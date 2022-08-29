@@ -1,0 +1,230 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "project": "tsconfig.json"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "eslint-comments",
+    "jest",
+    "promise",
+    "unicorn",
+    "import",
+    "react-hooks"
+  ],
+  "extends": [
+    "airbnb-typescript",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:eslint-comments/recommended",
+    "plugin:jest/recommended",
+    "plugin:promise/recommended",
+    "plugin:unicorn/recommended",
+    "plugin:import/errors",
+    "plugin:import/typescript",
+    "prettier",
+    "react-app"
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": [
+          "src"
+        ]
+      }
+    }
+  },
+  "rules": {
+    // configure rules for this project
+    "unicorn/prevent-abbreviations": [
+      "error",
+      {
+        "allowList": {
+          "params": true,
+          "Params": true,
+          "props": true,
+          "Props": true,
+          "otherProps": true,
+          "hoverRef": true,
+          "focusRef": true,
+          "useCombinedRefs": true,
+          "targetRef": true,
+          "refs": true,
+          "ref": true,
+          "Ref": true,
+          "dropdownContainerRef": true,
+          "RecordRendererProps": true,
+          "TableRendererProps": true,
+          "tableRendererProps": true,
+          "DropdownItemProps": true,
+          "FormControlProps": true,
+          "FormRegisterProps": true
+        }
+      }
+    ],
+    "eslint-comments/disable-enable-pair": [
+      "error",
+      {
+        "allowWholeFile": true
+      }
+    ],
+    "import/prefer-default-export": 0,
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          ".storybook/**",
+          "stories/**",
+          "**/*.stories.tsx",
+          "**/*.test.tsx",
+          "src/setupTests.ts",
+          "**/*.test.ts",
+          "@apollo/react-testing",
+          "/test|spec/"
+        ]
+      }
+    ],
+    "jsx-a11y/label-has-associated-control": [
+      2,
+      {
+        "labelComponents": [
+          "Label"
+        ],
+        "labelAttributes": [
+          "title"
+        ],
+        "controlComponents": [
+          "Input",
+          "Checkbox",
+          "Controller",
+          "FormSelect",
+          "Radio",
+          "RadioGroup",
+          "Select",
+          "Toggle"
+        ],
+        "depth": 3
+      }
+    ],
+    "react/jsx-props-no-spreading": 0,
+    "react/react-in-jsx-scope": 0,
+    "react/prop-types": 0,
+    "react/button-has-type": 0,
+    "@typescript-eslint/no-unused-expressions": ["error", {
+      "allowShortCircuit": true
+    }],
+
+    // code quality
+    "no-magic-numbers": [
+      "error",
+      {
+        "ignoreArrayIndexes": true,
+        "ignore": [
+          1,
+          0,
+          -1,
+          2,
+          3,
+          100
+        ]
+      }
+    ],
+    // formatting
+    "import/newline-after-import": "warn",
+    "import/order": [
+      "warn",
+      {
+        "groups": [
+          [
+            "external",
+            "builtin"
+          ],
+          [
+            "internal",
+            "index",
+            "parent"
+          ],
+          [
+            "sibling"
+          ]
+        ],
+        "newlines-between": "always"
+      }
+    ],
+    // disable bad dx
+    "unicorn/filename-case": 0,
+    "eslint-comments/no-unlimited-disable": 0,
+    "unicorn/no-abusive-eslint-disable": 0,
+    "unicorn/prefer-query-selector": 0,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "import/no-cycle": 0,
+    "unicorn/regex-shorthand": 0,
+    "unicorn/no-useless-undefined": 0,
+    "unicorn/no-new-array": 0,
+    "unicorn/require-array-join-separator": 0,
+    "unicorn/no-array-reduce": 0,
+    "unicorn/numeric-separators-style": 0,
+    "unicorn/prefer-switch": 0,
+    "unicorn/no-array-callback-reference": 0,
+    "class-methods-use-this": 0,
+    "promise/always-return": 0,
+    "@typescript-eslint/no-misused-promises": 0,
+    "arrow-body-style": 0,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "unicorn/no-fn-reference-in-iterator": 0,
+    "unicorn/no-null": 0,
+    "@typescript-eslint/no-unsafe-assignment": 0,
+    "@typescript-eslint/no-unsafe-member-access": 0,
+    "@typescript-eslint/restrict-template-expressions": 0,
+    "@typescript-eslint/no-unsafe-call": 0,
+    "@typescript-eslint/ban-types": 0,
+    "@typescript-eslint/no-floating-promises": 0,
+    "@typescript-eslint/unbound-method": 0,
+    "unicorn/prefer-optional-catch-binding": 0,
+    "@typescript-eslint/no-use-before-define": 0,
+    "unicorn/better-regex": 0,
+    "import/no-named-as-default": 0,
+    "no-restricted-syntax": 0,
+    "react/require-default-props": 0,
+    // "react/jsx-one-expression-per-line": 0,
+
+    // change warnings to errors
+    "react-hooks/rules-of-hooks": "error",
+    "@typescript-eslint/no-unused-vars": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "newline-before-return": "error",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-non-null-assertion": "error",
+    "jest/expect-expect": [
+      "error",
+      {
+        "assertFunctionNames": [
+          "expect",
+          "expectToThrow"
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["**/*test.tsx"],
+      "rules": {
+        "@typescript-eslint/no-non-null-assertion": 0,
+        "no-magic-numbers": 0
+      }
+    },
+    {
+      "files": [
+        "**/*.stories.*"
+      ],
+      "rules": {
+        "import/no-anonymous-default-export": 0
+      }
+    }
+  ]
+}
