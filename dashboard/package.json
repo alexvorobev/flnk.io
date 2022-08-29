@@ -7,6 +7,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "format": "prettier --write src/**",
     "lint:ts": "tsc --noEmit && yarn lint:eslint",
     "lint:eslint": "eslint --ext=jsx,ts,tsx 'src/**/*.{ts,tsx}'",
     "lint:css": "stylelint --custom-syntax \"postcss-scss\" \"src/**/*.scss\" --config ./.stylelintrc",
@@ -28,6 +29,7 @@
     "@types/node": "^16.11.49",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "autoprefixer": "^10.4.0",
     "dotenv": "8.2.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
@@ -44,6 +46,7 @@
     "eslint-plugin-testing-library": "^4.12.4",
     "eslint-plugin-unicorn": "^34.0.1",
     "eslint-webpack-plugin": "^2.5.2",
+    "prettier": "^2.7.1",
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4"
   },
