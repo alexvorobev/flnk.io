@@ -5,7 +5,7 @@
     "jest": true
   },
   "parserOptions": {
-    "project": "tsconfig.json"
+    "project": "tsconfig.eslint.json"
   },
   "plugins": [
     "@typescript-eslint",
@@ -41,6 +41,7 @@
   },
   "rules": {
     // configure rules for this project
+    "no-console": ["error", { "allow": ["warn", "error"] }],
     "unicorn/prevent-abbreviations": [
       "error",
       {
