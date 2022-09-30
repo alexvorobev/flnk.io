@@ -6,7 +6,7 @@ export const Header = () => {
   return (
     <HeaderWrapper>
       <Container>
-        <AppName>flink.io // Dashboard</AppName>
+        <AppName>flink.io</AppName>
       </Container>
     </HeaderWrapper>
   );
