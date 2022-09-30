@@ -11,11 +11,12 @@ interface FormFields {
 }
 
 export const LinkForm = () => {
-  const { register, handleSubmit } = useForm<FormFields>();
+  const { register, handleSubmit, reset } = useForm<FormFields>();
 
   const onSubmitCallback = useCallback((data: FormFields) => {
     console.log(data);
-  }, []);
+    reset()
+  }, [reset]);
 
   return (
     <FormWrapper onSubmit={handleSubmit(onSubmitCallback)}>
