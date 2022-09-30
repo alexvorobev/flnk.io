@@ -1,15 +1,12 @@
-import { Input, Button } from "components/core";
+import { AuthForm } from 'components/forms';
+import { AuthLayout } from 'components/layouts';
 
 const Auth = () => {
   return (
-    <div>
+    <AuthLayout>
       <h1>Auth</h1>
-      <div>
-        <Input placeholder="email" />
-        <Input placeholder="password" type='password' />
-        <Button>Send</Button>
-      </div>
-    </div>
+      <AuthForm />
+    </AuthLayout>
   );
 };
 

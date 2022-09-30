@@ -1,0 +1,18 @@
+{
+    "folders": [
+      {
+        "path": "api"
+      },
+      {
+        "path": "dashboard",
+      },
+      {
+        "path": "app",
+      }
+    ],
+    "settings": {
+      "git.confirmSync": false,
+      "stylelint.enable": true,
+      "typescript.tsdk": "dashboard/node_modules/typescript/lib"
+    }
+  }
