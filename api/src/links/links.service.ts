@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLinkInput } from './dto/create-link.input';
 import { Link } from './models/link';
 
 @Injectable()
