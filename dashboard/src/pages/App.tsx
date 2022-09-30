@@ -1,12 +1,10 @@
-import Auth from 'pages/auth';
-
+import { MainLayout } from 'components/layouts';
 import './App.css';
 
 function App() {
   return (
     <div className='App'>
-      FLNK Dashboard
-      <Auth />
+      <MainLayout>FLNK Dashboard</MainLayout>
     </div>
   );
 }
