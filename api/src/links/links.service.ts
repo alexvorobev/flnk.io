@@ -1,53 +1,58 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { Link } from './models/link';
+
+function makeid(length) {
+  let result = '';
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
 
 @Injectable()
 export class LinksService {
-  private links: Link[] = [
-    {
-      id: 123,
-      hash: 'jkoor4',
-      path: 'http://google.com',
-    },
-    {
-      id: 124,
-      hash: 'jklkr4',
-      path: 'http://google.com',
-    },
-    {
-      id: 125,
-      hash: 'jkdwr4',
-      path: 'http://google.com',
-    },
-    {
-      id: 126,
-      hash: 'jkhwr4',
-      path: 'http://google.com',
-    },
-  ];
+  constructor(private prisma: PrismaService) {}
 
-  public getLinks(): Link[] {
-    return this.links;
+  public async getLinks(): Promise<Link[]> {
+    return this.prisma.link.findMany();
   }
 
-  public createLink(hash: string, path: string): Link {
-    const randomId = Math.floor(Math.random() * 1000);
-    const link = { id: randomId, hash, path };
-    this.links.push(link);
-    return link;
+  public async createLink(path: string): Promise<Link> {
+    const link = { hash: makeid(5), path };
+    const createdLink = await this.prisma.link.create({
+      data: {
+        ...link,
+      },
+    });
+
+    return createdLink;
   }
 
-  public updateLink(id: number, hash: string, path: string): Link {
-    const link = this.links.find((link) => link.id === id);
-    link.path = path;
-    link.hash = hash;
-    return link;
+  public async updateLink(
+    id: number,
+    hash: string,
+    path: string,
+  ): Promise<Link> {
+    return await this.prisma.link.update({
+      where: {
+        id,
+      },
+      data: {
+        hash,
+        path,
+      },
+    });
   }
 
-  public deleteLink(id: number): Link {
-    const link = this.links.find((link) => link.id === id);
-    const deletingLink = { ...link };
-    this.links = this.links.filter((link) => link.id !== id);
-    return deletingLink;
+  public async deleteLink(id: number): Promise<Link> {
+    return await this.prisma.link.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

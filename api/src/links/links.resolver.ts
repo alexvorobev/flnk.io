@@ -7,26 +7,26 @@ export class LinksResolver {
   constructor(private readonly linksService: LinksService) {}
 
   @Query(() => [Link], { name: 'getLinks', nullable: true })
-  getLinks(): Link[] {
+  getLinks(): Promise<Link[]> {
     return this.linksService.getLinks();
   }
 
   @Mutation(() => Link, { name: 'createLink', nullable: true })
-  createLink(@Args('hash') hash: string, @Args('path') path: string): Link {
-    return this.linksService.createLink(hash, path);
+  async createLink(@Args('path') path: string): Promise<Link> {
+    return this.linksService.createLink(path);
   }
 
   @Mutation(() => Link, { name: 'updateLink', nullable: true })
-  updateLink(
+  async updateLink(
     @Args('id') id: number,
     @Args('hash') hash: string,
     @Args('path') path: string,
-  ): Link {
+  ): Promise<Link> {
     return this.linksService.updateLink(id, hash, path);
   }
 
   @Mutation(() => Link, { name: 'deleteLink', nullable: true })
-  deleteLink(@Args('id') id: number): Link {
+  async deleteLink(@Args('id') id: number): Promise<Link> {
     return this.linksService.deleteLink(id);
   }
 }
