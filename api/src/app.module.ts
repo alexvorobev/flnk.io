@@ -4,9 +4,12 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 import { LinksModule } from './links/links.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { PrismaService } from './prisma/prisma.service';
 
 @Module({
   imports: [
+    PrismaModule,
     LinksModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -14,6 +17,6 @@ import { LinksModule } from './links/links.module';
     }),
   ],
   controllers: [],
-  providers: [],
+  providers: [PrismaService],
 })
 export class AppModule {}
