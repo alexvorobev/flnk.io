@@ -1,12 +1,19 @@
+import { FC } from 'react';
+
+import { Link } from 'schema/types';
+
 import { LinkItem } from './LinkItem';
 
-export const LinksTable = () => {
+interface Props {
+  links?: Link[];
+}
+
+export const LinksTable: FC<Props> = ({ links }) => {
   return (
     <div>
-      <LinkItem />
-      <LinkItem />
-      <LinkItem />
-      <LinkItem />
+      {links?.map((link) => (
+        <LinkItem key={link.id} link={link} />
+      ))}
     </div>
   );
 };

@@ -12,8 +12,8 @@ export class LinksResolver {
   }
 
   @Mutation(() => Link, { name: 'createLink', nullable: true })
-  createLink(@Args('path') path: string): Link {
-    return this.linksService.createLink(path);
+  createLink(@Args('hash') hash: string, @Args('path') path: string): Link {
+    return this.linksService.createLink(hash, path);
   }
 
   @Mutation(() => Link, { name: 'updateLink', nullable: true })

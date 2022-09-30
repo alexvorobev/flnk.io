@@ -30,8 +30,8 @@ export class LinksService {
     return this.links;
   }
 
-  public createLink(path: string): Link {
-    const link = { hash: 'newl', path };
+  public createLink(hash: string, path: string): Link {
+    const link = { hash, path };
     this.links.push(link);
     return link;
   }

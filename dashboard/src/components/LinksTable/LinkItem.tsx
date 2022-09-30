@@ -1,44 +1,26 @@
-import styled from 'styled-components';
+import { FC } from 'react';
 
 import { Button } from 'components/core';
+import { Link } from 'schema/types';
+import { useLink } from 'controllers/links/useLink';
 
-const LinkRow = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 250px;
-  align-items: center;
-  grid-gap: 16px;
-  padding: 24px;
-  border-bottom: 1px solid #ebebeb;
-`;
+import { LinkCode, LinkControls, LinkPath, LinkRow } from './styles';
 
-const LinkCode = styled.p`
-  font-size: 16px;
-  font-weight: 600;
-  color: #000;
-  margin: 0;
-`;
+interface Props {
+  link: Link;
+}
 
-const LinkPath = styled.a`
-  font-size: 16px;
-  font-weight: 600;
-  color: #888;
-`;
+export const LinkItem: FC<Props> = ({ link }) => {
+  const { editLink } = useLink();
 
-const LinkControls = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 16px;
-`;
-
-export const LinkItem = () => {
   return (
     <LinkRow>
-      <LinkCode>123456</LinkCode>
-      <LinkPath href='https://google.com' target='_blank'>
-        https://google.com
+      <LinkCode>{link.hash}</LinkCode>
+      <LinkPath href={link.path} target='_blank'>
+        {link.path}
       </LinkPath>
       <LinkControls>
-        <Button>Edit</Button>
+        <Button onClick={() => editLink(link)}>Edit</Button>
         <Button>Delete</Button>
       </LinkControls>
     </LinkRow>

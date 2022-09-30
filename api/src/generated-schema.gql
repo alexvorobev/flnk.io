@@ -20,7 +20,7 @@ type Query {
 }
 
 type Mutation {
-  createLink(path: String!): Link
+  createLink(hash: String!, path: String!): Link
   updateLink(id: Float!, path: String!): Link
   deleteLink(id: Float!): Link
 }

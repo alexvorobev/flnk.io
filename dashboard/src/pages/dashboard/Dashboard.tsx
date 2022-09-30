@@ -3,17 +3,22 @@ import { useQuery } from '@apollo/client';
 import { LinkForm } from 'components/forms';
 import { MainLayout } from 'components/layouts';
 import { LinksTable } from 'components/LinksTable';
-import { getLinksQuery } from 'queries/getLinksQuery';
+import { LinksProvider } from 'controllers/links/useLink';
+import { getLinksQuery } from 'queries';
+import { Query } from 'schema/types';
 
 const Dashboard = () => {
-  const { data } = useQuery(getLinksQuery);
-  console.log({data})
+  const { data } = useQuery<Query>(getLinksQuery);
+
+  const links = data?.getLinks || [];
 
   return (
-    <MainLayout>
-      <LinkForm />
-      <LinksTable />
-    </MainLayout>
+    <LinksProvider>
+      <MainLayout>
+        <LinkForm />
+        <LinksTable links={links} />
+      </MainLayout>
+    </LinksProvider>
   );
 };
 
