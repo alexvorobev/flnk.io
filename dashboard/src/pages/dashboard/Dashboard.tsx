@@ -1,7 +1,14 @@
-import { MainLayout } from "components/layouts";
+import { LinkForm } from 'components/forms';
+import { MainLayout } from 'components/layouts';
+import { LinksTable } from 'components/LinksTable';
 
 const Dashboard = () => {
-    return <MainLayout>FLNK Dashboard</MainLayout>
+  return (
+    <MainLayout>
+      <LinkForm />
+      <LinksTable />
+    </MainLayout>
+  );
 };
 
 export default Dashboard;
