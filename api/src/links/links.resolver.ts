@@ -17,8 +17,12 @@ export class LinksResolver {
   }
 
   @Mutation(() => Link, { name: 'updateLink', nullable: true })
-  updateLink(@Args('id') id: number, @Args('path') path: string): Link {
-    return this.linksService.updateLink(id, path);
+  updateLink(
+    @Args('id') id: number,
+    @Args('hash') hash: string,
+    @Args('path') path: string,
+  ): Link {
+    return this.linksService.updateLink(id, hash, path);
   }
 
   @Mutation(() => Link, { name: 'deleteLink', nullable: true })

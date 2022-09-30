@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 
 import { Button } from 'components/core';
 import { Link } from 'schema/types';
@@ -11,7 +11,8 @@ interface Props {
 }
 
 export const LinkItem: FC<Props> = ({ link }) => {
-  const { editLink } = useLink();
+  const { editLink, deleteLink } = useLink();
+  const linkId = useMemo(() => Number.parseInt(link.id ?? '0', 10), [link]);
 
   return (
     <LinkRow>
@@ -21,7 +22,7 @@ export const LinkItem: FC<Props> = ({ link }) => {
       </LinkPath>
       <LinkControls>
         <Button onClick={() => editLink(link)}>Edit</Button>
-        <Button>Delete</Button>
+        <Button onClick={() => deleteLink(linkId)}>Delete</Button>
       </LinkControls>
     </LinkRow>
   );

@@ -1,3 +1,5 @@
+import { useMutation } from '@apollo/client';
+import { deleteLinkMutation } from 'mutations';
 import { createContext, FC, useCallback, useContext, useState } from 'react';
 
 import { Link } from 'schema/types';
@@ -22,14 +24,19 @@ interface ProviderProps {
 
 export const LinksProvider: FC<ProviderProps> = ({ children }) => {
   const [currentLink, setCurrentLink] = useState<Link>();
+  const [requestDeleteLink] = useMutation(deleteLinkMutation)
 
   const editLink = useCallback((link?: Link) => {
     setCurrentLink(link);
   }, []);
 
   const deleteLink = useCallback((id: number) => {
-    console.log(id);
-  }, []);
+    requestDeleteLink({
+      variables: {
+        id,
+      }
+    })
+  }, [requestDeleteLink]);
 
   return <LinksContext.Provider value={{ currentLink, editLink, deleteLink }}>{children}</LinksContext.Provider>;
 };
