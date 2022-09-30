@@ -1,0 +1,26 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""The main data about the links"""
+type Link {
+  id: ID
+
+  """
+  The id of the link is a random or custom string that should define short id
+  """
+  hash: String!
+
+  """The path of the link is the url of the link"""
+  path: String!
+}
+
+type Query {
+  getLinks: [Link!]
+}
+
+type Mutation {
+  createLink(path: String!): Link
+  updateLink(id: Float!, path: String!): Link
+  deleteLink(id: Float!): Link
+}

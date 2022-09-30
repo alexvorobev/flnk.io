@@ -1,0 +1,27 @@
+overwrite: true
+schema: ../api/src/generated-schema.graphql # GraphQL types (input file)
+documents:
+  - 'src/**/*.tsx'
+  - 'src/**/*.ts'
+generates:
+  ./gql-types.ts: # Typescript types (output generated file)
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      reactApolloVersion: 3
+      withHooks: true
+      withComponent: false
+      withHOC: false
+      skipTypename: true
+      immutableTypes: false
+      maybeValue: '(T extends unknown [] ? T : Partial<T>) | undefined | null'
+      namingConvention:
+        enumValues: keep
+      scalars:
+        # FIXME: properly use the scalar in code
+        # DateTime: string
+        Decimal: string
