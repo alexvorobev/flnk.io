@@ -34,7 +34,7 @@ export class LinksService {
       },
     });
 
-    await this.cacheManager.set(`${createdLink.hash}`, `${createdLink.path}`);
+    await this.cacheManager.set(createdLink.hash, createdLink.path);
 
     return createdLink;
   }
@@ -44,7 +44,7 @@ export class LinksService {
     hash: string,
     path: string,
   ): Promise<Link> {
-    this.cacheManager.del(`${hash}`);
+    this.cacheManager.del(hash);
 
     const updated = await this.prisma.link.update({
       where: {
@@ -55,7 +55,7 @@ export class LinksService {
         path,
       },
     });
-    this.cacheManager.set(`${updated.hash}`, `${updated.path}`);
+    this.cacheManager.set(updated.hash, updated.path);
 
     return updated;
   }
@@ -67,7 +67,7 @@ export class LinksService {
       },
     });
 
-    this.cacheManager.del(`${deleted.hash}`);
+    this.cacheManager.del(deleted.hash);
 
     return deleted;
   }

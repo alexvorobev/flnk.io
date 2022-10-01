@@ -10,7 +10,7 @@ export const LinkRow = styled.div`
 
   @media (max-width: 1200px) {
     grid-template-columns: 1fr;
-  }  
+  }
 `;
 
 export const LinkCode = styled.p`
