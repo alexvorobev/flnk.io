@@ -7,6 +7,10 @@ export const LinkRow = styled.div`
   grid-gap: 16px;
   padding: 24px;
   border-bottom: 1px solid #ebebeb;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: 1fr;
+  }  
 `;
 
 export const LinkCode = styled.p`

@@ -6,4 +6,8 @@ export const FormWrapper = styled.form`
   grid-gap: 16px;
   padding: 24px;
   background-color: #ebebeb;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: 1fr;
+  }
 `;
