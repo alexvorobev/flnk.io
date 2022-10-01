@@ -1,5 +1,5 @@
 import { useEffect, FC } from "react";
-import { GetServerSideProps, NextApiRequest } from "next";
+import { GetServerSideProps } from "next";
 
 interface Props {
     path: string | null;
@@ -8,20 +8,15 @@ interface Props {
 const LinkHashPage:FC<Props> = ({ path }) => {
 
     useEffect(() => {
-        if(window) {
-            console.log(window.navigator)
+        if(window && path) {
+            window.location.href = path;
         }
-    }, [])
+    }, [path]);
 
     return <>
         {path}
     </>;
-
 };
-
-interface ServerSideProps {
-    req: NextApiRequest;
-}
 
 export const getServerSideProps:GetServerSideProps = async (context) => {
     const { req, query } = context;

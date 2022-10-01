@@ -14,5 +14,7 @@ export default async function handler(
   const { hash, headers, cookies } = JSON.parse(body);
   const cached = await getRedis(hash);
 
-  res.status(200).json({ path: cached?.replaceAll('"', '') ?? null })
+  if (cached) {
+    res.status(200).json({ path: cached?.replaceAll('"', '') ?? null })
+  }
 }
