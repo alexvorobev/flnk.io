@@ -1,4 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { Cache } from 'cache-manager';
+
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Link } from './models/link';
 
@@ -15,7 +17,10 @@ function makeid(length) {
 
 @Injectable()
 export class LinksService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+  ) {}
 
   public async getLinks(): Promise<Link[]> {
     return this.prisma.link.findMany();
@@ -29,6 +34,8 @@ export class LinksService {
       },
     });
 
+    await this.cacheManager.set(`${createdLink.hash}`, `${createdLink.path}`);
+
     return createdLink;
   }
 
@@ -37,7 +44,9 @@ export class LinksService {
     hash: string,
     path: string,
   ): Promise<Link> {
-    return await this.prisma.link.update({
+    this.cacheManager.del(`${hash}`);
+
+    const updated = await this.prisma.link.update({
       where: {
         id,
       },
@@ -46,13 +55,20 @@ export class LinksService {
         path,
       },
     });
+    this.cacheManager.set(`${updated.hash}`, `${updated.path}`);
+
+    return updated;
   }
 
   public async deleteLink(id: number): Promise<Link> {
-    return await this.prisma.link.delete({
+    const deleted = await this.prisma.link.delete({
       where: {
         id,
       },
     });
+
+    this.cacheManager.del(`${deleted.hash}`);
+
+    return deleted;
   }
 }
