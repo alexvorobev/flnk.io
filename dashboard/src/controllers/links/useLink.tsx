@@ -1,8 +1,9 @@
 import { useMutation } from '@apollo/client';
-import { deleteLinkMutation } from 'mutations';
 import { createContext, FC, useCallback, useContext, useState } from 'react';
 
-import { Link } from 'schema/types';
+import { deleteLinkMutation } from 'mutations';
+import { getLinksQuery } from 'queries';
+import { Link, Query } from 'schema/types';
 
 interface LinksContextType {
   currentLink?: Link;
@@ -24,19 +25,31 @@ interface ProviderProps {
 
 export const LinksProvider: FC<ProviderProps> = ({ children }) => {
   const [currentLink, setCurrentLink] = useState<Link>();
-  const [requestDeleteLink] = useMutation(deleteLinkMutation)
+  const [requestDeleteLink] = useMutation(deleteLinkMutation);
 
   const editLink = useCallback((link?: Link) => {
     setCurrentLink(link);
   }, []);
 
-  const deleteLink = useCallback((id: number) => {
-    requestDeleteLink({
-      variables: {
-        id,
-      }
-    })
-  }, [requestDeleteLink]);
+  const deleteLink = useCallback(
+    (id: number) => {
+      requestDeleteLink({
+        variables: {
+          id,
+        },
+        update(cache, { data }) {
+          const links = cache.readQuery<Query>({ query: getLinksQuery });
+          cache.writeQuery({
+            query: getLinksQuery,
+            data: {
+              getLinks: links?.getLinks?.filter((link: Link) => link.id !== data?.deleteLink.id),
+            },
+          });
+        },
+      });
+    },
+    [requestDeleteLink],
+  );
 
   return <LinksContext.Provider value={{ currentLink, editLink, deleteLink }}>{children}</LinksContext.Provider>;
 };

@@ -21,13 +21,13 @@ export const LinkForm = () => {
     onCompleted: () => {
       reset();
       editLink();
-    }
+    },
   });
   const [createLink] = useMutation(createLinkMutation, {
     onCompleted: () => {
       reset();
       editLink();
-    }
+    },
   });
 
   const onSubmitCallback = useCallback(
