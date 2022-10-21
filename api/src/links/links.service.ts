@@ -26,6 +26,17 @@ export class LinksService {
     return this.prisma.link.findMany();
   }
 
+  public async getLinkByHash(hash: string): Promise<Link> {
+    const link = await this.prisma.link.findFirst({
+      where: {
+        hash,
+      },
+    });
+    this.cacheManager.set(link.hash, link.path);
+
+    return link;
+  }
+
   public async createLink(path: string): Promise<Link> {
     const link = { hash: makeid(5), path };
     const createdLink = await this.prisma.link.create({

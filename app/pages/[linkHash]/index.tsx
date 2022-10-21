@@ -33,7 +33,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
 
         return {
             props: {
-                path: data.path,
+                path: data.path ?? null,
             }
         }
     }).catch(() => {
