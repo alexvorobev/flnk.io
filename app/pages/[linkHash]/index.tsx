@@ -13,9 +13,7 @@ const LinkHashPage:FC<Props> = ({ path }) => {
         }
     }, [path]);
 
-    return <>
-        {path}
-    </>;
+    return null;
 };
 
 export const getServerSideProps:GetServerSideProps = async (context) => {
@@ -27,10 +25,8 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
         method: 'POST',
         body: JSON.stringify({ hash: linkHash, headers: req.headers, cookies: req.cookies}),
     });
-    
-    return result.json().then((data) => {
-        console.log({data});
 
+    return result.json().then((data) => {
         return {
             props: {
                 path: data.path ?? null,

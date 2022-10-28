@@ -6,8 +6,6 @@ type Data = {
   path: string | null
 }
 
-
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -17,17 +15,15 @@ export default async function handler(
   const cached = await getRedis(hash);
 
   if (cached) {
+    console.log('result was cached');
     res.status(200).json({ path: cached?.replaceAll('"', '') ?? null })
   } else {
-    await fetch(`http://localhost:3000/api/links/${hash}`, {
+    await fetch(`http://localhost:4000/links/${hash}`, {
       method: 'GET',
     }).then(async (result) => {
       // @ts-ignore
       const { path } = await result.json();
-      console.log(result.json());
-      console.log('.-.')
-      console.log(path)
-      res.status(200).json({ path: path ?? null })
+      res.status(200).json({ path })
     });
   }
 }
