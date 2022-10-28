@@ -14,7 +14,6 @@ export const AuthForm = () => {
   const { register, handleSubmit } = useForm<FormFields>();
 
   const onSubmit = useCallback((data: FormFields) => {
-    console.log(data);
   }, []);
 
   return (

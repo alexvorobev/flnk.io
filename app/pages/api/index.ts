@@ -15,7 +15,6 @@ export default async function handler(
   const cached = await getRedis(hash);
 
   if (cached) {
-    console.log('result was cached');
     res.status(200).json({ path: cached?.replaceAll('"', '') ?? null })
   } else {
     await fetch(`http://localhost:4000/links/${hash}`, {
