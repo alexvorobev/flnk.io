@@ -15,12 +15,34 @@ type Link {
   path: String!
 }
 
+"""User data entity"""
+type User {
+  id: ID
+
+  """User's name"""
+  name: String!
+
+  """User's surname"""
+  surname: String!
+
+  """User's email"""
+  email: String!
+
+  """User's encrypted password"""
+  password: String!
+
+  """User role"""
+  role: String!
+}
+
 type Query {
   getLinks: [Link!]
+  auth(email: String!, password: String!): User
 }
 
 type Mutation {
   createLink(path: String!): Link
   updateLink(id: Float!, hash: String!, path: String!): Link
   deleteLink(id: Float!): Link
+  signUp(name: String!, surname: String!, email: String!, password: String!): User
 }

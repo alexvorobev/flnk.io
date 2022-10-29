@@ -8,6 +8,7 @@ import { LinksModule } from './links/links.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { PrismaService } from './prisma/prisma.service';
 import { REDIS_CACHE_OPTIONS } from './infra/redis.config';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { REDIS_CACHE_OPTIONS } from './infra/redis.config';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/generated-schema.gql'),
     }),
+    UserModule,
   ],
   controllers: [],
   providers: [PrismaService],
