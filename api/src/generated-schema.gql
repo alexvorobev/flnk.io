@@ -50,5 +50,5 @@ type Mutation {
   createLink(path: String!, hash: String!): Link
   updateLink(id: Float!, hash: String!, path: String!): Link
   deleteLink(id: Float!): Link
-  signUp(name: String!, surname: String!, email: String!, password: String!): User
+  signUp(name: String!, surname: String!, email: String!, password: String!): AuthToken
 }

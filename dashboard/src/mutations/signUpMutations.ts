@@ -13,9 +13,7 @@ export const signUpMutation = gql`
             email: $email,
             password: $password,
         ) {
-            name
-            surname
-            email
+            token
         }
   }
 `;

@@ -15,13 +15,13 @@ export class UserResolver {
     return this.userService.authUser(email, password);
   }
 
-  @Mutation(() => User, { name: 'signUp', nullable: true })
+  @Mutation(() => AuthToken, { name: 'signUp', nullable: true })
   async signUp(
     @Args('name') name: string,
     @Args('surname') surname: string,
     @Args('email') email: string,
     @Args('password') password: string,
-  ): Promise<User> {
+  ): Promise<AuthToken> {
     return this.userService.signUp(name, surname, email, password);
   }
 }

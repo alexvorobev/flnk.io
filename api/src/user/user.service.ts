@@ -44,11 +44,11 @@ export class UserService {
     surname: string,
     email: string,
     password: string,
-  ): Promise<User> {
+  ): Promise<AuthToken> {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    return this.prisma.user.create({
+    const result = await this.prisma.user.create({
       data: {
         name,
         surname,
@@ -57,6 +57,10 @@ export class UserService {
         role: UserRoles.BASIC,
       },
     });
+
+    return {
+      token: this.jswService.sign({ userId: result.id }),
+    };
   }
 
   public async validateUser(userId: number): Promise<User> {
