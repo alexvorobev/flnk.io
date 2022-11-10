@@ -1,22 +1,28 @@
-import { useCallback } from 'react';
+import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Input, Button } from 'components/core';
 
 import { FormWrapper } from './styles';
 
-interface FormFields {
+export interface SignUpFormFields {
+  name: string;
+  surname: string;
   email: string;
   password: string;
 }
 
-export const AuthForm = () => {
-  const { register, handleSubmit } = useForm<FormFields>();
+interface Props {
+  onSubmit: (data: SignUpFormFields) => void;
+}
 
-  const onSubmit = useCallback((data: FormFields) => {}, []);
+export const SignUpForm: FC<Props> = ({ onSubmit }) => {
+  const { register, handleSubmit } = useForm<SignUpFormFields>();
 
   return (
     <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+      <Input placeholder='name' {...register('name')} />
+      <Input placeholder='surname' {...register('surname')} />
       <Input placeholder='email' {...register('email')} />
       <Input placeholder='password' type='password' {...register('password')} />
       <Button type='submit'>Send</Button>
