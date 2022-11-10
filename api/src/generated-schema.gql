@@ -15,6 +15,12 @@ type Link {
   path: String!
 }
 
+"""User access response"""
+type AuthToken {
+  """User's auth token"""
+  token: String!
+}
+
 """User data entity"""
 type User {
   id: ID
@@ -37,7 +43,7 @@ type User {
 
 type Query {
   getLinks: [Link!]
-  auth(email: String!, password: String!): User
+  auth(email: String!, password: String!): AuthToken
 }
 
 type Mutation {

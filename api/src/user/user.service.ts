@@ -1,23 +1,41 @@
 import * as bcrypt from 'bcrypt';
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserRoles } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from './models/user';
+import { AuthToken } from './models/authToken';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService, private jswService: JwtService) {}
 
-  public async authUser(email: string, password: string): Promise<User> {
+  public async authUser(email: string, password: string): Promise<AuthToken> {
+    const result = await this.prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!result) {
+      throw new NotFoundException();
+    }
+
+    const comparedPassword = await bcrypt.compare(password, result.password);
+
+    if (!comparedPassword) {
+      throw new UnauthorizedException(
+        "Can't find user with such email or password",
+      );
+    }
+
     return {
-      id: 1,
-      name: '',
-      surname: '',
-      email,
-      password,
-      role: UserRoles.USER,
+      token: this.jswService.sign({ userId: result.id }),
     };
   }
 
@@ -28,7 +46,8 @@ export class UserService {
     password: string,
   ): Promise<User> {
     console.log(process.env.BCRYPT_SALT);
-    const hashedPassword = await bcrypt.hash(password, process.env.BCRYPT_SALT);
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     return this.prisma.user.create({
       data: {
@@ -36,7 +55,7 @@ export class UserService {
         surname,
         email,
         password: hashedPassword,
-        role: UserRoles.USER,
+        role: UserRoles.BASIC,
       },
     });
   }

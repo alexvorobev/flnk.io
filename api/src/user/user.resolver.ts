@@ -1,4 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { AuthToken } from './models/authToken';
 import { User } from './models/user';
 import { UserService } from './user.service';
 
@@ -6,11 +7,11 @@ import { UserService } from './user.service';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Query(() => User, { name: 'auth', nullable: true })
+  @Query(() => AuthToken, { name: 'auth', nullable: true })
   auth(
     @Args('email') email: string,
     @Args('password') password: string,
-  ): Promise<User> {
+  ): Promise<AuthToken> {
     return this.userService.authUser(email, password);
   }
 
