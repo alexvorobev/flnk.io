@@ -12,8 +12,11 @@ export class LinksResolver {
   }
 
   @Mutation(() => Link, { name: 'createLink', nullable: true })
-  async createLink(@Args('path') path: string): Promise<Link> {
-    return this.linksService.createLink(path);
+  async createLink(
+    @Args('path') path: string,
+    @Args('hash') hash?: string,
+  ): Promise<Link> {
+    return this.linksService.createLink(path, hash);
   }
 
   @Mutation(() => Link, { name: 'updateLink', nullable: true })
