@@ -45,7 +45,6 @@ export class UserService {
     email: string,
     password: string,
   ): Promise<User> {
-    console.log(process.env.BCRYPT_SALT);
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 

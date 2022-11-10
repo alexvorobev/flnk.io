@@ -2,25 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-"""The main data about the links"""
-type Link {
-  id: ID
-
-  """
-  The id of the link is a random or custom string that should define short id
-  """
-  hash: String!
-
-  """The path of the link is the url of the link"""
-  path: String!
-}
-
-"""User access response"""
-type AuthToken {
-  """User's auth token"""
-  token: String!
-}
-
 """User data entity"""
 type User {
   id: ID
@@ -34,11 +15,30 @@ type User {
   """User's email"""
   email: String!
 
-  """User's encrypted password"""
-  password: String!
-
   """User role"""
   role: String!
+}
+
+"""The main data about the links"""
+type Link {
+  id: ID
+
+  """
+  The id of the link is a random or custom string that should define short id
+  """
+  hash: String!
+
+  """The path of the link is the url of the link"""
+  path: String!
+
+  """Link creator data"""
+  user: User
+}
+
+"""User access response"""
+type AuthToken {
+  """User's auth token"""
+  token: String!
 }
 
 type Query {

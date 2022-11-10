@@ -22,11 +22,6 @@ export class User {
   email: string;
 
   @Field(() => String, {
-    description: "User's encrypted password",
-  })
-  password: string;
-
-  @Field(() => String, {
     description: 'User role',
   })
   role: UserRoles;

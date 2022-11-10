@@ -9,6 +9,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { PrismaService } from './prisma/prisma.service';
 import { REDIS_CACHE_OPTIONS } from './infra/redis.config';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UserModule } from './user/user.module';
       autoSchemaFile: join(process.cwd(), 'src/generated-schema.gql'),
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [PrismaService],

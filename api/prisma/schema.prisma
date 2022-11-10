@@ -22,6 +22,8 @@ model Link {
   path      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  createdBy Int
+  user      User     @relation(fields: [createdBy], references: [id])
 }
 
 model User {
@@ -33,4 +35,5 @@ model User {
   role      UserRoles @default(BASIC)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  links     Link[]
 }
