@@ -44,6 +44,7 @@ type AuthToken {
 type Query {
   getLinks: [Link!]
   auth(email: String!, password: String!): AuthToken
+  me: User
 }
 
 type Mutation {

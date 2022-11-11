@@ -1,13 +1,25 @@
-import { Container } from 'components/core';
+import { FC } from 'react';
 
-import { AppName, HeaderWrapper } from './styles';
+import UserInfo from 'components/core/UserInfo/UserInfo';
 
-export const Header = () => {
+import { AppName, HeaderContainer, HeaderWrapper } from './styles';
+
+interface Props {
+  user?: {
+    name: string;
+    surname: string;
+    email: string;
+  };
+  onLogout?: () => void;
+}
+
+export const Header: FC<Props> = ({ user, onLogout }) => {
   return (
     <HeaderWrapper>
-      <Container>
-        <AppName>flink.io</AppName>
-      </Container>
+      <HeaderContainer>
+        <AppName>flnk.io</AppName>
+        <UserInfo user={user} onLogout={onLogout} />
+      </HeaderContainer>
     </HeaderWrapper>
   );
 };

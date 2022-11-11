@@ -16,7 +16,7 @@ export const LinkRow = styled.div`
 export const LinkCode = styled.p`
   font-size: 16px;
   font-weight: 600;
-  color: #000;
+  color: #1a2d37;
   margin: 0;
 `;
 
