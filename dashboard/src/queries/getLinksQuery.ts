@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const getLinksQuery = gql`
-  query GetAllLinks {
+  query GetAllLinksQuery {
     getLinks {
       id
       hash

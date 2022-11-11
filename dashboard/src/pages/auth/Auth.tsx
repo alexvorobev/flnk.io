@@ -1,11 +1,44 @@
-import { AuthForm } from 'components/forms';
+import { useCallback } from 'react';
+import { useLazyQuery } from '@apollo/client';
+
+import { AuthForm, AuthFormFields } from 'components/forms';
 import { AuthLayout } from 'components/layouts';
+import { authQuery } from 'queries/authQuery';
+import { useAuth } from 'controllers/auth/useAuth';
+
+interface ResponseData {
+  auth: {
+    token: string;
+  };
+}
 
 const Auth = () => {
+  const [getToken] = useLazyQuery(authQuery);
+  const { handleLogin, handleLogout } = useAuth();
+
+  const onSubmit = useCallback(
+    (data: AuthFormFields) => {
+      getToken({
+        variables: {
+          ...data,
+        },
+        onCompleted: (response: ResponseData) => {
+          if (response.auth.token) {
+            handleLogin(response.auth.token);
+          }
+        },
+        onError: () => {
+          handleLogout();
+        },
+      });
+    },
+    [getToken, handleLogin, handleLogout],
+  );
+
   return (
     <AuthLayout>
       <h1>Auth</h1>
-      <AuthForm />
+      <AuthForm onSubmit={onSubmit} />
     </AuthLayout>
   );
 };

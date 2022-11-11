@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 import { Input, Button } from 'components/core';
 
@@ -26,6 +27,9 @@ export const SignUpForm: FC<Props> = ({ onSubmit }) => {
       <Input placeholder='email' {...register('email')} />
       <Input placeholder='password' type='password' {...register('password')} />
       <Button type='submit'>Send</Button>
+      <p>
+        <Link to='/auth'>Sign in</Link>
+      </p>
     </FormWrapper>
   );
 };
