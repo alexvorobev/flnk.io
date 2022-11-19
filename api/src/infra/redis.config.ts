@@ -7,6 +7,7 @@ const REDIS_TTL = 60 * 60 * 24 * 7; // 7 days
 export const REDIS_CONFIG = {
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
+  password: process.env.REDIS_PASSWORD,
 };
 
 export const REDIS_CACHE_OPTIONS = {
