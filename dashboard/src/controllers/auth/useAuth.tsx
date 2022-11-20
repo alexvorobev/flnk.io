@@ -1,8 +1,8 @@
 import { useQuery } from '@apollo/client';
-import { meQuery } from 'queries/meQuery';
 import { createContext, FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { meQuery } from 'queries/meQuery';
 import { PUBLIC_ROUTES, ROUTES } from 'routes';
 
 interface AuthContextType {

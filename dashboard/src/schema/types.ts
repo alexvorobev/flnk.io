@@ -13,6 +13,20 @@ export type Scalars = {
   Float: number;
 };
 
+/** User data entity */
+export type User = {
+  __typename?: 'User';
+  id?: Maybe<Scalars['ID']>;
+  /** User's name */
+  name: Scalars['String'];
+  /** User's surname */
+  surname: Scalars['String'];
+  /** User's email */
+  email: Scalars['String'];
+  /** User role */
+  role: Scalars['String'];
+};
+
 /** The main data about the links */
 export type Link = {
   __typename?: 'Link';
@@ -21,11 +35,28 @@ export type Link = {
   hash: Scalars['String'];
   /** The path of the link is the url of the link */
   path: Scalars['String'];
+  /** Link creator data */
+  user?: Maybe<User>;
+};
+
+/** User access response */
+export type AuthToken = {
+  __typename?: 'AuthToken';
+  /** User's auth token */
+  token: Scalars['String'];
 };
 
 export type Query = {
   __typename?: 'Query';
   getLinks?: Maybe<Array<Link>>;
+  auth?: Maybe<AuthToken>;
+  getUsers?: Maybe<Array<User>>;
+  me?: Maybe<User>;
+};
+
+export type QueryAuthArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type Mutation = {
@@ -33,17 +64,27 @@ export type Mutation = {
   createLink?: Maybe<Link>;
   updateLink?: Maybe<Link>;
   deleteLink?: Maybe<Link>;
+  signUp?: Maybe<AuthToken>;
 };
 
 export type MutationCreateLinkArgs = {
   path: Scalars['String'];
+  hash: Scalars['String'];
 };
 
 export type MutationUpdateLinkArgs = {
   id: Scalars['Float'];
+  hash: Scalars['String'];
   path: Scalars['String'];
 };
 
 export type MutationDeleteLinkArgs = {
   id: Scalars['Float'];
+};
+
+export type MutationSignUpArgs = {
+  name: Scalars['String'];
+  surname: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
 };

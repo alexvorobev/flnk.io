@@ -6,6 +6,7 @@ import './App.css';
 import Auth from './auth';
 import Dashboard from './dashboard';
 import SignUp from './sign-up';
+import { UsersPage } from './users';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <AuthProvider>
           <Routes>
             <Route path='/' element={<Dashboard />} />
+            <Route path='/users' element={<UsersPage />} />
             <Route path='/auth' element={<Auth />} />
             <Route path='/sign-up' element={<SignUp />} />
           </Routes>
