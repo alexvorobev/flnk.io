@@ -33,7 +33,16 @@ export const UsersTable: FC<Props> = ({ users }) => {
             <Table.TextCell>{user.name}</Table.TextCell>
             <Table.TextCell>{user.surname}</Table.TextCell>
             <Table.TextCell>{user.email}</Table.TextCell>
-            <Table.SelectMenuCell selectMenuProps={{ options: userRoles, selected: getUserRole(user.role)?.value, hasFilter: false, height: 'max-content', hasTitle: false, closeOnSelect: true }}>
+            <Table.SelectMenuCell
+              selectMenuProps={{
+                options: userRoles,
+                selected: getUserRole(user.role)?.value,
+                hasFilter: false,
+                height: 'max-content',
+                hasTitle: false,
+                closeOnSelect: true,
+              }}
+            >
               <Badge color={getUserRole(user.role)?.value === 'ADMIN' ? 'orange' : 'blue'} marginRight={8}>
                 {getUserRole(user.role)?.label}
               </Badge>
