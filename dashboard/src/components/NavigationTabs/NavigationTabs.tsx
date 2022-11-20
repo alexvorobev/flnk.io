@@ -13,14 +13,14 @@ export const NavigationTabs = () => {
   const location = useLocation();
 
   return (
-    <TabNavigation marginBottom={32}>
+    <TabNavigation>
       {menuLinks.map((tab, index) => (
         <Tab
           key={tab.label}
           is='div'
           size='large'
-          height={48}
-          paddingX={24}
+          height={36}
+          paddingX={20}
           onSelect={() => navigate(tab.to)}
           id={tab.label}
           isSelected={location.pathname === tab.to}

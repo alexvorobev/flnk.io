@@ -15,9 +15,15 @@ export const HeaderContainer = styled(Container)`
   justify-content: space-between;
 `;
 
+export const LogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 32px;
+`;
+
 export const AppName = styled.h1`
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 600;
   color: #1a2d37;
   margin: 0;
 `;

@@ -1,8 +1,9 @@
 import { FC } from 'react';
 
 import UserInfo from 'components/core/UserInfo/UserInfo';
+import { NavigationTabs } from 'components/NavigationTabs';
 
-import { AppName, HeaderContainer, HeaderWrapper } from './styles';
+import { AppName, HeaderContainer, HeaderWrapper, LogoContainer } from './styles';
 
 interface Props {
   user?: {
@@ -17,7 +18,10 @@ export const Header: FC<Props> = ({ user, onLogout }) => {
   return (
     <HeaderWrapper>
       <HeaderContainer>
-        <AppName>flnk.io</AppName>
+        <LogoContainer>
+          <AppName>flnk.io</AppName>
+          <NavigationTabs />
+        </LogoContainer>
         <UserInfo user={user} onLogout={onLogout} />
       </HeaderContainer>
     </HeaderWrapper>
