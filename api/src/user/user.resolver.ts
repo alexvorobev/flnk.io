@@ -18,6 +18,12 @@ export class UserResolver {
     return this.userService.authUser(email, password);
   }
 
+  @Query(() => [User], { name: 'getUsers', nullable: true })
+  @UseGuards(GqlAuthGuard)
+  getUsers(@CurrentUser() user: User): Promise<User[]> {
+    return this.userService.getUsers(user);
+  }
+
   @UseGuards(GqlAuthGuard)
   @Query(() => User, { name: 'me', nullable: true })
   me(@CurrentUser() user: User): User {

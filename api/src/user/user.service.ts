@@ -63,6 +63,14 @@ export class UserService {
     };
   }
 
+  public async getUsers(user: User): Promise<User[]> {
+    if (user.role !== UserRoles.ADMIN) {
+      return [];
+    }
+
+    return this.prisma.user.findMany();
+  }
+
   public async validateUser(userId: number): Promise<User> {
     return this.prisma.user.findUnique({
       where: {
