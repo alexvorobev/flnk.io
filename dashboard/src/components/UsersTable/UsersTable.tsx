@@ -20,7 +20,7 @@ export const UsersTable: FC<Props> = ({ users }) => {
   return (
     <Table>
       <Table.Head>
-        <Table.TextHeaderCell>id</Table.TextHeaderCell>
+        <Table.TextHeaderCell maxWidth={64}>id</Table.TextHeaderCell>
         <Table.TextHeaderCell>First name</Table.TextHeaderCell>
         <Table.TextHeaderCell>Last name</Table.TextHeaderCell>
         <Table.TextHeaderCell>Email</Table.TextHeaderCell>
@@ -29,11 +29,11 @@ export const UsersTable: FC<Props> = ({ users }) => {
       <Table.Body>
         {users.map((user) => (
           <Table.Row key={user.id}>
-            <Table.TextCell>{user.id}</Table.TextCell>
+            <Table.TextCell maxWidth={64}>{user.id}</Table.TextCell>
             <Table.TextCell>{user.name}</Table.TextCell>
             <Table.TextCell>{user.surname}</Table.TextCell>
             <Table.TextCell>{user.email}</Table.TextCell>
-            <Table.SelectMenuCell selectMenuProps={{ options: userRoles, selected: getUserRole(user.role)?.value }}>
+            <Table.SelectMenuCell selectMenuProps={{ options: userRoles, selected: getUserRole(user.role)?.value, hasFilter: false, height: 'max-content', hasTitle: false, closeOnSelect: true }}>
               <Badge color={getUserRole(user.role)?.value === 'ADMIN' ? 'orange' : 'blue'} marginRight={8}>
                 {getUserRole(user.role)?.label}
               </Badge>
