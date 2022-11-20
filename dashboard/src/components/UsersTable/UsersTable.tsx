@@ -1,8 +1,7 @@
-import React, { FC } from 'react';
-import { Table } from 'evergreen-ui';
+import { FC } from 'react';
+import { Table, Badge } from 'evergreen-ui';
 
 import { User } from 'schema/types';
-import { Select } from 'components/core/Select';
 
 interface Props {
   users: User[];
@@ -34,9 +33,11 @@ export const UsersTable: FC<Props> = ({ users }) => {
             <Table.TextCell>{user.name}</Table.TextCell>
             <Table.TextCell>{user.surname}</Table.TextCell>
             <Table.TextCell>{user.email}</Table.TextCell>
-            <Table.TextCell>
-              <Select options={userRoles} defaultValue={getUserRole(user.role)?.value} width='100%' />
-            </Table.TextCell>
+            <Table.SelectMenuCell selectMenuProps={{ options: userRoles, selected: getUserRole(user.role)?.value }}>
+              <Badge color={getUserRole(user.role)?.value === 'ADMIN' ? 'orange' : 'blue'} marginRight={8}>
+                {getUserRole(user.role)?.label}
+              </Badge>
+            </Table.SelectMenuCell>
           </Table.Row>
         ))}
       </Table.Body>

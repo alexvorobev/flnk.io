@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client';
 import { LinkForm } from 'components/forms';
 import { MainLayout } from 'components/layouts';
 import { LinksTable } from 'components/LinksTable';
+import { NavigationTabs } from 'components/NavigationTabs';
 import { LinksProvider } from 'controllers/links/useLink';
 import { getLinksQuery } from 'queries';
 import { Query } from 'schema/types';
@@ -15,6 +16,7 @@ const Dashboard = () => {
   return (
     <LinksProvider>
       <MainLayout>
+        <NavigationTabs />
         <LinkForm />
         <LinksTable links={links} />
       </MainLayout>
