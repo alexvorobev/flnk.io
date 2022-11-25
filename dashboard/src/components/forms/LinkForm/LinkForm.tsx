@@ -2,8 +2,8 @@
 import { useForm } from 'react-hook-form';
 import { useCallback, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
+import { TextInput, Button } from 'evergreen-ui';
 
-import { Button, Input } from 'components/core';
 import { useLink } from 'controllers/links/useLink';
 import { createLinkMutation, updateLinkMutation } from 'mutations';
 
@@ -64,9 +64,9 @@ export const LinkForm = () => {
 
   return (
     <FormWrapper onSubmit={handleSubmit(onSubmitCallback)}>
-      <Input placeholder='Your custom link hash' {...register('hash')} />
-      <Input placeholder='Link to be shortened' type='url' {...register('path')} />
-      <Button>Save</Button>
+      <TextInput placeholder='Your custom link hash' width='100%' height={40} {...register('hash')} />
+      <TextInput placeholder='Link to be shortened' width='100%' height={40} type='url' {...register('path')} />
+      <Button width='100%' height={40} appearance="primary">Save</Button>
     </FormWrapper>
   );
 };
