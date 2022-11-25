@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
-import UserInfo from 'components/core/UserInfo/UserInfo';
-import { NavigationTabs } from 'components/NavigationTabs';
+import { NavigationMenu } from 'components/NavigationMenu';
+import { UserInfo } from 'components/core/UserInfo';
 
 import { AppName, HeaderContainer, HeaderWrapper, LogoContainer } from './styles';
 
@@ -20,7 +20,7 @@ export const Header: FC<Props> = ({ user, onLogout }) => {
       <HeaderContainer>
         <LogoContainer>
           <AppName>flnk.io</AppName>
-          <NavigationTabs />
+          <NavigationMenu />
         </LogoContainer>
         <UserInfo user={user} onLogout={onLogout} />
       </HeaderContainer>

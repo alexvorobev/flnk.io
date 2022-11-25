@@ -11,7 +11,7 @@ export const UserInfoWrapper = styled.div`
 export const UserMainInfo = styled.div`
   position: relative;
   z-index: 1;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
 `;
 

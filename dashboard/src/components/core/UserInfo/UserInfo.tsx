@@ -13,7 +13,7 @@ export interface UserInfoProps {
   onLogout?: () => void;
 }
 
-const UserInfo: FC<UserInfoProps> = ({ user, onLogout }) => {
+export const UserInfo: FC<UserInfoProps> = ({ user, onLogout }) => {
   if (!user) return null;
 
   return (
@@ -45,5 +45,3 @@ const UserInfo: FC<UserInfoProps> = ({ user, onLogout }) => {
     </div>
   );
 };
-
-export default UserInfo;

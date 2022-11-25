@@ -5,7 +5,7 @@ import { Container } from 'components/core';
 export const HeaderWrapper = styled.div`
   padding: 20px 0;
   width: 100%;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid #edeff5;
   margin-bottom: 32px;
 `;
 
