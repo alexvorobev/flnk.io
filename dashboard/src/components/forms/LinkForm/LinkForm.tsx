@@ -6,6 +6,7 @@ import { TextInput, Button } from 'evergreen-ui';
 
 import { useLink } from 'controllers/links/useLink';
 import { createLinkMutation, updateLinkMutation } from 'mutations';
+import { useAuth } from 'controllers/auth/useAuth';
 
 import { FormWrapper } from './styles';
 
@@ -16,6 +17,7 @@ interface FormFields {
 
 export const LinkForm = () => {
   const { register, handleSubmit, reset, setValue } = useForm<FormFields>();
+  const { me } = useAuth();
   const { currentLink, editLink } = useLink();
   const [updateLink] = useMutation(updateLinkMutation, {
     onCompleted: () => {
@@ -43,13 +45,13 @@ export const LinkForm = () => {
       } else {
         createLink({
           variables: {
-            hash: data.hash,
+            hash: me?.role !== 'ADMIN' ? '' : data.hash,
             path: data.path,
           },
         });
       }
     },
-    [createLink, currentLink, updateLink],
+    [createLink, currentLink, me?.role, updateLink],
   );
 
   useEffect(() => {
@@ -64,9 +66,17 @@ export const LinkForm = () => {
 
   return (
     <FormWrapper onSubmit={handleSubmit(onSubmitCallback)}>
-      <TextInput placeholder='Your custom link hash' width='100%' height={40} {...register('hash')} />
+      <TextInput
+        placeholder={me?.role === 'ADMIN' ? 'Your custom link hash' : 'Link hash'}
+        width='100%'
+        height={40}
+        {...register('hash')}
+        disabled={me?.role !== 'ADMIN'}
+      />
       <TextInput placeholder='Link to be shortened' width='100%' height={40} type='url' {...register('path')} />
-      <Button width='100%' height={40} appearance="primary">Save</Button>
+      <Button width='100%' height={40} appearance='primary'>
+        Save
+      </Button>
     </FormWrapper>
   );
 };

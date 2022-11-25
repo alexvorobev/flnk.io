@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { createContext, FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { meQuery } from 'queries/meQuery';
 import { PUBLIC_ROUTES, ROUTES } from 'routes';
@@ -10,6 +10,7 @@ interface AuthContextType {
     name: string;
     surname: string;
     email: string;
+    role: string;
   };
   isAuthorized: boolean;
   handleLogin: (token: string) => void;
@@ -31,7 +32,6 @@ interface ProviderProps {
 
 export const AuthProvider: FC<ProviderProps> = ({ children }) => {
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
-  const navigate = useNavigate();
   const location = useLocation();
   const { data } = useQuery(meQuery);
   const me = data?.me;
@@ -46,24 +46,21 @@ export const AuthProvider: FC<ProviderProps> = ({ children }) => {
     if (!!token && token.length > 0) {
       setIsAuthorized(true);
     } else if (!isPublicRoute) {
-      navigate(ROUTES.AUTH);
+      window.location.replace(ROUTES.AUTH);
     }
-  }, [navigate, isPublicRoute]);
+  }, [isPublicRoute]);
 
-  const handleLogin = useCallback(
-    (token: string) => {
-      localStorage.setItem('token', token);
-      setIsAuthorized(true);
-      navigate(ROUTES.HOME);
-    },
-    [navigate],
-  );
+  const handleLogin = useCallback((token: string) => {
+    localStorage.setItem('token', token);
+    setIsAuthorized(true);
+    window.location.replace(ROUTES.HOME);
+  }, []);
 
   const handleLogout = useCallback(() => {
     localStorage.setItem('token', '');
     setIsAuthorized(false);
-    navigate(ROUTES.AUTH);
-  }, [navigate]);
+    window.location.replace(ROUTES.AUTH);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ isAuthorized, handleLogin, handleLogout, me }}>{children}</AuthContext.Provider>

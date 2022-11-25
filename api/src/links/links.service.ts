@@ -55,7 +55,7 @@ export class LinksService {
     path: string,
     hash?: string,
   ): Promise<Link> {
-    const link = { hash: hash ?? makeid(5), path };
+    const link = { hash: hash.length ? hash : makeid(5), path };
     const createdLink = await this.prisma.link.create({
       data: {
         ...link,

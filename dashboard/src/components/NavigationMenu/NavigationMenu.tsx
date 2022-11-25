@@ -38,8 +38,8 @@ const StyledNavigationLink = styled(Link)<NavigationLinkProps>`
   display: block;
 
   &:hover {
-    color: #3366FF;
-    background-color: #F2F4FF;
+    color: #3366ff;
+    background-color: #f2f4ff;
   }
 
   ${({ isActive }) =>
@@ -51,15 +51,11 @@ const StyledNavigationLink = styled(Link)<NavigationLinkProps>`
 
 export const NavigationMenu = () => {
   const location = useLocation();
-  
+
   return (
     <StyledNavigationMenu>
       {menuLinks.map((tab, index) => (
-        <StyledNavigationLink
-          key={tab.label}
-          to={tab.to}
-          isActive={location.pathname === tab.to}
-        >
+        <StyledNavigationLink key={tab.label} to={tab.to} isActive={location.pathname === tab.to}>
           {tab.label}
         </StyledNavigationLink>
       ))}

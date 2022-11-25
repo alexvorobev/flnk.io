@@ -1,8 +1,7 @@
 import { FC } from 'react';
+import { TextInput, Button } from 'evergreen-ui';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-
-import { Input, Button } from 'components/core';
 
 import { FormWrapper } from './styles';
 
@@ -20,8 +19,8 @@ export const AuthForm: FC<Props> = ({ onSubmit }) => {
 
   return (
     <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-      <Input placeholder='email' {...register('email')} />
-      <Input placeholder='password' type='password' {...register('password')} />
+      <TextInput placeholder='email' {...register('email')} />
+      <TextInput placeholder='password' type='password' {...register('password')} />
       <Button type='submit'>Send</Button>
       <p>
         <Link to='/sign-up'>Register</Link> for free

@@ -6,6 +6,7 @@ export const meQuery = gql`
       name
       surname
       email
+      role
     }
   }
 `;

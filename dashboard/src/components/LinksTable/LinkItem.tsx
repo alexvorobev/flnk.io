@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react';
+import { Button } from 'evergreen-ui';
 
-import { Button } from 'components/core';
 import { Link } from 'schema/types';
 import { useLink } from 'controllers/links/useLink';
 
