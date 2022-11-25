@@ -5,9 +5,9 @@ import { UserEmail, UserInfoWrapper, UserMainInfo } from './styles';
 
 export interface UserInfoProps {
   user?: {
-    name: string;
-    surname: string;
-    email: string;
+    name?: string;
+    surname?: string;
+    email?: string;
     createdAt?: string;
   };
   onLogout?: () => void;

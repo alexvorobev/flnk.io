@@ -6,6 +6,11 @@ export const getLinksQuery = gql`
       id
       hash
       path
+      user {
+        name
+        surname
+        email
+      }
     }
   }
 `;

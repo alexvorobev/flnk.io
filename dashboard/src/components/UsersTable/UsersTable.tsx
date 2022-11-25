@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Table, Badge } from 'evergreen-ui';
+import { Table, Badge, Switch } from 'evergreen-ui';
 
 import { User } from 'schema/types';
 
@@ -24,6 +24,7 @@ export const UsersTable: FC<Props> = ({ users }) => {
         <Table.TextHeaderCell>First name</Table.TextHeaderCell>
         <Table.TextHeaderCell>Last name</Table.TextHeaderCell>
         <Table.TextHeaderCell>Email</Table.TextHeaderCell>
+        <Table.TextHeaderCell>Blocked</Table.TextHeaderCell>
         <Table.TextHeaderCell>Role</Table.TextHeaderCell>
       </Table.Head>
       <Table.Body>
@@ -33,6 +34,9 @@ export const UsersTable: FC<Props> = ({ users }) => {
             <Table.TextCell>{user.name}</Table.TextCell>
             <Table.TextCell>{user.surname}</Table.TextCell>
             <Table.TextCell>{user.email}</Table.TextCell>
+            <Table.TextCell>
+              <Switch />
+            </Table.TextCell>
             <Table.SelectMenuCell
               selectMenuProps={{
                 options: userRoles,
