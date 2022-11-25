@@ -1,9 +1,11 @@
 import { FC } from 'react';
-import { TextInput, Button } from 'evergreen-ui';
+import { TextInput, Button, Pane } from 'evergreen-ui';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { FormWrapper } from './styles';
+import { ROUTES } from 'routes';
+
+import { FormButtons, FormWrapper } from './styles';
 
 export interface SignUpFormFields {
   name: string;
@@ -18,17 +20,24 @@ interface Props {
 
 export const SignUpForm: FC<Props> = ({ onSubmit }) => {
   const { register, handleSubmit } = useForm<SignUpFormFields>();
+  const navigate = useNavigate();
 
   return (
-    <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-      <TextInput placeholder='name' {...register('name')} />
-      <TextInput placeholder='surname' {...register('surname')} />
-      <TextInput placeholder='email' {...register('email')} />
-      <TextInput placeholder='password' type='password' {...register('password')} />
-      <Button type='submit'>Send</Button>
-      <p>
-        <Link to='/auth'>Sign in</Link>
-      </p>
-    </FormWrapper>
+    <Pane>
+      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+        <TextInput height={40} placeholder='name' {...register('name')} />
+        <TextInput height={40} placeholder='surname' {...register('surname')} />
+        <TextInput height={40} placeholder='email' {...register('email')} />
+        <TextInput height={40} placeholder='password' type='password' {...register('password')} />
+        <FormButtons>
+          <Button height={40} onClick={() => navigate(ROUTES.AUTH)}>
+            Login
+          </Button>
+          <Button height={40} appearance='primary' type='submit'>
+            Sign up
+          </Button>
+        </FormButtons>
+      </FormWrapper>
+    </Pane>
   );
 };

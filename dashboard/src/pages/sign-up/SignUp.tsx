@@ -21,7 +21,7 @@ const SignUp = () => {
 
   return (
     <AuthLayout>
-      <h1>Register</h1>
+      <h3 style={{ textAlign: 'center' }}>Sign up</h3>
       <SignUpForm onSubmit={handleSignUp} />
     </AuthLayout>
   );

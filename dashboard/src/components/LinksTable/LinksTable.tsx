@@ -28,7 +28,7 @@ export const LinksTable: FC<Props> = ({ links }) => {
               <Table.TextCell>{link.path}</Table.TextCell>
               <Table.TextCell maxWidth={128}>0</Table.TextCell>
               <Table.TextCell maxWidth={128}>
-                <Switch />
+                <Switch checked />
               </Table.TextCell>
               <Table.TextCell maxWidth={180}>
                 <Button marginRight={16} onClick={() => editLink(link)}>

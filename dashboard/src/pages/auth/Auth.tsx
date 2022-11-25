@@ -37,7 +37,7 @@ const Auth = () => {
 
   return (
     <AuthLayout>
-      <h1>Auth</h1>
+      <h3 style={{ textAlign: 'center' }}>Auth</h3>
       <AuthForm onSubmit={onSubmit} />
     </AuthLayout>
   );
