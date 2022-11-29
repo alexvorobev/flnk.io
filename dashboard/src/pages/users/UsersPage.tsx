@@ -3,11 +3,11 @@ import { UsersTable } from 'components/UsersTable';
 import { useUsersList } from 'hooks';
 
 export const UsersPage = () => {
-  const users = useUsersList();
+  const { users, handleUserBlock } = useUsersList();
 
   return (
     <MainLayout>
-      <UsersTable users={users} />
+      <UsersTable users={users} onUserBlock={handleUserBlock} />
     </MainLayout>
   );
 };

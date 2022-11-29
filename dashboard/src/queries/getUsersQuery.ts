@@ -8,6 +8,7 @@ export const getUsersQuery = gql`
       surname
       email
       role
+      isBlocked
     }
   }
 `;

@@ -25,6 +25,8 @@ export type User = {
   email: Scalars['String'];
   /** User role */
   role: Scalars['String'];
+  /** Is user blocked flag */
+  isBlocked: Scalars['Boolean'];
 };
 
 /** The main data about the links */
@@ -65,6 +67,7 @@ export type Mutation = {
   updateLink?: Maybe<Link>;
   deleteLink?: Maybe<Link>;
   signUp?: Maybe<AuthToken>;
+  updateUser?: Maybe<User>;
 };
 
 export type MutationCreateLinkArgs = {
@@ -87,4 +90,19 @@ export type MutationSignUpArgs = {
   surname: Scalars['String'];
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type MutationUpdateUserArgs = {
+  updateUserInput: UpdateUserInput;
+};
+
+export type UpdateUserInput = {
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  surname?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  newPassword?: Maybe<Scalars['String']>;
+  role?: Maybe<Scalars['String']>;
+  isBlocked?: Maybe<Scalars['Boolean']>;
 };

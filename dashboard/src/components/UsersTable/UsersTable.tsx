@@ -5,6 +5,7 @@ import { User } from 'schema/types';
 
 interface Props {
   users: User[];
+  onUserBlock?: (id: number, blocked: boolean) => void;
 }
 
 const userRoles = [
@@ -16,7 +17,7 @@ const getUserRole = (role: string) => {
   return userRoles.find((userRole) => userRole.value === role);
 };
 
-export const UsersTable: FC<Props> = ({ users }) => {
+export const UsersTable: FC<Props> = ({ users, onUserBlock }) => {
   return (
     <Table>
       <Table.Head>
@@ -35,7 +36,7 @@ export const UsersTable: FC<Props> = ({ users }) => {
             <Table.TextCell>{user.surname}</Table.TextCell>
             <Table.TextCell>{user.email}</Table.TextCell>
             <Table.TextCell>
-              <Switch />
+              <Switch checked={user.isBlocked} onChange={() => (user.id ? onUserBlock?.(Number(user.id), !user.isBlocked) : null)} />
             </Table.TextCell>
             <Table.SelectMenuCell
               selectMenuProps={{
