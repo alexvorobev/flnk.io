@@ -13,6 +13,9 @@
     "settings": {
       "git.confirmSync": false,
       "stylelint.enable": true,
-      "typescript.tsdk": "dashboard/node_modules/typescript/lib"
+      "typescript.tsdk": "dashboard/node_modules/typescript/lib",
+      "cSpell.words": [
+        "geoip"
+      ]
     }
   }
