@@ -8,7 +8,12 @@ import { UserRoles } from '@prisma/client';
 import { Cache } from 'cache-manager';
 
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UserLogsService } from 'src/user-logs/user-logs.service';
 import { User } from 'src/user/models/user';
+import {
+  UserLogAction,
+  UserLogActionEntity,
+} from 'src/user-logs/models/userLog';
 import { UpdateLinkInput } from './dto/updateLink.input';
 import { Link } from './models/link';
 
@@ -27,6 +32,7 @@ function makeid(length) {
 export class LinksService {
   constructor(
     private prisma: PrismaService,
+    private userLogs: UserLogsService,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
@@ -56,6 +62,7 @@ export class LinksService {
 
     return link;
   }
+
   public async createLink(
     userId: number,
     path: string,
@@ -70,6 +77,13 @@ export class LinksService {
     });
 
     await this.cacheManager.set(`link:${createdLink.hash}`, createdLink.path);
+
+    this.userLogs.pushLog({
+      user: userId,
+      action: UserLogAction.CREATE,
+      entity: UserLogActionEntity.LINK,
+      entityData: JSON.stringify(createdLink),
+    });
 
     return createdLink;
   }
@@ -94,7 +108,7 @@ export class LinksService {
       throw new NotFoundException(`You are not allowed to update this link`);
     }
 
-    this.cacheManager.del(linkToUpdate.hash);
+    await this.cacheManager.del(linkToUpdate.hash);
 
     const updated = await this.prisma.link.update({
       where: {
@@ -107,7 +121,15 @@ export class LinksService {
         isBlocked: isBlocked ?? linkToUpdate.isBlocked,
       },
     });
-    this.cacheManager.set(`link:${updated.hash}`, updated.path);
+
+    await this.cacheManager.set(`link:${updated.hash}`, updated.path);
+
+    this.userLogs.pushLog({
+      user: user.id,
+      action: UserLogAction.UPDATE,
+      entity: UserLogActionEntity.LINK,
+      entityData: JSON.stringify(updated),
+    });
 
     return updated;
   }
@@ -131,6 +153,13 @@ export class LinksService {
       where: {
         id,
       },
+    });
+
+    this.userLogs.pushLog({
+      user: user.id,
+      action: UserLogAction.DELETE,
+      entity: UserLogActionEntity.LINK,
+      entityData: JSON.stringify(deleted),
     });
 
     this.cacheManager.del(`link:${deleted.hash}`);

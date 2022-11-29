@@ -3,6 +3,7 @@ import { REDIS_CACHE_OPTIONS } from 'src/infra/redis.config';
 import { LinksResolver } from './links.resolver';
 import { LinksService } from './links.service';
 import { LinksController } from './links.controller';
+import { UserLogsService } from 'src/user-logs/user-logs.service';
 
 @Module({
   imports: [
@@ -10,7 +11,7 @@ import { LinksController } from './links.controller';
       ...REDIS_CACHE_OPTIONS,
     }),
   ],
-  providers: [LinksResolver, LinksService],
+  providers: [LinksResolver, LinksService, UserLogsService],
   controllers: [LinksController],
 })
 export class LinksModule {}

@@ -16,6 +16,19 @@ enum UserRoles {
   BASIC
 }
 
+enum UserLogAction {
+  CREATE
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+}
+
+enum UserLogActionEntity {
+  LINK
+  USER
+}
+
 model Link {
   id        Int      @id @default(autoincrement())
   hash      String   @unique
@@ -39,4 +52,15 @@ model User {
   updatedAt DateTime  @updatedAt
   isBlocked Boolean   @default(false)
   links     Link[]
+  logs      UserLog[]
+}
+
+model UserLog {
+  id         Int                 @id @default(autoincrement())
+  action     UserLogAction
+  entity     UserLogActionEntity
+  entityData String
+  user       Int
+  createdAt  DateTime            @default(now())
+  author     User                @relation(fields: [user], references: [id])
 }

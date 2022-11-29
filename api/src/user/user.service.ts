@@ -11,6 +11,11 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from './models/user';
 import { AuthToken } from './models/authToken';
 import { UpdateUserInput } from './dto/updateUser.input';
+import { UserLogsService } from 'src/user-logs/user-logs.service';
+import {
+  UserLogAction,
+  UserLogActionEntity,
+} from 'src/user-logs/models/userLog';
 
 type UpdateUserArgs = UpdateUserInput & {
   currentUser: User;
@@ -18,7 +23,11 @@ type UpdateUserArgs = UpdateUserInput & {
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService, private jswService: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jswService: JwtService,
+    private userLogService: UserLogsService,
+  ) {}
 
   public async authUser(email: string, password: string): Promise<AuthToken> {
     const result = await this.prisma.user.findUnique({
@@ -38,6 +47,13 @@ export class UserService {
         "Can't find user with such email or password",
       );
     }
+
+    this.userLogService.pushLog({
+      user: result.id,
+      action: UserLogAction.LOGIN,
+      entity: UserLogActionEntity.USER,
+      entityData: '',
+    });
 
     return {
       token: this.jswService.sign({ userId: result.id }),
@@ -61,6 +77,18 @@ export class UserService {
         password: hashedPassword,
         role: UserRoles.BASIC,
       },
+    });
+
+    this.userLogService.pushLog({
+      user: result.id,
+      action: UserLogAction.CREATE,
+      entity: UserLogActionEntity.USER,
+      entityData: JSON.stringify({
+        name: result.name,
+        surname: result.surname,
+        email: result.email,
+        role: result.role,
+      }),
     });
 
     return {
@@ -142,6 +170,19 @@ export class UserService {
       updatedUser['role'] = UserRoles[role] ?? user.role;
       updatedUser['isBlocked'] = isBlocked ?? user.isBlocked;
     }
+
+    this.userLogService.pushLog({
+      user: id,
+      action: UserLogAction.UPDATE,
+      entity: UserLogActionEntity.USER,
+      entityData: JSON.stringify({
+        name: updatedUser.name,
+        surname: updatedUser.surname,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        isBlocked: updatedUser.isBlocked,
+      }),
+    });
 
     return this.prisma.user.update({
       where: {

@@ -10,6 +10,8 @@ import { PrismaService } from './prisma/prisma.service';
 import { REDIS_CACHE_OPTIONS } from './infra/redis.config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { UserLogsModule } from './user-logs/user-logs.module';
+import { UserLogsService } from './user-logs/user-logs.service';
 
 @Module({
   imports: [
@@ -25,8 +27,9 @@ import { AuthModule } from './auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    UserLogsModule,
   ],
   controllers: [],
-  providers: [PrismaService],
+  providers: [PrismaService, UserLogsService],
 })
 export class AppModule {}

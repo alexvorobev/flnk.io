@@ -4,6 +4,7 @@ import { UserResolver } from './user.resolver';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
+import { UserLogsService } from 'src/user-logs/user-logs.service';
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { JwtStrategy } from './jwt.strategy';
       },
     }),
   ],
-  providers: [UserService, UserResolver, JwtStrategy],
+  providers: [UserService, UserResolver, JwtStrategy, UserLogsService],
 })
 export class UserModule {}
