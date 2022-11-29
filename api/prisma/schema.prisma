@@ -23,6 +23,8 @@ model Link {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   createdBy Int
+  isActive  Boolean  @default(true)
+  isBlocked Boolean  @default(false)
   user      User     @relation(fields: [createdBy], references: [id])
 }
 
@@ -35,5 +37,6 @@ model User {
   role      UserRoles @default(BASIC)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  isBlocked Boolean   @default(false)
   links     Link[]
 }

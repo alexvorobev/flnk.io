@@ -25,4 +25,9 @@ export class User {
     description: 'User role',
   })
   role: UserRoles;
+
+  @Field(() => Boolean, {
+    description: 'Is user blocked flag',
+  })
+  isBlocked: boolean;
 }

@@ -10,6 +10,11 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from './models/user';
 import { AuthToken } from './models/authToken';
+import { UpdateUserInput } from './models/updateUser.input';
+
+type UpdateUserArgs = UpdateUserInput & {
+  currentUser: User;
+};
 
 @Injectable()
 export class UserService {
@@ -65,7 +70,7 @@ export class UserService {
 
   public async getUsers(user: User): Promise<User[]> {
     if (user.role !== UserRoles.ADMIN) {
-      return [];
+      throw new UnauthorizedException('You are not allowed to do this');
     }
 
     return this.prisma.user.findMany();
@@ -76,6 +81,65 @@ export class UserService {
       where: {
         id: userId,
       },
+    });
+  }
+
+  public async updateUser(updateUserInput: UpdateUserArgs): Promise<User> {
+    const {
+      id: userId,
+      name,
+      surname,
+      email,
+      password,
+      newPassword,
+      role,
+      isBlocked,
+      currentUser,
+    } = updateUserInput;
+    const id = Number(userId ?? currentUser.id);
+
+    if (currentUser.id !== id && currentUser.role !== UserRoles.ADMIN) {
+      throw new UnauthorizedException('You are not allowed to do this');
+    }
+
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    const updatedUser: User = {
+      ...user,
+      name: name ?? user.name,
+      surname: surname ?? user.surname,
+    };
+
+    if (password) {
+      const comparedPassword = await bcrypt.compare(password, user.password);
+
+      if (!comparedPassword) {
+        throw new UnauthorizedException(
+          "Can't find user with such email or password",
+        );
+      }
+
+      const salt = await bcrypt.genSalt();
+      updatedUser['email'] = email ?? user.email;
+      updatedUser['password'] = newPassword
+        ? await bcrypt.hash(newPassword, salt)
+        : user.password;
+    }
+
+    if (currentUser.role === UserRoles.ADMIN) {
+      updatedUser['role'] = UserRoles[role] ?? user.role;
+      updatedUser['isBlocked'] = isBlocked ?? user.isBlocked;
+    }
+
+    return this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: updatedUser,
     });
   }
 }

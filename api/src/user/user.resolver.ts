@@ -3,6 +3,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { GqlAuthGuard } from 'src/guards/gql-auth.guard';
 import { AuthToken } from './models/authToken';
+import { UpdateUserInput } from './models/updateUser.input';
 import { User } from './models/user';
 import { UserService } from './user.service';
 
@@ -38,5 +39,17 @@ export class UserResolver {
     @Args('password') password: string,
   ): Promise<AuthToken> {
     return this.userService.signUp(name, surname, email, password);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => User, { name: 'updateUser', nullable: true })
+  async updateUser(
+    @Args('updateUserInput') updateUserInput: UpdateUserInput,
+    @CurrentUser() user: User,
+  ): Promise<User> {
+    return this.userService.updateUser({
+      ...updateUserInput,
+      currentUser: user,
+    });
   }
 }

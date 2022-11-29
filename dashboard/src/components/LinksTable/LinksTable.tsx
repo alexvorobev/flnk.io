@@ -18,7 +18,7 @@ export const LinksTable: FC<Props> = ({ links }) => {
     <div>
       <Table>
         <Table.Head>
-          <Table.TextHeaderCell maxWidth={128}>Hash</Table.TextHeaderCell>
+          <Table.SearchHeaderCell maxWidth={220}>Hash</Table.SearchHeaderCell>
           <Table.TextHeaderCell>URL</Table.TextHeaderCell>
           {me?.role === 'ADMIN' && <Table.TextHeaderCell>User</Table.TextHeaderCell>}
           <Table.TextHeaderCell maxWidth={128}>Visits 24H</Table.TextHeaderCell>
@@ -29,7 +29,7 @@ export const LinksTable: FC<Props> = ({ links }) => {
         <Table.Body>
           {links?.map((link) => (
             <Table.Row key={link.id}>
-              <Table.TextCell maxWidth={128}>{link.hash}</Table.TextCell>
+              <Table.TextCell maxWidth={220}>{link.hash}</Table.TextCell>
               <Table.TextCell>{link.path}</Table.TextCell>
               {me?.role === 'ADMIN' && (
                 <Table.TextCell>

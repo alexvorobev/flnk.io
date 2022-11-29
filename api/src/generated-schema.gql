@@ -17,6 +17,9 @@ type User {
 
   """User role"""
   role: String!
+
+  """Is user blocked flag"""
+  isBlocked: Boolean!
 }
 
 """The main data about the links"""
@@ -53,4 +56,16 @@ type Mutation {
   updateLink(id: Float!, hash: String!, path: String!): Link
   deleteLink(id: Float!): Link
   signUp(name: String!, surname: String!, email: String!, password: String!): AuthToken
+  updateUser(updateUserInput: UpdateUserInput!): User
+}
+
+input UpdateUserInput {
+  id: ID
+  name: String
+  surname: String
+  email: String
+  password: String
+  newPassword: String
+  role: String
+  isBlocked: Boolean
 }
