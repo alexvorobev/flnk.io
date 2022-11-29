@@ -4,7 +4,7 @@ const client = new Client();
 
 async function connect() {
     if (!client.isOpen()) {
-        await client.open(process.env.REDIS_URL);
+        await client.open(`redis://:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}/0`);
     }
 }
 
