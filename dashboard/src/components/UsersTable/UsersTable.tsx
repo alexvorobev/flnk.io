@@ -27,9 +27,7 @@ export const UsersTable: FC<Props> = ({ users, onUserBlock, onUserRoleChange }) 
         <Table.TextHeaderCell>Last name</Table.TextHeaderCell>
         <Table.TextHeaderCell>Email</Table.TextHeaderCell>
         <Table.TextHeaderCell maxWidth={100}>Blocked</Table.TextHeaderCell>
-        <Table.TextHeaderCell
-              maxWidth={120}
-              >Role</Table.TextHeaderCell>
+        <Table.TextHeaderCell maxWidth={120}>Role</Table.TextHeaderCell>
         <Table.TextHeaderCell maxWidth={100} />
       </Table.Head>
       <Table.Body>
@@ -39,9 +37,7 @@ export const UsersTable: FC<Props> = ({ users, onUserBlock, onUserRoleChange }) 
             <Table.TextCell>{user.name}</Table.TextCell>
             <Table.TextCell>{user.surname}</Table.TextCell>
             <Table.TextCell>{user.email}</Table.TextCell>
-            <Table.TextCell
-              maxWidth={100}
-              >
+            <Table.TextCell maxWidth={100}>
               <Switch
                 checked={user.isBlocked}
                 onChange={() => (user.id ? onUserBlock?.(Number(user.id), !user.isBlocked) : null)}

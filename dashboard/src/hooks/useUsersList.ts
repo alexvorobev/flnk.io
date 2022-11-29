@@ -35,20 +35,23 @@ export const useUsersList = () => {
     [updateUser],
   );
 
-  const handleUserRoleChange = useCallback((id: number, role: string) => {
-    updateUser({
-      variables: {
-        updateUserInput: {
-          id,
-          role,
+  const handleUserRoleChange = useCallback(
+    (id: number, role: string) => {
+      updateUser({
+        variables: {
+          updateUserInput: {
+            id,
+            role,
+          },
         },
-      },
-    });
-  }, [updateUser]);
+      });
+    },
+    [updateUser],
+  );
 
   return {
     users: users ?? [],
     handleUserBlock,
-    handleUserRoleChange
+    handleUserRoleChange,
   };
 };

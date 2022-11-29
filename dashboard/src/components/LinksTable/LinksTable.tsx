@@ -12,17 +12,21 @@ interface Props {
 }
 
 const copyToClipboard = (link: string) => {
-  navigator.clipboard.writeText(link).then(() => {
-    toaster.success('Copied to clipboard');
-  }).catch(() => {
-    toaster.danger('Failed to copy to clipboard');
-  });
-}
+  navigator.clipboard
+    .writeText(`${process.env.REACT_APP_URL}/${link}`)
+    .then(() => {
+      toaster.success('Copied!', { description: 'Link copied to clipboard' });
+    })
+    .catch(() => {
+      toaster.danger('Failed!', {
+        description: 'Failed to copy link to clipboard',
+      });
+    });
+};
 
 export const LinksTable: FC<Props> = ({ links }) => {
   const { editLink, deleteLink } = useLink();
   const { me } = useAuth();
-
 
   return (
     <div>
@@ -41,7 +45,14 @@ export const LinksTable: FC<Props> = ({ links }) => {
             <Table.Row key={link.id}>
               <Table.TextCell maxWidth={220}>
                 {link.hash}
-                <Button marginLeft={16} width={24} height={24} minWidth={24} paddingX={0} onClick={() => copyToClipboard(link.hash)}>
+                <Button
+                  marginLeft={16}
+                  width={24}
+                  height={24}
+                  minWidth={24}
+                  paddingX={0}
+                  onClick={() => copyToClipboard(link.hash)}
+                >
                   <BsLink45Deg />
                 </Button>
               </Table.TextCell>
