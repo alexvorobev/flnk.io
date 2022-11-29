@@ -63,7 +63,7 @@ export class LinksService {
       },
     });
 
-    await this.cacheManager.set(createdLink.hash, createdLink.path);
+    await this.cacheManager.set(`link:${createdLink.hash}`, createdLink.path);
 
     return createdLink;
   }
@@ -84,7 +84,7 @@ export class LinksService {
         path,
       },
     });
-    this.cacheManager.set(updated.hash, updated.path);
+    this.cacheManager.set(`link:${updated.hash}`, updated.path);
 
     return updated;
   }
@@ -96,7 +96,7 @@ export class LinksService {
       },
     });
 
-    this.cacheManager.del(deleted.hash);
+    this.cacheManager.del(`link:${deleted.hash}`);
 
     return deleted;
   }

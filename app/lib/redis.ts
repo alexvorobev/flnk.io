@@ -10,5 +10,5 @@ async function connect() {
 
 export async function get(key: string) {
     await connect();
-    return await client.get(key);
+    return await client.get(`link:${key}`);
 }
