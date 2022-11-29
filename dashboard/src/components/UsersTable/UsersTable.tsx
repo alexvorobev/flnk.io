@@ -5,19 +5,20 @@ import { User } from 'schema/types';
 
 interface Props {
   users: User[];
+  onUserRoleChange?: (id: number, role: string) => void;
   onUserBlock?: (id: number, blocked: boolean) => void;
 }
 
 const userRoles = [
-  { value: 'ADMIN', label: 'Admin' },
-  { value: 'BASIC', label: 'Basic' },
+  { value: 'ADMIN', label: 'ADMIN' },
+  { value: 'BASIC', label: 'BASIC' },
 ];
 
 const getUserRole = (role: string) => {
   return userRoles.find((userRole) => userRole.value === role);
 };
 
-export const UsersTable: FC<Props> = ({ users, onUserBlock }) => {
+export const UsersTable: FC<Props> = ({ users, onUserBlock, onUserRoleChange }) => {
   return (
     <Table>
       <Table.Head>
@@ -45,6 +46,7 @@ export const UsersTable: FC<Props> = ({ users, onUserBlock }) => {
               selectMenuProps={{
                 options: userRoles,
                 selected: getUserRole(user.role)?.value,
+                onSelect: (role) => onUserRoleChange?.(Number(user.id), role.label),
                 hasFilter: false,
                 height: 'max-content',
                 hasTitle: false,
