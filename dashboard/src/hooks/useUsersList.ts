@@ -1,8 +1,8 @@
+import { useCallback } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 import { User } from 'schema/types';
 import { getUsersQuery } from 'queries';
-import { useCallback } from 'react';
 import { updateUserMutation } from 'mutations/updateUserMutation';
 
 interface UsersListQuery {

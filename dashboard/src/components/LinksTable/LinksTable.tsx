@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { Table, Switch, Button, toaster } from 'evergreen-ui';
+import { FC, useCallback, useState } from 'react';
+import { Table, Switch, Button, toaster, Dialog, Alert } from 'evergreen-ui';
 import { BsLink45Deg } from 'react-icons/bs';
 
 import { Link } from 'schema/types';
@@ -27,9 +27,32 @@ const copyToClipboard = (link: string) => {
 export const LinksTable: FC<Props> = ({ links }) => {
   const { editLink, deleteLink } = useLink();
   const { me } = useAuth();
+  const [linkToDelete, setLinkToDelete] = useState<Link>();
+
+  const handleConfirmedDelete = useCallback(async () => {
+    if (linkToDelete) {
+      await deleteLink?.(Number(linkToDelete.id));
+      setLinkToDelete(undefined);
+    }
+  }, [deleteLink, linkToDelete]);
 
   return (
     <div>
+      <Dialog
+        isShown={!!linkToDelete}
+        title='Are you sure you want to delete link?'
+        intent='danger'
+        onConfirm={handleConfirmedDelete}
+        onCancel={() => setLinkToDelete(undefined)}
+        onCloseComplete={() => setLinkToDelete(undefined)}
+        confirmLabel='Delete'
+      >
+        {linkToDelete && (
+          <Alert intent='danger' title={`${process.env.REACT_APP_URL}/${linkToDelete?.hash}`} hasIcon={false}>
+            {linkToDelete?.path}
+          </Alert>
+        )}
+      </Dialog>
       <Table>
         <Table.Head>
           <Table.SearchHeaderCell maxWidth={220}>Hash</Table.SearchHeaderCell>
@@ -77,7 +100,7 @@ export const LinksTable: FC<Props> = ({ links }) => {
                 <Button marginRight={16} onClick={() => editLink(link)}>
                   Edit
                 </Button>
-                <Button intent='danger' onClick={() => deleteLink(Number.parseInt(link.id ?? '0', 10))}>
+                <Button intent='danger' onClick={() => setLinkToDelete(link)}>
                   Delete
                 </Button>
               </Table.TextCell>

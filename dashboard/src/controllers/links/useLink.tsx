@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { FetchResult, useMutation } from '@apollo/client';
 import { createContext, FC, useCallback, useContext, useState } from 'react';
 
 import { deleteLinkMutation } from 'mutations';
@@ -8,7 +8,7 @@ import { Link, Query } from 'schema/types';
 interface LinksContextType {
   currentLink?: Link;
   editLink: (link?: Link) => void;
-  deleteLink: (id: number) => void;
+  deleteLink?: (id: number) => Promise<FetchResult>;
 }
 
 const noop = () => {};
@@ -16,7 +16,7 @@ const noop = () => {};
 const LinksContext = createContext<LinksContextType>({
   currentLink: undefined,
   editLink: noop,
-  deleteLink: noop,
+  deleteLink: undefined,
 });
 
 interface ProviderProps {
@@ -32,7 +32,7 @@ export const LinksProvider: FC<ProviderProps> = ({ children }) => {
   }, []);
 
   const deleteLink = useCallback(
-    (id: number) => {
+    (id: number) =>
       requestDeleteLink({
         variables: {
           id,
@@ -46,8 +46,7 @@ export const LinksProvider: FC<ProviderProps> = ({ children }) => {
             },
           });
         },
-      });
-    },
+      }),
     [requestDeleteLink],
   );
 

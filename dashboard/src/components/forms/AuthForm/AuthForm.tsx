@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import { TextInput, Button, Pane } from 'evergreen-ui';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+
+import { ROUTES } from 'routes';
 
 import { FormButtons, FormWrapper } from './styles';
-import { useNavigate } from 'react-router-dom';
-import { ROUTES } from 'routes';
 
 export interface AuthFormFields {
   email: string;
