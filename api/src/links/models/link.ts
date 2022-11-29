@@ -22,4 +22,16 @@ export class Link {
     nullable: true,
   })
   user?: User;
+
+  @Field(() => Boolean, {
+    description: 'The link is active or not',
+    nullable: true,
+  })
+  isActive?: boolean;
+
+  @Field(() => Boolean, {
+    description: 'The link is blocked or not',
+    nullable: true,
+  })
+  isBlocked?: boolean;
 }

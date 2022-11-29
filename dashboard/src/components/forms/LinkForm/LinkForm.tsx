@@ -37,9 +37,11 @@ export const LinkForm = () => {
       if (currentLink) {
         updateLink({
           variables: {
-            id: Number.parseInt(currentLink.id ?? '', 10),
-            hash: data.hash,
-            path: data.path,
+            updateLinkInput: {
+              id: Number.parseInt(currentLink.id ?? '', 10),
+              hash: data.hash,
+              path: data.path,
+            },
           },
         });
       } else {

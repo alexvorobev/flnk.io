@@ -6,6 +6,8 @@ export const getLinksQuery = gql`
       id
       hash
       path
+      isActive
+      isBlocked
       user {
         name
         surname

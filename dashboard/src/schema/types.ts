@@ -40,6 +40,10 @@ export type Link = {
   path: Scalars['String'];
   /** Link creator data */
   user?: Maybe<User>;
+  /** The link is active or not */
+  isActive?: Maybe<Scalars['Boolean']>;
+  /** The link is blocked or not */
+  isBlocked?: Maybe<Scalars['Boolean']>;
 };
 
 /** User access response */
@@ -77,9 +81,7 @@ export type MutationCreateLinkArgs = {
 };
 
 export type MutationUpdateLinkArgs = {
-  id: Scalars['Float'];
-  hash: Scalars['String'];
-  path: Scalars['String'];
+  updateLinkInput: UpdateLinkInput;
 };
 
 export type MutationDeleteLinkArgs = {
@@ -95,6 +97,14 @@ export type MutationSignUpArgs = {
 
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput;
+};
+
+export type UpdateLinkInput = {
+  id?: Maybe<Scalars['ID']>;
+  hash?: Maybe<Scalars['String']>;
+  path?: Maybe<Scalars['String']>;
+  isActive?: Maybe<Scalars['Boolean']>;
+  isBlocked?: Maybe<Scalars['Boolean']>;
 };
 
 export type UpdateUserInput = {

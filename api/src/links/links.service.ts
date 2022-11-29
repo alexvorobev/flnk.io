@@ -1,9 +1,15 @@
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import {
+  CACHE_MANAGER,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UserRoles } from '@prisma/client';
 import { Cache } from 'cache-manager';
 
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from 'src/user/models/user';
+import { UpdateLinkInput } from './dto/updateLink.input';
 import { Link } from './models/link';
 
 function makeid(length) {
@@ -68,20 +74,30 @@ export class LinksService {
     return createdLink;
   }
 
-  public async updateLink(
-    id: number,
-    hash: string,
-    path: string,
-  ): Promise<Link> {
-    this.cacheManager.del(hash);
+  public async updateLink(updateLinkInput: UpdateLinkInput): Promise<Link> {
+    const { id, hash, path, isActive, isBlocked } = updateLinkInput;
+
+    const linkToUpdate = await this.prisma.link.findFirst({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (!linkToUpdate) {
+      throw new NotFoundException(`Link with id ${id} not found`);
+    }
+
+    this.cacheManager.del(linkToUpdate.hash);
 
     const updated = await this.prisma.link.update({
       where: {
-        id,
+        id: Number(id),
       },
       data: {
-        hash,
-        path,
+        hash: hash ?? linkToUpdate.hash,
+        path: path ?? linkToUpdate.path,
+        isActive: isActive ?? linkToUpdate.isActive,
+        isBlocked: isBlocked ?? linkToUpdate.isBlocked,
       },
     });
     this.cacheManager.set(`link:${updated.hash}`, updated.path);

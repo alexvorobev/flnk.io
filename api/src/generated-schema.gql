@@ -36,6 +36,12 @@ type Link {
 
   """Link creator data"""
   user: User
+
+  """The link is active or not"""
+  isActive: Boolean
+
+  """The link is blocked or not"""
+  isBlocked: Boolean
 }
 
 """User access response"""
@@ -53,10 +59,18 @@ type Query {
 
 type Mutation {
   createLink(path: String!, hash: String!): Link
-  updateLink(id: Float!, hash: String!, path: String!): Link
+  updateLink(updateLinkInput: UpdateLinkInput!): Link
   deleteLink(id: Float!): Link
   signUp(name: String!, surname: String!, email: String!, password: String!): AuthToken
   updateUser(updateUserInput: UpdateUserInput!): User
+}
+
+input UpdateLinkInput {
+  id: ID
+  hash: String
+  path: String
+  isActive: Boolean
+  isBlocked: Boolean
 }
 
 input UpdateUserInput {

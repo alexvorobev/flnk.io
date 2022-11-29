@@ -23,9 +23,9 @@ const copyToClipboard = (link: string) => {
       });
     });
 };
-
+// , blockLink, unblockLink, activateLink, inactivateLink
 export const LinksTable: FC<Props> = ({ links }) => {
-  const { editLink, deleteLink } = useLink();
+  const { editLink, deleteLink, blockLink, unblockLink, activateLink, inactivateLink } = useLink();
   const { me } = useAuth();
   const [linkToDelete, setLinkToDelete] = useState<Link>();
 
@@ -89,11 +89,17 @@ export const LinksTable: FC<Props> = ({ links }) => {
               )}
               <Table.TextCell maxWidth={128}>0</Table.TextCell>
               <Table.TextCell maxWidth={128}>
-                <Switch checked />
+                <Switch
+                  checked={link.isActive ?? false}
+                  onChange={() => (link.isActive ? inactivateLink(link) : activateLink(link))}
+                />
               </Table.TextCell>
               {me?.role === 'ADMIN' && (
                 <Table.TextCell maxWidth={128}>
-                  <Switch />
+                  <Switch
+                    checked={link.isBlocked ?? false}
+                    onChange={() => (!link.isBlocked ? blockLink(link) : unblockLink(link))}
+                  />
                 </Table.TextCell>
               )}
               <Table.TextCell maxWidth={180}>
