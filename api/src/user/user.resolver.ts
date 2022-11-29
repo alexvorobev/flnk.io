@@ -3,7 +3,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { GqlAuthGuard } from 'src/guards/gql-auth.guard';
 import { AuthToken } from './models/authToken';
-import { UpdateUserInput } from './models/updateUser.input';
+import { UpdateUserInput } from './dto/updateUser.input';
 import { User } from './models/user';
 import { UserService } from './user.service';
 

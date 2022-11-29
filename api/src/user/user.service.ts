@@ -10,7 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from './models/user';
 import { AuthToken } from './models/authToken';
-import { UpdateUserInput } from './models/updateUser.input';
+import { UpdateUserInput } from './dto/updateUser.input';
 
 type UpdateUserArgs = UpdateUserInput & {
   currentUser: User;
