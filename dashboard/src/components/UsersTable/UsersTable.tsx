@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Table, Badge, Switch } from 'evergreen-ui';
+import { Table, Badge, Switch, Button } from 'evergreen-ui';
 
 import { User } from 'schema/types';
 
@@ -26,8 +26,11 @@ export const UsersTable: FC<Props> = ({ users, onUserBlock, onUserRoleChange }) 
         <Table.TextHeaderCell>First name</Table.TextHeaderCell>
         <Table.TextHeaderCell>Last name</Table.TextHeaderCell>
         <Table.TextHeaderCell>Email</Table.TextHeaderCell>
-        <Table.TextHeaderCell>Blocked</Table.TextHeaderCell>
-        <Table.TextHeaderCell>Role</Table.TextHeaderCell>
+        <Table.TextHeaderCell maxWidth={100}>Blocked</Table.TextHeaderCell>
+        <Table.TextHeaderCell
+              maxWidth={120}
+              >Role</Table.TextHeaderCell>
+        <Table.TextHeaderCell maxWidth={100} />
       </Table.Head>
       <Table.Body>
         {users.map((user) => (
@@ -36,19 +39,23 @@ export const UsersTable: FC<Props> = ({ users, onUserBlock, onUserRoleChange }) 
             <Table.TextCell>{user.name}</Table.TextCell>
             <Table.TextCell>{user.surname}</Table.TextCell>
             <Table.TextCell>{user.email}</Table.TextCell>
-            <Table.TextCell>
+            <Table.TextCell
+              maxWidth={100}
+              >
               <Switch
                 checked={user.isBlocked}
                 onChange={() => (user.id ? onUserBlock?.(Number(user.id), !user.isBlocked) : null)}
               />
             </Table.TextCell>
             <Table.SelectMenuCell
+              maxWidth={120}
               selectMenuProps={{
                 options: userRoles,
                 selected: getUserRole(user.role)?.value,
                 onSelect: (role) => onUserRoleChange?.(Number(user.id), role.label),
                 hasFilter: false,
                 height: 'max-content',
+                width: 120,
                 hasTitle: false,
                 closeOnSelect: true,
               }}
@@ -57,6 +64,9 @@ export const UsersTable: FC<Props> = ({ users, onUserBlock, onUserRoleChange }) 
                 {getUserRole(user.role)?.label}
               </Badge>
             </Table.SelectMenuCell>
+            <Table.TextCell maxWidth={100}>
+              <Button>Logs</Button>
+            </Table.TextCell>
           </Table.Row>
         ))}
       </Table.Body>
