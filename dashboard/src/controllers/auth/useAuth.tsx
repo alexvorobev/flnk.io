@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import { meQuery } from 'queries/meQuery';
 import { PUBLIC_ROUTES, ROUTES } from 'routes';
+import { UserBlocked } from 'components/notifications/UserBlocked';
 
 interface AuthContextType {
   me?: {
@@ -63,7 +64,9 @@ export const AuthProvider: FC<ProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthorized, handleLogin, handleLogout, me }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ isAuthorized, handleLogin, handleLogout, me }}>
+      {me?.isBlocked && !isPublicRoute ? <UserBlocked /> : children}
+    </AuthContext.Provider>
   );
 };
 

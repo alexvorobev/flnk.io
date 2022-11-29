@@ -7,6 +7,7 @@ export const meQuery = gql`
       surname
       email
       role
+      isBlocked
     }
   }
 `;
