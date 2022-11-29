@@ -1,5 +1,6 @@
 import { FC } from 'react';
-import { Table, Switch, Button } from 'evergreen-ui';
+import { Table, Switch, Button, toaster } from 'evergreen-ui';
+import { BsLink45Deg } from 'react-icons/bs';
 
 import { Link } from 'schema/types';
 import { useLink } from 'controllers/links/useLink';
@@ -10,9 +11,18 @@ interface Props {
   links?: Link[];
 }
 
+const copyToClipboard = (link: string) => {
+  navigator.clipboard.writeText(link).then(() => {
+    toaster.success('Copied to clipboard');
+  }).catch(() => {
+    toaster.danger('Failed to copy to clipboard');
+  });
+}
+
 export const LinksTable: FC<Props> = ({ links }) => {
   const { editLink, deleteLink } = useLink();
   const { me } = useAuth();
+
 
   return (
     <div>
@@ -29,7 +39,12 @@ export const LinksTable: FC<Props> = ({ links }) => {
         <Table.Body>
           {links?.map((link) => (
             <Table.Row key={link.id}>
-              <Table.TextCell maxWidth={220}>{link.hash}</Table.TextCell>
+              <Table.TextCell maxWidth={220}>
+                {link.hash}
+                <Button marginLeft={16} width={24} height={24} minWidth={24} paddingX={0} onClick={() => copyToClipboard(link.hash)}>
+                  <BsLink45Deg />
+                </Button>
+              </Table.TextCell>
               <Table.TextCell>{link.path}</Table.TextCell>
               {me?.role === 'ADMIN' && (
                 <Table.TextCell>
