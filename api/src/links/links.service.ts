@@ -74,7 +74,10 @@ export class LinksService {
     return createdLink;
   }
 
-  public async updateLink(updateLinkInput: UpdateLinkInput): Promise<Link> {
+  public async updateLink(
+    updateLinkInput: UpdateLinkInput,
+    user: User,
+  ): Promise<Link> {
     const { id, hash, path, isActive, isBlocked } = updateLinkInput;
 
     const linkToUpdate = await this.prisma.link.findFirst({
@@ -85,6 +88,10 @@ export class LinksService {
 
     if (!linkToUpdate) {
       throw new NotFoundException(`Link with id ${id} not found`);
+    }
+
+    if (linkToUpdate.createdBy !== user.id && user.role !== UserRoles.ADMIN) {
+      throw new NotFoundException(`You are not allowed to update this link`);
     }
 
     this.cacheManager.del(linkToUpdate.hash);
@@ -105,7 +112,21 @@ export class LinksService {
     return updated;
   }
 
-  public async deleteLink(id: number): Promise<Link> {
+  public async deleteLink(id: number, user: User): Promise<Link> {
+    const linkToDelete = await this.prisma.link.findFirst({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (!linkToDelete) {
+      throw new NotFoundException(`Link not found`);
+    }
+
+    if (linkToDelete.createdBy !== user.id && user.role !== UserRoles.ADMIN) {
+      throw new NotFoundException(`You are not allowed to delete this link`);
+    }
+
     const deleted = await this.prisma.link.delete({
       where: {
         id,

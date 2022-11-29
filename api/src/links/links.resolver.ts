@@ -29,13 +29,17 @@ export class LinksResolver {
 
   @Mutation(() => Link, { name: 'updateLink', nullable: true })
   async updateLink(
+    @CurrentUser() user: User,
     @Args('updateLinkInput') updateLinkInput: UpdateLinkInput,
   ): Promise<Link> {
-    return this.linksService.updateLink(updateLinkInput);
+    return this.linksService.updateLink(updateLinkInput, user);
   }
 
   @Mutation(() => Link, { name: 'deleteLink', nullable: true })
-  async deleteLink(@Args('id') id: number): Promise<Link> {
-    return this.linksService.deleteLink(id);
+  async deleteLink(
+    @CurrentUser() user: User,
+    @Args('id') id: number,
+  ): Promise<Link> {
+    return this.linksService.deleteLink(id, user);
   }
 }
