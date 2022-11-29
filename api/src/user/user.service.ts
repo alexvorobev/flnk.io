@@ -98,6 +98,14 @@ export class UserService {
     } = updateUserInput;
     const id = Number(userId ?? currentUser.id);
 
+    if (
+      isBlocked &&
+      currentUser.role === UserRoles.ADMIN &&
+      id === currentUser.id
+    ) {
+      throw new UnauthorizedException('You are not allowed to do this');
+    }
+
     if (currentUser.id !== id && currentUser.role !== UserRoles.ADMIN) {
       throw new UnauthorizedException('You are not allowed to do this');
     }

@@ -36,7 +36,10 @@ export const UsersTable: FC<Props> = ({ users, onUserBlock }) => {
             <Table.TextCell>{user.surname}</Table.TextCell>
             <Table.TextCell>{user.email}</Table.TextCell>
             <Table.TextCell>
-              <Switch checked={user.isBlocked} onChange={() => (user.id ? onUserBlock?.(Number(user.id), !user.isBlocked) : null)} />
+              <Switch
+                checked={user.isBlocked}
+                onChange={() => (user.id ? onUserBlock?.(Number(user.id), !user.isBlocked) : null)}
+              />
             </Table.TextCell>
             <Table.SelectMenuCell
               selectMenuProps={{
