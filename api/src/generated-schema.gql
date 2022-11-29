@@ -27,7 +27,7 @@ type UserLog {
   id: ID
 
   """Action author"""
-  user: User!
+  author: User!
 
   """Action type"""
   action: String!
@@ -72,7 +72,7 @@ type Query {
   auth(email: String!, password: String!): AuthToken
   getUsers: [User!]
   me: User
-  getLogs(id: String!): [UserLog!]
+  getLogs(id: Float): [UserLog!]
 }
 
 type Mutation {

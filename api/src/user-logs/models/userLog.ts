@@ -22,17 +22,17 @@ export class UserLog {
   @Field(() => User, {
     description: 'Action author',
   })
-  user: User;
+  author: User;
 
   @Field(() => String, {
     description: 'Action type',
   })
-  action: UserLogAction;
+  action: string;
 
   @Field(() => String, {
     description: 'Action entity',
   })
-  entity: UserLogActionEntity;
+  entity: string;
 
   @Field(() => String, {
     description: 'Action entity data',

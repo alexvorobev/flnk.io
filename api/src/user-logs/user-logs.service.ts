@@ -11,4 +11,17 @@ export class UserLogsService {
       data: userLogInput,
     });
   }
+
+  public async getLogs(id?: string | number) {
+    const userId = id ? Number(id) : undefined;
+
+    return this.prisma.userLog.findMany({
+      where: {
+        user: userId,
+      },
+      include: {
+        author: true,
+      },
+    });
+  }
 }
