@@ -1,14 +1,16 @@
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, UsePipes } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { User } from '@prisma/client';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { GqlAuthGuard } from 'src/guards/gql-auth.guard';
+import { ValidateUserAccessPipe } from 'src/pipes/validateUserAccess.pipe';
 import { UpdateLinkInput } from './dto/updateLink.input';
 import { LinksService } from './links.service';
 import { Link } from './models/link';
 
 @Resolver(() => Link)
 @UseGuards(GqlAuthGuard)
+@UsePipes(ValidateUserAccessPipe)
 export class LinksResolver {
   constructor(private readonly linksService: LinksService) {}
 
