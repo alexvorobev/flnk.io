@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from 'react';
-import { Table, Switch, Button, toaster, Dialog, Alert } from 'evergreen-ui';
+import { Table, Switch, Button, toaster, Dialog, Alert, Pane } from 'evergreen-ui';
 import { BsLink45Deg } from 'react-icons/bs';
 
 import { Link } from 'schema/types';
@@ -67,17 +67,19 @@ export const LinksTable: FC<Props> = ({ links }) => {
           {links?.map((link) => (
             <Table.Row key={link.id}>
               <Table.TextCell maxWidth={220}>
-                {link.hash}
-                <Button
-                  marginLeft={16}
-                  width={24}
-                  height={24}
-                  minWidth={24}
-                  paddingX={0}
-                  onClick={() => copyToClipboard(link.hash)}
-                >
-                  <BsLink45Deg />
-                </Button>
+                <Pane display='flex' alignItems='center'>
+                  <Pane width='100%'>{link.hash}</Pane>
+                  <Button
+                    marginLeft={16}
+                    width={24}
+                    height={24}
+                    minWidth={24}
+                    paddingX={0}
+                    onClick={() => copyToClipboard(link.hash)}
+                  >
+                    <BsLink45Deg />
+                  </Button>
+                </Pane>
               </Table.TextCell>
               <Table.TextCell>{link.path}</Table.TextCell>
               {me?.role === 'ADMIN' && (
