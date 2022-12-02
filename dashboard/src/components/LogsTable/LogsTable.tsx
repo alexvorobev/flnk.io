@@ -9,6 +9,47 @@ interface Props {
   logs?: UserLog[];
 }
 
+enum UserLogAction {
+  CREATE = 'CREATE',
+  UPDATE = 'UPDATE',
+  DELETE = 'DELETE',
+  LOGIN = 'LOGIN',
+  LOGOUT = 'LOGOUT',
+}
+
+enum UserLogActionEntity {
+  LINK = 'LINK',
+  USER = 'USER',
+}
+
+const getActionBadgeColor = (action: string) => {
+  switch (action) {
+    case UserLogAction.CREATE:
+      return 'green';
+    case UserLogAction.UPDATE:
+      return 'blue';
+    case UserLogAction.DELETE:
+      return 'red';
+    case UserLogAction.LOGIN:
+      return 'green';
+    case UserLogAction.LOGOUT:
+      return 'orange';
+    default:
+      return 'blue';
+  }
+};
+
+const getActionEntityBadgeColor = (entity: string) => {
+  switch (entity) {
+    case UserLogActionEntity.USER:
+      return 'blue';
+    case UserLogActionEntity.LINK:
+      return 'green';
+    default:
+      return 'green';
+  }
+};
+
 export const LogsTable: FC<Props> = ({ logs }) => {
   if (!logs) {
     return null;
@@ -16,7 +57,7 @@ export const LogsTable: FC<Props> = ({ logs }) => {
 
   return (
     <>
-      <Table>
+      <Table marginBottom={64}>
         <Table.Head>
           <Table.TextHeaderCell maxWidth={240}>User</Table.TextHeaderCell>
           <Table.TextHeaderCell maxWidth={120}>Action</Table.TextHeaderCell>
@@ -33,10 +74,10 @@ export const LogsTable: FC<Props> = ({ logs }) => {
                 </Pane>
               </Table.TextCell>
               <Table.TextCell maxWidth={120}>
-                <Badge color='green'>{log.action}</Badge>
+                <Badge color={getActionBadgeColor(log.action)}>{log.action}</Badge>
               </Table.TextCell>
               <Table.TextCell maxWidth={120}>
-                <Badge color='green'>{log.entity}</Badge>
+                <Badge color={getActionEntityBadgeColor(log.entity)}>{log.entity}</Badge>
               </Table.TextCell>
               <Table.TextCell>{log.entityData}</Table.TextCell>
               <Table.TextCell maxWidth={140}>{moment(`${log.createdAt}`).format('DD.MM.YYYY HH:mm')}</Table.TextCell>

@@ -1,8 +1,16 @@
 import { gql } from '@apollo/client';
 
 export const getLogsQuery = gql`
-  query GetLogsQuery {
-    getLogs {
+  query GetLogsQuery(
+    $users: [String!]
+    $actions: [String!]
+    $entities: [String!]
+  ) {
+    getLogs(
+      users: $users
+      actions: $actions
+      entities: $entities
+    ) {
       author {
         name
         surname
