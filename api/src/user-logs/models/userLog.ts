@@ -38,4 +38,9 @@ export class UserLog {
     description: 'Action entity data',
   })
   entityData: string;
+
+  @Field(() => Date, {
+    description: 'Action created at',
+  })
+  createdAt: Date;
 }

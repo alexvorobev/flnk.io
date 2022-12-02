@@ -1,6 +1,7 @@
 export const PROTECTED_ROUTES = {
   HOME: '/',
   USERS: '/users',
+  LOGS: '/logs',
 };
 
 export const PUBLIC_ROUTES = {

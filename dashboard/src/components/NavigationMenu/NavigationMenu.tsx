@@ -6,6 +6,7 @@ import { PROTECTED_ROUTES } from 'routes';
 const menuLinks = [
   { label: 'Links', to: PROTECTED_ROUTES.HOME },
   { label: 'Users', to: PROTECTED_ROUTES.USERS },
+  { label: 'Logs', to: PROTECTED_ROUTES.LOGS },
 ];
 
 const StyledNavigationMenu = styled.div`
@@ -13,7 +14,7 @@ const StyledNavigationMenu = styled.div`
   align-items: center;
   gap: 12px;
   position: relative;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   line-height: 2.4rem;
 
   &::before {
@@ -34,7 +35,7 @@ const StyledNavigationLink = styled(Link)<NavigationLinkProps>`
   color: #101840;
   text-decoration: none;
   border-radius: 4px;
-  padding: 4px 12px;
+  padding: 4px 16px;
   display: block;
 
   &:hover {

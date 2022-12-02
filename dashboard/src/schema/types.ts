@@ -14,6 +14,8 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
+  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
+  DateTime: any
 }
 
 /** User data entity */
@@ -44,6 +46,8 @@ export type UserLog = {
   entity: Scalars["String"]
   /** Action entity data */
   entityData: Scalars["String"]
+  /** Action created at */
+  createdAt: Scalars["DateTime"]
 }
 
 /** The main data about the links */
