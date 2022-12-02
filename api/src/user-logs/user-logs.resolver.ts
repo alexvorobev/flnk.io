@@ -4,7 +4,7 @@ import { User } from '@prisma/client';
 import { ForbiddenError } from 'apollo-server-express';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { GqlAuthGuard } from 'src/guards/gql-auth.guard';
-import { UserLog } from './models/userLog';
+import { UserLog, UserLogAction, UserLogActionEntity } from './models/userLog';
 import { UserLogsService } from './user-logs.service';
 
 @Resolver(() => UserLog)
@@ -15,12 +15,21 @@ export class UserLogsResolver {
   @Query(() => [UserLog], { name: 'getLogs', nullable: true })
   getLogs(
     @CurrentUser() user: User,
-    @Args('id', { nullable: true }) id?: number,
+    @Args('users', { nullable: true, type: () => [String] })
+    users?: string[],
+    @Args('actions', { nullable: true, type: () => [String] })
+    actions?: UserLogAction[],
+    @Args('entities', { nullable: true, type: () => [String] })
+    entities?: UserLogActionEntity[],
   ): Promise<UserLog[]> {
     if (user.role !== 'ADMIN') {
       throw new ForbiddenError('You are not allowed to do this');
     }
 
-    return this.userLogsService.getLogs(id);
+    return this.userLogsService.getLogs({
+      users,
+      actions,
+      entities,
+    });
   }
 }

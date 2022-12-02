@@ -8,7 +8,7 @@ import { useMultiSelectState } from 'hooks';
 
 interface Props {
   users: User[];
-  setFilter: (filter: { users: string[]; actions: string[]; entities: string[] }) => void;
+  setFilter: (filter: { users?: string[]; actions?: string[]; entities?: string[] }) => void;
 }
 
 interface SelectRenderProps {
@@ -43,7 +43,7 @@ export const UserLogsFilter: FC<Props> = ({ users, setFilter }) => {
     () =>
       users.map((user) => ({
         label: user.email,
-        value: user.email,
+        value: user.id ?? -1,
       })),
     [users],
   );
@@ -79,9 +79,9 @@ export const UserLogsFilter: FC<Props> = ({ users, setFilter }) => {
 
   useEffect(() => {
     setFilter({
-      users: selectedUsers,
-      actions: selectedActions,
-      entities: selectedEntities,
+      users: selectedUsers.length > 0 ? selectedUsers : undefined,
+      actions: selectedActions.length > 0 ? selectedActions : undefined,
+      entities: selectedEntities.length > 0 ? selectedEntities : undefined,
     });
   }, [selectedActions, selectedEntities, selectedUsers, setFilter]);
 
