@@ -80,7 +80,7 @@ type Query {
   auth(email: String!, password: String!): AuthToken
   getUsers: [User!]
   me: User
-  getLogs(users: [String!], actions: [String!], entities: [String!]): [UserLog!]
+  getLogs(users: [String!], actions: [String!], entities: [String!], dates: [String!], body: String): [UserLog!]
 }
 
 type Mutation {

@@ -7,6 +7,8 @@ type GetLogsQueryArgs = {
   users?: string[];
   actions?: UserLogAction[];
   entities?: UserLogActionEntity[];
+  dates?: string[];
+  body?: string;
 };
 @Injectable()
 export class UserLogsService {
@@ -19,19 +21,33 @@ export class UserLogsService {
   }
 
   public async getLogs(args: GetLogsQueryArgs) {
-    const { actions, entities, users } = args;
+    const { actions, entities, users, body } = args;
     const userIds = users ? users.map((user) => Number(user)) : undefined;
+    let dateFrom = undefined;
+    let dateTo = undefined;
+
+    if (args.dates && args.dates.length === 2) {
+      dateFrom = new Date(args.dates[0]);
+      dateTo = new Date(args.dates[1]);
+    }
 
     return this.prisma.userLog.findMany({
       where: {
         user: {
           in: userIds,
         },
+        entityData: {
+          contains: body,
+        },
         action: {
           in: actions,
         },
         entity: {
           in: entities,
+        },
+        createdAt: {
+          gte: dateFrom,
+          lte: dateTo,
         },
       },
       include: {

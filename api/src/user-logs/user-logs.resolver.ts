@@ -21,6 +21,10 @@ export class UserLogsResolver {
     actions?: UserLogAction[],
     @Args('entities', { nullable: true, type: () => [String] })
     entities?: UserLogActionEntity[],
+    @Args('dates', { nullable: true, type: () => [String] })
+    dates?: string[],
+    @Args('body', { nullable: true, type: () => String })
+    body?: string,
   ): Promise<UserLog[]> {
     if (user.role !== 'ADMIN') {
       throw new ForbiddenError('You are not allowed to do this');
@@ -30,6 +34,8 @@ export class UserLogsResolver {
       users,
       actions,
       entities,
+      dates,
+      body,
     });
   }
 }
