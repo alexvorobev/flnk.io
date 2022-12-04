@@ -27,8 +27,6 @@ export async function getCountedList<T>(
     prisma[entity].findMany(query),
   ]);
 
-  console.log(results[1].length);
-
   return {
     total: results[0].length,
     items: results[1],

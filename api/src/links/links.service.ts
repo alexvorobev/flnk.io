@@ -61,18 +61,6 @@ export class LinksService {
       },
     };
 
-    // const results = await this.prisma.$transaction([
-    //   this.prisma.link.findMany({
-    //     ...query,
-    //     cursor: undefined,
-    //     skip: undefined,
-    //     take: undefined,
-    //   }),
-    //   this.prisma.link.findMany(query),
-    // ]);
-
-    // console.log(results[0].length);
-
     return getCountedList(this.prisma, 'link', query);
   }
 
