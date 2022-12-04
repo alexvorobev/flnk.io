@@ -6,6 +6,8 @@ import { AuthToken } from './models/authToken';
 import { UpdateUserInput } from './dto/updateUser.input';
 import { User } from './models/user';
 import { UserService } from './user.service';
+import { CountedListType } from 'src/utils/getCountedList';
+import { CountedUsers } from './models/countedUsers';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -19,10 +21,13 @@ export class UserResolver {
     return this.userService.authUser(email, password);
   }
 
-  @Query(() => [User], { name: 'getUsers', nullable: true })
+  @Query(() => CountedUsers, { name: 'getUsers', nullable: true })
   @UseGuards(GqlAuthGuard)
-  getUsers(@CurrentUser() user: User): Promise<User[]> {
-    return this.userService.getUsers(user);
+  getUsers(
+    @CurrentUser() user: User,
+    @Args('cursor', { nullable: true }) cursor?: string,
+  ): Promise<CountedListType<User[]>> {
+    return this.userService.getUsers(user, cursor);
   }
 
   @UseGuards(GqlAuthGuard)

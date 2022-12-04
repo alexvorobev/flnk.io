@@ -31,6 +31,35 @@ export class UserLogsService {
       dateTo = new Date(args.dates[1]);
     }
 
+    const query = {
+      skip: 0,
+      take: 10,
+      where: {
+        user: {
+          in: userIds,
+        },
+        entityData: {
+          contains: body,
+        },
+        action: {
+          in: actions,
+        },
+        entity: {
+          in: entities,
+        },
+        createdAt: {
+          gte: dateFrom,
+          lte: dateTo,
+        },
+      },
+      include: {
+        author: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    };
+
     return this.prisma.userLog.findMany({
       where: {
         user: {
@@ -52,6 +81,9 @@ export class UserLogsService {
       },
       include: {
         author: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
   }

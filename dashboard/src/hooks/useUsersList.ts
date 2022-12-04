@@ -1,18 +1,16 @@
 import { useCallback } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
-import { User } from 'schema/types';
+import { Query } from 'schema/types';
 import { getUsersQuery } from 'queries';
 import { updateUserMutation } from 'mutations/updateUserMutation';
 
-interface UsersListQuery {
-  getUsers: User[];
-}
 
 export const useUsersList = () => {
-  const { data } = useQuery<UsersListQuery>(getUsersQuery);
+  const { data, fetchMore } = useQuery<Query>(getUsersQuery);
   const [updateUser] = useMutation(updateUserMutation);
-  const users = data?.getUsers?.map((user) => ({
+  const totalUsers = data?.getUsers?.total || 0;
+  const users = data?.getUsers?.items?.map((user) => ({
     id: `${user.id}`,
     name: user.name,
     surname: user.surname,
@@ -49,9 +47,18 @@ export const useUsersList = () => {
     [updateUser],
   );
 
+  const handleFetchMore = useCallback(() => {
+    fetchMore({
+      variables: {
+        cursor: users?.[users.length - 1].id,
+      },
+    });
+  }, [fetchMore, users]);
+
   return {
     users: users ?? [],
     handleUserBlock,
     handleUserRoleChange,
+    handleFetchMore: totalUsers > (users?.length ?? 0) ? handleFetchMore : undefined,
   };
 };

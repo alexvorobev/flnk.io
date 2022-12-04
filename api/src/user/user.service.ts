@@ -16,6 +16,7 @@ import {
   UserLogAction,
   UserLogActionEntity,
 } from 'src/user-logs/models/userLog';
+import { CountedListType, getCountedList } from 'src/utils/getCountedList';
 
 type UpdateUserArgs = UpdateUserInput & {
   currentUser: User;
@@ -96,12 +97,24 @@ export class UserService {
     };
   }
 
-  public async getUsers(user: User): Promise<User[]> {
+  public async getUsers(
+    user: User,
+    cursor?: string,
+  ): Promise<CountedListType<User[]>> {
     if (user.role !== UserRoles.ADMIN) {
       throw new UnauthorizedException('You are not allowed to do this');
     }
 
-    return this.prisma.user.findMany();
+    const query = {
+      cursor: cursor ? { id: Number(cursor) } : undefined,
+      take: 10,
+      skip: cursor ? 1 : 0,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    };
+
+    return getCountedList(this.prisma, 'user', query);
   }
 
   public async validateUser(userId: number): Promise<User> {
