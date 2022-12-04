@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { Table, Switch, Button, toaster, Dialog, Alert, Pane } from 'evergreen-ui';
 import { BsLink45Deg } from 'react-icons/bs';
 
@@ -6,9 +6,11 @@ import { Link } from 'schema/types';
 import { useLink } from 'controllers/links/useLink';
 import { useAuth } from 'controllers/auth/useAuth';
 import { UserInfo } from 'components/core';
+import { useThreshold } from 'hooks';
 
 interface Props {
   links?: Link[];
+  onSearch?: (search: string) => void;
 }
 
 const copyToClipboard = (link: string) => {
@@ -23,11 +25,14 @@ const copyToClipboard = (link: string) => {
       });
     });
 };
-// , blockLink, unblockLink, activateLink, inactivateLink
-export const LinksTable: FC<Props> = ({ links }) => {
+
+const threshold = 500;
+
+export const LinksTable: FC<Props> = ({ links, onSearch }) => {
   const { editLink, deleteLink, blockLink, unblockLink, activateLink, inactivateLink } = useLink();
   const { me } = useAuth();
   const [linkToDelete, setLinkToDelete] = useState<Link>();
+  const handleSearch = useThreshold<string>(onSearch, threshold);
 
   const handleConfirmedDelete = useCallback(async () => {
     if (linkToDelete) {
@@ -55,7 +60,10 @@ export const LinksTable: FC<Props> = ({ links }) => {
       </Dialog>
       <Table>
         <Table.Head>
-          <Table.SearchHeaderCell maxWidth={220}>Hash</Table.SearchHeaderCell>
+          <Table.SearchHeaderCell
+            maxWidth={220}
+            onChange={handleSearch}
+          />
           <Table.TextHeaderCell>URL</Table.TextHeaderCell>
           {me?.role === 'ADMIN' && <Table.TextHeaderCell>User</Table.TextHeaderCell>}
           <Table.TextHeaderCell maxWidth={128}>Visits 24H</Table.TextHeaderCell>

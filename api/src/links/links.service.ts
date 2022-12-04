@@ -36,20 +36,51 @@ export class LinksService {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
-  public async getLinks(user: User): Promise<Link[]> {
+  public async getLinks(user: User, search?: string): Promise<Link[]> {
+    const searchQuery = search
+      ? [
+          {
+            path: {
+              contains: search,
+            },
+          },
+          {
+            hash: {
+              contains: search,
+            },
+          },
+        ]
+      : undefined;
+
     if (user.role === UserRoles.ADMIN) {
-      return this.prisma.link.findMany({
-        include: {
-          user: true,
-        },
-      });
+      return search
+        ? this.prisma.link.findMany({
+            where: {
+              OR: searchQuery,
+            },
+            include: {
+              user: true,
+            },
+          })
+        : this.prisma.link.findMany({
+            include: {
+              user: true,
+            },
+          });
     }
 
-    return this.prisma.link.findMany({
-      where: {
-        createdBy: user.id,
-      },
-    });
+    return search
+      ? this.prisma.link.findMany({
+          where: {
+            createdBy: user.id,
+            OR: searchQuery,
+          },
+        })
+      : this.prisma.link.findMany({
+          where: {
+            createdBy: user.id,
+          },
+        });
   }
 
   public async getLinkByHash(hash: string): Promise<Link> {

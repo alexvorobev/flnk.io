@@ -1,8 +1,10 @@
 import { gql } from '@apollo/client';
 
 export const getLinksQuery = gql`
-  query GetAllLinksQuery {
-    getLinks {
+  query GetAllLinksQuery($search: String) {
+    getLinks(
+      search: $search
+    ) {
       id
       hash
       path

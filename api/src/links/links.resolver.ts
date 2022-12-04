@@ -15,8 +15,11 @@ export class LinksResolver {
   constructor(private readonly linksService: LinksService) {}
 
   @Query(() => [Link], { name: 'getLinks', nullable: true })
-  getLinks(@CurrentUser() user: User): Promise<Link[]> {
-    return this.linksService.getLinks(user);
+  getLinks(
+    @CurrentUser() user: User,
+    @Args('search', { nullable: true }) search?: string,
+  ): Promise<Link[]> {
+    return this.linksService.getLinks(user, search);
   }
 
   @Mutation(() => Link, { name: 'createLink', nullable: true })

@@ -76,7 +76,7 @@ type AuthToken {
 }
 
 type Query {
-  getLinks: [Link!]
+  getLinks(search: String): [Link!]
   auth(email: String!, password: String!): AuthToken
   getUsers: [User!]
   me: User

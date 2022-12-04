@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useQuery } from '@apollo/client';
 
 import { LinkForm } from 'components/forms';
@@ -8,15 +9,18 @@ import { getLinksQuery } from 'queries';
 import { Query } from 'schema/types';
 
 const Dashboard = () => {
-  const { data } = useQuery<Query>(getLinksQuery);
-
+  const { data, refetch } = useQuery<Query>(getLinksQuery);
   const links = data?.getLinks || [];
+  
+  const handleSearch = useCallback((search: string) => {
+    refetch({ search });
+  }, [refetch])
 
   return (
     <LinksProvider>
       <MainLayout>
         <LinkForm />
-        <LinksTable links={links} />
+        <LinksTable links={links} onSearch={handleSearch} />
       </MainLayout>
     </LinksProvider>
   );
