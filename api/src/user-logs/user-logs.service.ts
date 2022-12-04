@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserLogInput } from './models/userLog.input';
-import { UserLogAction, UserLogActionEntity } from './models/userLog';
+import { UserLog, UserLogAction, UserLogActionEntity } from './models/userLog';
+import { CountedListType, getCountedList } from 'src/utils/getCountedList';
 
 type GetLogsQueryArgs = {
   users?: string[];
@@ -9,6 +10,7 @@ type GetLogsQueryArgs = {
   entities?: UserLogActionEntity[];
   dates?: string[];
   body?: string;
+  cursor?: string;
 };
 @Injectable()
 export class UserLogsService {
@@ -20,7 +22,9 @@ export class UserLogsService {
     });
   }
 
-  public async getLogs(args: GetLogsQueryArgs) {
+  public async getLogs(
+    args: GetLogsQueryArgs,
+  ): Promise<CountedListType<UserLog[]>> {
     const { actions, entities, users, body } = args;
     const userIds = users ? users.map((user) => Number(user)) : undefined;
     let dateFrom = undefined;
@@ -32,7 +36,8 @@ export class UserLogsService {
     }
 
     const query = {
-      skip: 0,
+      cursor: args.cursor ? { id: Number(args.cursor) } : undefined,
+      skip: args.cursor ? 1 : 0,
       take: 10,
       where: {
         user: {
@@ -60,31 +65,6 @@ export class UserLogsService {
       },
     };
 
-    return this.prisma.userLog.findMany({
-      where: {
-        user: {
-          in: userIds,
-        },
-        entityData: {
-          contains: body,
-        },
-        action: {
-          in: actions,
-        },
-        entity: {
-          in: entities,
-        },
-        createdAt: {
-          gte: dateFrom,
-          lte: dateTo,
-        },
-      },
-      include: {
-        author: true,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+    return getCountedList(this.prisma, 'userLog', query);
   }
 }

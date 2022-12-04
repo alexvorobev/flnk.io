@@ -88,13 +88,20 @@ export type CountedUsers = {
   items?: Maybe<Array<User>>
 }
 
+/** User actions log data */
+export type CountedUsersLog = {
+  __typename?: "CountedUsersLog"
+  total?: Maybe<Scalars["Float"]>
+  items?: Maybe<Array<UserLog>>
+}
+
 export type Query = {
   __typename?: "Query"
   getLinks?: Maybe<CountedLinks>
   auth?: Maybe<AuthToken>
   getUsers?: Maybe<CountedUsers>
   me?: Maybe<User>
-  getLogs?: Maybe<Array<UserLog>>
+  getLogs?: Maybe<CountedUsersLog>
 }
 
 export type QueryGetLinksArgs = {
@@ -117,6 +124,7 @@ export type QueryGetLogsArgs = {
   entities?: Maybe<Array<Scalars["String"]>>
   dates?: Maybe<Array<Scalars["String"]>>
   body?: Maybe<Scalars["String"]>
+  cursor?: Maybe<Scalars["String"]>
 }
 
 export type Mutation = {

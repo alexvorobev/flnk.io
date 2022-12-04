@@ -1,12 +1,14 @@
 import { FC } from 'react';
 import { Badge, Pane, Table } from 'evergreen-ui';
 import moment from 'moment';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { UserLog } from 'schema/types';
 import { UserInfo } from 'components/core';
 
 interface Props {
   logs?: UserLog[];
+  onFetchMore?: () => void;
 }
 
 enum UserLogAction {
@@ -50,13 +52,22 @@ const getActionEntityBadgeColor = (entity: string) => {
   }
 };
 
-export const LogsTable: FC<Props> = ({ logs }) => {
+export const LogsTable: FC<Props> = ({ logs, onFetchMore }) => {
   if (!logs) {
     return null;
   }
 
   return (
     <>
+      <InfiniteScroll
+      next={() => {
+        onFetchMore?.();
+      }}
+      loader={<></>}
+      endMessage={<></>}
+      hasMore={!!onFetchMore}
+      dataLength={logs?.length ?? 0}
+    >
       <Table marginBottom={64}>
         <Table.Head>
           <Table.TextHeaderCell maxWidth={240}>User</Table.TextHeaderCell>
@@ -85,6 +96,7 @@ export const LogsTable: FC<Props> = ({ logs }) => {
           ))}
         </Table.Body>
       </Table>
+      </InfiniteScroll>
     </>
   );
 };

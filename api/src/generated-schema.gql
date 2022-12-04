@@ -87,12 +87,18 @@ type CountedUsers {
   items: [User!]
 }
 
+"""User actions log data"""
+type CountedUsersLog {
+  total: Float
+  items: [UserLog!]
+}
+
 type Query {
   getLinks(search: String, cursor: String): CountedLinks
   auth(email: String!, password: String!): AuthToken
   getUsers(cursor: String): CountedUsers
   me: User
-  getLogs(users: [String!], actions: [String!], entities: [String!], dates: [String!], body: String): [UserLog!]
+  getLogs(users: [String!], actions: [String!], entities: [String!], dates: [String!], body: String, cursor: String): CountedUsersLog
 }
 
 type Mutation {
