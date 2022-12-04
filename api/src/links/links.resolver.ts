@@ -4,8 +4,10 @@ import { User } from '@prisma/client';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { GqlAuthGuard } from 'src/guards/gql-auth.guard';
 import { ValidateUserAccessPipe } from 'src/pipes/validateUserAccess.pipe';
+import { CountedListType } from 'src/utils/getCountedList';
 import { UpdateLinkInput } from './dto/updateLink.input';
 import { LinksService } from './links.service';
+import { CountedLinks } from './models/countedLinks';
 import { Link } from './models/link';
 
 @Resolver(() => Link)
@@ -14,12 +16,14 @@ import { Link } from './models/link';
 export class LinksResolver {
   constructor(private readonly linksService: LinksService) {}
 
-  @Query(() => [Link], { name: 'getLinks', nullable: true })
+  @Query(() => CountedLinks, { name: 'getLinks', nullable: true })
   getLinks(
     @CurrentUser() user: User,
     @Args('search', { nullable: true }) search?: string,
-  ): Promise<Link[]> {
-    return this.linksService.getLinks(user, search);
+    @Args('cursor', { nullable: true })
+    cursor?: string,
+  ): Promise<CountedListType<Link[]>> {
+    return this.linksService.getLinks(user, search, cursor);
   }
 
   @Mutation(() => Link, { name: 'createLink', nullable: true })

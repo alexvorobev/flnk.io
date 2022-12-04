@@ -51,7 +51,7 @@ export const LinksProvider: FC<ProviderProps> = ({ children }) => {
           cache.writeQuery({
             query: getLinksQuery,
             data: {
-              getLinks: links?.getLinks?.filter((link: Link) => link.id !== data?.deleteLink.id),
+              getLinks: links?.getLinks?.items?.filter((link: Link) => link.id !== data?.deleteLink.id),
             },
           });
         },

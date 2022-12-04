@@ -69,6 +69,12 @@ type Link {
   isBlocked: Boolean
 }
 
+"""Counted list of the links"""
+type CountedLinks {
+  total: Float
+  items: [Link!]
+}
+
 """User access response"""
 type AuthToken {
   """User's auth token"""
@@ -76,7 +82,7 @@ type AuthToken {
 }
 
 type Query {
-  getLinks(search: String): [Link!]
+  getLinks(search: String, cursor: String): CountedLinks
   auth(email: String!, password: String!): AuthToken
   getUsers: [User!]
   me: User

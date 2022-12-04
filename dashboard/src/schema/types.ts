@@ -65,6 +65,13 @@ export type Link = {
   isBlocked?: Maybe<Scalars['Boolean']>;
 };
 
+/** Counted list of the links */
+export type CountedLinks = {
+  __typename?: 'CountedLinks';
+  total?: Maybe<Scalars['Float']>;
+  items?: Maybe<Array<Link>>;
+};
+
 /** User access response */
 export type AuthToken = {
   __typename?: 'AuthToken';
@@ -74,11 +81,16 @@ export type AuthToken = {
 
 export type Query = {
   __typename?: 'Query';
-  getLinks?: Maybe<Array<Link>>;
+  getLinks?: Maybe<CountedLinks>;
   auth?: Maybe<AuthToken>;
   getUsers?: Maybe<Array<User>>;
   me?: Maybe<User>;
   getLogs?: Maybe<Array<UserLog>>;
+};
+
+export type QueryGetLinksArgs = {
+  search?: Maybe<Scalars['String']>;
+  cursor?: Maybe<Scalars['String']>;
 };
 
 export type QueryAuthArgs = {
@@ -87,7 +99,11 @@ export type QueryAuthArgs = {
 };
 
 export type QueryGetLogsArgs = {
-  id?: Maybe<Scalars['Float']>;
+  users?: Maybe<Array<Scalars['String']>>;
+  actions?: Maybe<Array<Scalars['String']>>;
+  entities?: Maybe<Array<Scalars['String']>>;
+  dates?: Maybe<Array<Scalars['String']>>;
+  body?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {

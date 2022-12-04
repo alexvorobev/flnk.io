@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 
 import { LinkForm } from 'components/forms';
@@ -6,21 +6,46 @@ import { MainLayout } from 'components/layouts';
 import { LinksTable } from 'components/LinksTable';
 import { LinksProvider } from 'controllers/links/useLink';
 import { getLinksQuery } from 'queries';
-import { Query } from 'schema/types';
+import { Link, Query } from 'schema/types';
 
 const Dashboard = () => {
-  const { data, refetch } = useQuery<Query>(getLinksQuery);
-  const links = data?.getLinks || [];
-  
-  const handleSearch = useCallback((search: string) => {
-    refetch({ search });
-  }, [refetch])
+  const { data, refetch, fetchMore } = useQuery<Query>(getLinksQuery);
+  const links = useMemo((): Link[] => data?.getLinks?.items ?? [], [data]);
+  const total = useMemo((): number => data?.getLinks?.total ?? 0, [data]);
+
+  const handleSearch = useCallback(
+    (search: string) => {
+      refetch({ search });
+    },
+    [refetch],
+  );
+
+  const handleFetchMore = useCallback(() => {
+    const cursor = links?.[links.length - 1]?.id;
+    fetchMore({
+      variables: { cursor },
+      updateQuery: (previous, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return previous;
+
+        return {
+          getLinks: {
+            ...fetchMoreResult.getLinks,
+            items: [...(previous?.getLinks?.items ?? []), ...(fetchMoreResult?.getLinks?.items ?? [])],
+          },
+        };
+      },
+    });
+  }, [links, fetchMore]);
 
   return (
     <LinksProvider>
       <MainLayout>
         <LinkForm />
-        <LinksTable links={links} onSearch={handleSearch} />
+        <LinksTable
+          links={links ?? []}
+          onSearch={handleSearch}
+          onFetchMore={total > links.length ? handleFetchMore : undefined}
+        />
       </MainLayout>
     </LinksProvider>
   );

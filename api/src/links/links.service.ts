@@ -16,6 +16,7 @@ import {
 } from 'src/user-logs/models/userLog';
 import { UpdateLinkInput } from './dto/updateLink.input';
 import { Link } from './models/link';
+import { CountedListType, getCountedList } from 'src/utils/getCountedList';
 
 function makeid(length) {
   let result = '';
@@ -36,51 +37,43 @@ export class LinksService {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
-  public async getLinks(user: User, search?: string): Promise<Link[]> {
-    const searchQuery = search
-      ? [
-          {
-            path: {
-              contains: search,
-            },
-          },
-          {
-            hash: {
-              contains: search,
-            },
-          },
-        ]
-      : undefined;
+  public async getLinks(
+    user: User,
+    search?: string,
+    cursor?: string,
+  ): Promise<CountedListType<Link[]>> {
+    const query = {
+      cursor: cursor
+        ? {
+            id: Number(cursor),
+          }
+        : undefined,
+      take: 10,
+      skip: cursor ? 1 : 0,
+      where: {
+        OR: search
+          ? [{ hash: { contains: search } }, { path: { contains: search } }]
+          : undefined,
+        createdBy: user.role !== UserRoles.ADMIN ? user.id : undefined,
+      },
+      include: {
+        user: user.role === UserRoles.ADMIN,
+      },
+    };
 
-    if (user.role === UserRoles.ADMIN) {
-      return search
-        ? this.prisma.link.findMany({
-            where: {
-              OR: searchQuery,
-            },
-            include: {
-              user: true,
-            },
-          })
-        : this.prisma.link.findMany({
-            include: {
-              user: true,
-            },
-          });
-    }
+    // const results = await this.prisma.$transaction([
+    //   this.prisma.link.findMany({
+    //     ...query,
+    //     cursor: undefined,
+    //     skip: undefined,
+    //     take: undefined,
+    //   }),
+    //   this.prisma.link.findMany(query),
+    // ]);
 
-    return search
-      ? this.prisma.link.findMany({
-          where: {
-            createdBy: user.id,
-            OR: searchQuery,
-          },
-        })
-      : this.prisma.link.findMany({
-          where: {
-            createdBy: user.id,
-          },
-        });
+    // console.log(results[0].length);
+
+    return getCountedList(this.prisma, 'link', query);
   }
 
   public async getLinkByHash(hash: string): Promise<Link> {

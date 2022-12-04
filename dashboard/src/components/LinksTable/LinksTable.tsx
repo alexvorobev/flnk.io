@@ -10,6 +10,7 @@ import { useThreshold } from 'hooks';
 
 interface Props {
   links?: Link[];
+  onFetchMore?: () => void;
   onSearch?: (search: string) => void;
 }
 
@@ -28,7 +29,7 @@ const copyToClipboard = (link: string) => {
 
 const threshold = 500;
 
-export const LinksTable: FC<Props> = ({ links, onSearch }) => {
+export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore }) => {
   const { editLink, deleteLink, blockLink, unblockLink, activateLink, inactivateLink } = useLink();
   const { me } = useAuth();
   const [linkToDelete, setLinkToDelete] = useState<Link>();
@@ -40,6 +41,10 @@ export const LinksTable: FC<Props> = ({ links, onSearch }) => {
       setLinkToDelete(undefined);
     }
   }, [deleteLink, linkToDelete]);
+
+  console.log({
+    onFetchMore,
+  });
 
   return (
     <div>
@@ -60,10 +65,7 @@ export const LinksTable: FC<Props> = ({ links, onSearch }) => {
       </Dialog>
       <Table>
         <Table.Head>
-          <Table.SearchHeaderCell
-            maxWidth={220}
-            onChange={handleSearch}
-          />
+          <Table.SearchHeaderCell maxWidth={220} onChange={handleSearch} />
           <Table.TextHeaderCell>URL</Table.TextHeaderCell>
           {me?.role === 'ADMIN' && <Table.TextHeaderCell>User</Table.TextHeaderCell>}
           <Table.TextHeaderCell maxWidth={128}>Visits 24H</Table.TextHeaderCell>
@@ -124,6 +126,7 @@ export const LinksTable: FC<Props> = ({ links, onSearch }) => {
           ))}
         </Table.Body>
       </Table>
+      {onFetchMore && <Button onClick={onFetchMore}>Load more</Button>}
     </div>
   );
 };

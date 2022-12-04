@@ -1,4 +1,5 @@
 import React from 'react';
+import { Pane } from 'evergreen-ui';
 
 import { Container } from 'components/core';
 import { Header } from 'components/Header';
@@ -14,7 +15,9 @@ export const MainLayout: React.FC<Props> = ({ children }) => {
   return (
     <>
       <Header user={me} onLogout={handleLogout} />
-      <Container>{children}</Container>
+      <Container>
+        <Pane paddingBottom={64}>{children}</Pane>
+      </Container>
     </>
   );
 };
