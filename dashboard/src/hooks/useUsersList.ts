@@ -5,7 +5,6 @@ import { Query } from 'schema/types';
 import { getUsersQuery } from 'queries';
 import { updateUserMutation } from 'mutations/updateUserMutation';
 
-
 export const useUsersList = () => {
   const { data, fetchMore } = useQuery<Query>(getUsersQuery);
   const [updateUser] = useMutation(updateUserMutation);

@@ -7,7 +7,12 @@ export const UsersPage = () => {
 
   return (
     <MainLayout>
-      <UsersTable users={users} onUserBlock={handleUserBlock} onUserRoleChange={handleUserRoleChange} onFetchMore={handleFetchMore} />
+      <UsersTable
+        users={users}
+        onUserBlock={handleUserBlock}
+        onUserRoleChange={handleUserRoleChange}
+        onFetchMore={handleFetchMore}
+      />
     </MainLayout>
   );
 };

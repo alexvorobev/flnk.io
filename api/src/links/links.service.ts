@@ -59,6 +59,9 @@ export class LinksService {
       include: {
         user: user.role === UserRoles.ADMIN,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     };
 
     return getCountedList(this.prisma, 'link', query);

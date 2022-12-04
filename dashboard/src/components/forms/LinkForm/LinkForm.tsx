@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useForm } from 'react-hook-form';
 import { useCallback, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
@@ -7,6 +6,7 @@ import { TextInput, Button } from 'evergreen-ui';
 import { useLink } from 'controllers/links/useLink';
 import { createLinkMutation, updateLinkMutation } from 'mutations';
 import { useAuth } from 'controllers/auth/useAuth';
+import { Mutation, Query } from 'schema/types';
 
 import { FormWrapper } from './styles';
 
@@ -25,7 +25,7 @@ export const LinkForm = () => {
       editLink();
     },
   });
-  const [createLink] = useMutation(createLinkMutation, {
+  const [createLink] = useMutation<Mutation>(createLinkMutation, {
     onCompleted: () => {
       reset();
       editLink();
@@ -49,6 +49,18 @@ export const LinkForm = () => {
           variables: {
             hash: me?.role !== 'ADMIN' ? '' : data.hash,
             path: data.path,
+          },
+          update: (cache, { data: newLink }) => {
+            cache.modify({
+              fields: {
+                getLinks(existingLinks: Query['getLinks']) {
+                  return {
+                    ...existingLinks,
+                    items: [newLink, ...(existingLinks?.items ?? [])],
+                  };
+                },
+              },
+            });
           },
         });
       }
