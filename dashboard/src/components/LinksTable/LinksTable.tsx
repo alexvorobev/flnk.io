@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
 import { Table, Switch, Button, toaster, Dialog, Alert, Pane } from 'evergreen-ui';
-import { BsLink45Deg } from 'react-icons/bs';
+import { BsLink45Deg, BsPencil, BsTrash } from 'react-icons/bs';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { Link } from 'schema/types';
@@ -72,13 +72,13 @@ export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore }) => {
 
         <Table>
           <Table.Head>
-            <Table.SearchHeaderCell maxWidth={220} onChange={handleSearch} />
+            <Table.SearchHeaderCell placeholder='Search...' maxWidth={220} onChange={handleSearch} />
             <Table.TextHeaderCell>URL</Table.TextHeaderCell>
             {me?.role === 'ADMIN' && <Table.TextHeaderCell>User</Table.TextHeaderCell>}
             <Table.TextHeaderCell maxWidth={128}>Visits 24H</Table.TextHeaderCell>
             <Table.TextHeaderCell maxWidth={128}>Active</Table.TextHeaderCell>
             {me?.role === 'ADMIN' && <Table.TextHeaderCell maxWidth={128}>Blocked</Table.TextHeaderCell>}
-            <Table.TextHeaderCell maxWidth={180} />
+            <Table.TextHeaderCell maxWidth={96} />
           </Table.Head>
           <Table.Body>
             {links?.map((link) => (
@@ -121,12 +121,12 @@ export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore }) => {
                     />
                   </Table.TextCell>
                 )}
-                <Table.TextCell maxWidth={180}>
-                  <Button marginRight={16} onClick={() => editLink(link)}>
-                    Edit
+                <Table.TextCell maxWidth={96}>
+                  <Button padding={0} height={32} width={32} marginRight={8} onClick={() => editLink(link)}>
+                    <BsPencil />
                   </Button>
-                  <Button intent='danger' onClick={() => setLinkToDelete(link)}>
-                    Delete
+                  <Button padding={0} height={32} width={32} intent='danger' onClick={() => setLinkToDelete(link)}>
+                    <BsTrash />
                   </Button>
                 </Table.TextCell>
               </Table.Row>
