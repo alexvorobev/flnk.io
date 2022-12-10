@@ -8,7 +8,7 @@ import Auth from './auth';
 import Dashboard from './dashboard';
 import SignUp from './sign-up';
 import { UsersPage } from './users';
-import { LogsPage } from './logs';
+import { LogsPage } from './userlogs';
 
 function App() {
   return (
