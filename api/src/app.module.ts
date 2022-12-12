@@ -12,6 +12,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { UserLogsModule } from './user-logs/user-logs.module';
 import { UserLogsService } from './user-logs/user-logs.service';
+import { VisitsModule } from './visits/visits.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UserLogsService } from './user-logs/user-logs.service';
     UserModule,
     AuthModule,
     UserLogsModule,
+    VisitsModule,
   ],
   controllers: [],
   providers: [PrismaService, UserLogsService],

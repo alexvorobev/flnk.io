@@ -39,6 +39,7 @@ model Link {
   isActive  Boolean  @default(true)
   isBlocked Boolean  @default(false)
   user      User     @relation(fields: [createdBy], references: [id])
+  visits    Visit[]
 }
 
 model User {
@@ -63,4 +64,35 @@ model UserLog {
   user       Int
   createdAt  DateTime            @default(now())
   author     User                @relation(fields: [user], references: [id])
+}
+
+model Visit {
+  id          Int      @id @default(autoincrement())
+  link        Int
+  ip          String
+  country     String
+  region      String
+  city        String
+  visitor     Int
+  createdAt   DateTime @default(now())
+  linkData    Link     @relation(fields: [link], references: [id])
+  visitorData Visitor  @relation(fields: [visitor], references: [id])
+}
+
+model Visitor {
+  id             Int      @id @default(autoincrement())
+  uuid           String   @unique
+  ua             String
+  browser        String
+  browserVersion String
+  engine         String
+  engineVersion  String
+  os             String
+  osVersion      String
+  cpu            String
+  device         String
+  deviceType     String
+  deviceVendor   String
+  createdAt      DateTime @default(now())
+  visits         Visit[]
 }

@@ -28,6 +28,7 @@
     "@nestjs/core": "^8.0.0",
     "@nestjs/graphql": "^10.1.2",
     "@nestjs/jwt": "^9.0.0",
+    "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "@prisma/client": "^4.4.0",
@@ -36,13 +37,16 @@
     "cache-manager": "^4.0.0",
     "cache-manager-redis-store": "^2.0.0",
     "class-validator": "^0.13.2",
+    "geoip-lite": "^1.4.6",
     "graphql": "^16.6.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "prisma": "^4.4.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "ua-parser-js": "^1.0.32",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
