@@ -157,17 +157,27 @@ export class LinksService {
   }
 
   public async deleteLink(id: number, user: User): Promise<Link> {
-    const linkToDelete = await this.prisma.link.findFirst({
+    const visitsToDelete = this.prisma.visit.deleteMany({
+      where: {
+        link: Number(id),
+      },
+    });
+    const linkToDelete = this.prisma.link.findFirst({
       where: {
         id: Number(id),
       },
     });
 
-    if (!linkToDelete) {
+    const [, deletedLink] = await this.prisma.$transaction([
+      visitsToDelete,
+      linkToDelete,
+    ]);
+
+    if (!deletedLink) {
       throw new NotFoundException(`Link not found`);
     }
 
-    if (linkToDelete.createdBy !== user.id && user.role !== UserRoles.ADMIN) {
+    if (deletedLink.createdBy !== user.id && user.role !== UserRoles.ADMIN) {
       throw new NotFoundException(`You are not allowed to delete this link`);
     }
 
