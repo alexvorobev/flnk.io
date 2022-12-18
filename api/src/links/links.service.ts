@@ -73,7 +73,7 @@ export class LinksService {
         hash,
       },
     });
-    this.cacheManager.set(link.hash, link.path);
+    this.cacheManager.set(`link:${link.hash}`, link.path);
 
     return link;
   }

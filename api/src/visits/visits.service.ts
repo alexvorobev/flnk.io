@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateVisitDto } from './dto/create-visit.dto';
 import { uuid as uuidv4 } from 'uuidv4';
 import * as uaParser from 'ua-parser-js';
-import geoip from 'geoip-lite';
+import { lookup } from 'geoip-lite';
 
 @Injectable()
 export class VisitsService {
@@ -11,41 +11,47 @@ export class VisitsService {
   async create(createVisitDto: CreateVisitDto) {
     const uuid = createVisitDto.uuid || uuidv4();
     const { ip, ua, link } = createVisitDto;
-    const geo = geoip.lookup(ip);
+    const geo = lookup(ip);
     const parsedUA = uaParser(ua);
     const { browser, os, device, engine } = parsedUA;
 
-    const visitor = createVisitDto
+    const linkData = await this.prisma.link.findUnique({
+      where: {
+        hash: link,
+      },
+    });
+
+    const visitor = createVisitDto.uuid
       ? await this.prisma.visitor.findUnique({
           where: {
-            uuid: uuid,
+            uuid,
           },
         })
       : await this.prisma.visitor.create({
           data: {
             uuid,
             ua,
-            browser: browser.name,
-            browserVersion: browser.version,
-            engine: engine.engine,
-            engineVersion: engine.version,
-            os: os.name,
-            osVersion: os.version,
-            cpu: os.architecture,
-            device: device.type,
-            deviceType: device.type,
-            deviceVendor: device.vendor,
+            browser: browser.name ?? 'null',
+            browserVersion: browser.version ?? 'null',
+            engine: engine.engine ?? 'null',
+            engineVersion: engine.version ?? 'null',
+            os: os.name ?? 'null',
+            osVersion: os.version ?? 'null',
+            cpu: os.architecture ?? 'null',
+            device: device.type ?? 'null',
+            deviceType: device.type ?? 'null',
+            deviceVendor: device.vendor ?? 'null',
           },
         });
 
     await this.prisma.visit.create({
       data: {
-        link: +link,
-        visitor: +visitor.id,
+        link: linkData.id,
+        visitor: visitor.id,
         ip,
-        country: geo?.country,
-        region: geo?.region,
-        city: geo?.city,
+        country: geo?.country ?? 'null',
+        region: geo?.region ?? 'null',
+        city: geo?.city ?? 'null',
       },
     });
 

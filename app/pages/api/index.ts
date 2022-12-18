@@ -3,7 +3,13 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { get as getRedis } from '../../lib/redis';
 
 type Data = {
-  path: string | null
+  path: string | null;
+  uuid: string;
+}
+
+type JSONResponse = {
+  uuid?: string;
+  errors?: Array<{message: string}>
 }
 
 export default async function handler(
@@ -11,18 +17,55 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const body = req.body;
-  const { hash, headers, cookies } = JSON.parse(body);
+  const { hash, userAgent, cookies, address } = JSON.parse(body);
+  const { uuid } = cookies;
   const cached = await getRedis(hash);
+  let linkPath = '';
+  console.time('short');
+  console.time('long');
+  console.log({cached, hash})
 
   if (cached) {
-    res.status(200).json({ path: cached?.replaceAll('"', '') ?? null })
+    linkPath = cached?.replaceAll('"', '') ?? null;
   } else {
     await fetch(`http://localhost:4000/links/${hash}`, {
       method: 'GET',
     }).then(async (result) => {
-      // @ts-ignore
       const { path } = await result.json();
-      res.status(200).json({ path })
+      linkPath = path;
     });
   }
+
+  if(uuid) {
+    res.status(200).json({
+      path: linkPath,
+      uuid,
+    });
+
+    console.timeEnd('short');
+  }
+
+  fetch(`http://${process.env.API_URL}/visits`, {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            uuid,
+            ip: address,
+            ua: userAgent,
+            link: hash,
+        }),
+    }).then(async (result) => {
+      const { uuid: newUUID } = await result.json() as JSONResponse;
+
+      if(!uuid) {
+        res.status(200).json({
+          path: linkPath,
+          uuid: newUUID ?? '',
+        });
+        console.timeEnd('long');
+      }
+    }).catch(() => {});
 }
