@@ -21,9 +21,6 @@ export default async function handler(
   const { uuid } = cookies;
   const cached = await getRedis(hash);
   let linkPath = '';
-  console.time('short');
-  console.time('long');
-  console.log({cached, hash})
 
   if (cached) {
     linkPath = cached?.replaceAll('"', '') ?? null;
@@ -41,8 +38,6 @@ export default async function handler(
       path: linkPath,
       uuid,
     });
-
-    console.timeEnd('short');
   }
 
   fetch(`http://${process.env.API_URL}/visits`, {
@@ -65,7 +60,6 @@ export default async function handler(
           path: linkPath,
           uuid: newUUID ?? '',
         });
-        console.timeEnd('long');
       }
     }).catch(() => {});
 }
