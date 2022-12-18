@@ -58,6 +58,13 @@ export class LinksService {
       },
       include: {
         user: user.role === UserRoles.ADMIN,
+        visits: {
+          where: {
+            createdAt: {
+              gte: new Date(new Date().setDate(new Date().getDate() - 2)),
+            },
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',

@@ -47,6 +47,18 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+"""The main data about the visit"""
+type Visit {
+  id: Float
+  link: Float
+  ip: String
+  country: String
+  region: String
+  city: String
+  visitor: Float
+  createdAt: String
+}
+
 """The main data about the links"""
 type Link {
   id: ID
@@ -67,6 +79,9 @@ type Link {
 
   """The link is blocked or not"""
   isBlocked: Boolean
+
+  """Whole amount of visits"""
+  visits: [Visit!]
 }
 
 """Counted list of the links"""

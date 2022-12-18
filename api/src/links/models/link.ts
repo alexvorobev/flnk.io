@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { User } from 'src/user/models/user';
+import { Visit } from 'src/visits/entities/visit.entity';
 
 @ObjectType({ description: 'The main data about the links' })
 export class Link {
@@ -34,4 +35,10 @@ export class Link {
     nullable: true,
   })
   isBlocked?: boolean;
+
+  @Field(() => [Visit], {
+    description: 'Whole amount of visits',
+    nullable: true,
+  })
+  visits?: Visit[];
 }
