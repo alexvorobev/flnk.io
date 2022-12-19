@@ -47,6 +47,15 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+"""Link visits stat"""
+type VisitsSummary {
+  """The link visits during the last 24 hours"""
+  current: Float
+
+  """The link visits change in percentage"""
+  change: Float
+}
+
 """Counted visits list of the links"""
 type CountedVisitsLink {
   id: ID
@@ -69,7 +78,7 @@ type CountedVisitsLink {
   isBlocked: Boolean
 
   """The link visits"""
-  visits: Float
+  visits: VisitsSummary
 }
 
 """Counted list of the links"""

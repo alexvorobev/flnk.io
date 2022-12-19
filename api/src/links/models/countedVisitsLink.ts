@@ -2,6 +2,21 @@ import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { User } from 'src/user/models/user';
 import { Link } from './link';
 
+@ObjectType({ description: 'Link visits stat' })
+export class VisitsSummary {
+  @Field(() => Number, {
+    description: 'The link visits during the last 24 hours',
+    nullable: true,
+  })
+  current: number;
+
+  @Field(() => Number, {
+    description: 'The link visits change in percentage',
+    nullable: true,
+  })
+  change: number;
+}
+
 @ObjectType({ description: 'Counted visits list of the links' })
 export class CountedVisitsLink implements Omit<Link, 'visits'> {
   @Field(() => ID, { nullable: true })
@@ -36,9 +51,9 @@ export class CountedVisitsLink implements Omit<Link, 'visits'> {
   })
   isBlocked?: boolean;
 
-  @Field(() => Number, {
+  @Field(() => VisitsSummary, {
     description: 'The link visits',
     nullable: true,
   })
-  visits: number;
+  visits: VisitsSummary;
 }
