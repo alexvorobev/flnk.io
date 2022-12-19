@@ -44,6 +44,7 @@ const Dashboard = () => {
         <LinksTable
           links={links ?? []}
           onSearch={handleSearch}
+          onRefetch={() => refetch({})}
           onFetchMore={total > links.length ? handleFetchMore : undefined}
         />
       </MainLayout>

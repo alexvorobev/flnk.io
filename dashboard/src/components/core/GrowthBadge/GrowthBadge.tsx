@@ -1,4 +1,4 @@
-import { Badge } from 'evergreen-ui';
+import { Pill } from 'evergreen-ui';
 import { FC, memo } from 'react';
 
 interface Props {
@@ -12,9 +12,9 @@ export const GrowthBadge: FC<Props> = memo(({ value = 0 }) => {
   const negativeColor = isNegative ? 'red' : null;
 
   return (
-    <Badge color={positiveColor || negativeColor || 'neutral'} borderRadius={16}>
+    <Pill color={positiveColor || negativeColor || 'neutral'}>
       {isPositive && '+'}
       {value}%
-    </Badge>
+    </Pill>
   );
 });

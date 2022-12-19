@@ -1,6 +1,7 @@
-import React, { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { Table, Switch, Button, toaster, Dialog, Alert, Pane } from 'evergreen-ui';
-import { BsLink45Deg, BsPencil, BsTrash } from 'react-icons/bs';
+import { BsPencil, BsTrash } from 'react-icons/bs';
+import { RxUpdate, RxLink2 } from 'react-icons/rx';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { CountedVisitsLink } from 'schema/types';
@@ -13,8 +14,9 @@ import GrowthCell from './GrowthCell';
 
 interface Props {
   links?: CountedVisitsLink[];
-  onFetchMore?: () => void;
   onSearch?: (search: string) => void;
+  onFetchMore?: () => void;
+  onRefetch?: () => void;
 }
 
 const copyToClipboard = (link: string) => {
@@ -32,7 +34,7 @@ const copyToClipboard = (link: string) => {
 
 const threshold = 500;
 
-export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore }) => {
+export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore, onRefetch }) => {
   const { editLink, deleteLink, blockLink, unblockLink, activateLink, inactivateLink } = useLink();
   const { me } = useAuth();
   const [linkToDelete, setLinkToDelete] = useState<CountedVisitsLink>();
@@ -80,7 +82,11 @@ export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore }) => {
             <Table.TextHeaderCell maxWidth={128}>Visits 24H</Table.TextHeaderCell>
             <Table.TextHeaderCell maxWidth={128}>Active</Table.TextHeaderCell>
             {me?.role === 'ADMIN' && <Table.TextHeaderCell maxWidth={128}>Blocked</Table.TextHeaderCell>}
-            <Table.TextHeaderCell maxWidth={96} />
+            <Table.TextHeaderCell textAlign='right' maxWidth={96}>
+              <Button appearance='minimal' padding={0} height={32} width={32} onClick={onRefetch}>
+                <RxUpdate />
+              </Button>
+            </Table.TextHeaderCell>
           </Table.Head>
           <Table.Body>
             {links?.map((link) => (
@@ -96,7 +102,7 @@ export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore }) => {
                       paddingX={0}
                       onClick={() => copyToClipboard(link.hash)}
                     >
-                      <BsLink45Deg />
+                      <RxLink2 />
                     </Button>
                   </Pane>
                 </Table.TextCell>
