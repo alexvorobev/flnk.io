@@ -47,6 +47,37 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+"""Counted visits list of the links"""
+type CountedVisitsLink {
+  id: ID
+
+  """
+  The id of the link is a random or custom string that should define short id
+  """
+  hash: String!
+
+  """The path of the link is the url of the link"""
+  path: String!
+
+  """Link creator data"""
+  user: User
+
+  """The link is active or not"""
+  isActive: Boolean
+
+  """The link is blocked or not"""
+  isBlocked: Boolean
+
+  """The link visits"""
+  visits: Float
+}
+
+"""Counted list of the links"""
+type CountedLinks {
+  total: Float
+  items: [CountedVisitsLink!]
+}
+
 """The main data about the visit"""
 type Visit {
   id: Float
@@ -82,12 +113,6 @@ type Link {
 
   """Whole amount of visits"""
   visits: [Visit!]
-}
-
-"""Counted list of the links"""
-type CountedLinks {
-  total: Float
-  items: [Link!]
 }
 
 """User access response"""

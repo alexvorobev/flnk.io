@@ -12,11 +12,12 @@ export class CountedList {
   total?: number;
 }
 
-export async function getCountedList<T>(
+export async function getCountedList<T, S = T>(
   prisma: PrismaService,
   entity: string,
   query,
-): Promise<CountedListType<T>> {
+  mutation?: (item: T) => S,
+): Promise<CountedListType<S>> {
   const results = await prisma.$transaction([
     prisma[entity].findMany({
       ...query,
@@ -26,6 +27,13 @@ export async function getCountedList<T>(
     }),
     prisma[entity].findMany(query),
   ]);
+
+  if (mutation) {
+    return {
+      total: results[0].length,
+      items: mutation(results[1]),
+    };
+  }
 
   return {
     total: results[0].length,

@@ -17,6 +17,8 @@ import {
 import { UpdateLinkInput } from './dto/updateLink.input';
 import { Link } from './models/link';
 import { CountedListType, getCountedList } from 'src/utils/getCountedList';
+import { CountedVisitsLink } from './models/countedVisitsLink';
+import getCountedVisits from './utils/getCountedVisits';
 
 function makeid(length) {
   let result = '';
@@ -41,7 +43,7 @@ export class LinksService {
     user: User,
     search?: string,
     cursor?: string,
-  ): Promise<CountedListType<Link[]>> {
+  ): Promise<CountedListType<CountedVisitsLink[]>> {
     const query = {
       cursor: cursor
         ? {
@@ -71,7 +73,12 @@ export class LinksService {
       },
     };
 
-    return getCountedList(this.prisma, 'link', query);
+    return getCountedList<Link[], CountedVisitsLink[]>(
+      this.prisma,
+      'link',
+      query,
+      getCountedVisits,
+    );
   }
 
   public async getLinkByHash(hash: string): Promise<Link> {

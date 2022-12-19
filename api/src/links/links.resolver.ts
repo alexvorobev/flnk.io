@@ -8,6 +8,7 @@ import { CountedListType } from 'src/utils/getCountedList';
 import { UpdateLinkInput } from './dto/updateLink.input';
 import { LinksService } from './links.service';
 import { CountedLinks } from './models/countedLinks';
+import { CountedVisitsLink } from './models/countedVisitsLink';
 import { Link } from './models/link';
 
 @Resolver(() => Link)
@@ -22,7 +23,7 @@ export class LinksResolver {
     @Args('search', { nullable: true }) search?: string,
     @Args('cursor', { nullable: true })
     cursor?: string,
-  ): Promise<CountedListType<Link[]>> {
+  ): Promise<CountedListType<CountedVisitsLink[]>> {
     return this.linksService.getLinks(user, search, cursor);
   }
 
