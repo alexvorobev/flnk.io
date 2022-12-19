@@ -3,14 +3,16 @@ import { Table, Switch, Button, toaster, Dialog, Alert, Pane } from 'evergreen-u
 import { BsLink45Deg, BsPencil, BsTrash } from 'react-icons/bs';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-import { Link } from 'schema/types';
+import { CountedVisitsLink } from 'schema/types';
 import { useLink } from 'controllers/links/useLink';
 import { useAuth } from 'controllers/auth/useAuth';
 import { UserInfo } from 'components/core';
 import { useThreshold } from 'hooks';
 
+import GrowthCell from './GrowthCell';
+
 interface Props {
-  links?: Link[];
+  links?: CountedVisitsLink[];
   onFetchMore?: () => void;
   onSearch?: (search: string) => void;
 }
@@ -33,7 +35,7 @@ const threshold = 500;
 export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore }) => {
   const { editLink, deleteLink, blockLink, unblockLink, activateLink, inactivateLink } = useLink();
   const { me } = useAuth();
-  const [linkToDelete, setLinkToDelete] = useState<Link>();
+  const [linkToDelete, setLinkToDelete] = useState<CountedVisitsLink>();
   const handleSearch = useThreshold<string>(onSearch, threshold);
 
   const handleConfirmedDelete = useCallback(async () => {
@@ -106,7 +108,9 @@ export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore }) => {
                     </div>
                   </Table.TextCell>
                 )}
-                <Table.TextCell maxWidth={128}>0</Table.TextCell>
+                <Table.TextCell maxWidth={128}>
+                  <GrowthCell value={link?.visits?.current ?? 0} change={link?.visits?.change ?? 0} />
+                </Table.TextCell>
                 <Table.TextCell maxWidth={128}>
                   <Switch
                     checked={link.isActive ?? false}

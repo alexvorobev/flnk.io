@@ -6,11 +6,11 @@ import { MainLayout } from 'components/layouts';
 import { LinksTable } from 'components/LinksTable';
 import { LinksProvider } from 'controllers/links/useLink';
 import { getLinksQuery } from 'queries';
-import { Link, Query } from 'schema/types';
+import { CountedVisitsLink, Query } from 'schema/types';
 
 const Dashboard = () => {
   const { data, refetch, fetchMore } = useQuery<Query>(getLinksQuery);
-  const links = useMemo((): Link[] => data?.getLinks?.items ?? [], [data]);
+  const links = useMemo((): CountedVisitsLink[] => data?.getLinks?.items ?? [], [data]);
   const total = useMemo((): number => data?.getLinks?.total ?? 0, [data]);
 
   const handleSearch = useCallback(

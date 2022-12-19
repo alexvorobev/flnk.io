@@ -49,6 +49,53 @@ export type UserLog = {
   createdAt: Scalars['DateTime'];
 };
 
+/** Link visits stat */
+export type VisitsSummary = {
+  __typename?: 'VisitsSummary';
+  /** The link visits during the last 24 hours */
+  current?: Maybe<Scalars['Float']>;
+  /** The link visits change in percentage */
+  change?: Maybe<Scalars['Float']>;
+};
+
+/** Counted visits list of the links */
+export type CountedVisitsLink = {
+  __typename?: 'CountedVisitsLink';
+  id?: Maybe<Scalars['ID']>;
+  /** The id of the link is a random or custom string that should define short id */
+  hash: Scalars['String'];
+  /** The path of the link is the url of the link */
+  path: Scalars['String'];
+  /** Link creator data */
+  user?: Maybe<User>;
+  /** The link is active or not */
+  isActive?: Maybe<Scalars['Boolean']>;
+  /** The link is blocked or not */
+  isBlocked?: Maybe<Scalars['Boolean']>;
+  /** The link visits */
+  visits?: Maybe<VisitsSummary>;
+};
+
+/** Counted list of the links */
+export type CountedLinks = {
+  __typename?: 'CountedLinks';
+  total?: Maybe<Scalars['Float']>;
+  items?: Maybe<Array<CountedVisitsLink>>;
+};
+
+/** The main data about the visit */
+export type Visit = {
+  __typename?: 'Visit';
+  id?: Maybe<Scalars['Float']>;
+  link?: Maybe<Scalars['Float']>;
+  ip?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  region?: Maybe<Scalars['String']>;
+  city?: Maybe<Scalars['String']>;
+  visitor?: Maybe<Scalars['Float']>;
+  createdAt?: Maybe<Scalars['String']>;
+};
+
 /** The main data about the links */
 export type Link = {
   __typename?: 'Link';
@@ -63,13 +110,8 @@ export type Link = {
   isActive?: Maybe<Scalars['Boolean']>;
   /** The link is blocked or not */
   isBlocked?: Maybe<Scalars['Boolean']>;
-};
-
-/** Counted list of the links */
-export type CountedLinks = {
-  __typename?: 'CountedLinks';
-  total?: Maybe<Scalars['Float']>;
-  items?: Maybe<Array<Link>>;
+  /** Whole amount of visits */
+  visits?: Maybe<Array<Visit>>;
 };
 
 /** User access response */

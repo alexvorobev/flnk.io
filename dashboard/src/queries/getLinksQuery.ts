@@ -15,6 +15,10 @@ export const getLinksQuery = gql`
           surname
           email
         }
+        visits {
+          current
+          change
+        }
       }
     }
   }

@@ -3,15 +3,15 @@ import { createContext, FC, useCallback, useContext, useState } from 'react';
 
 import { deleteLinkMutation, updateLinkMutation } from 'mutations';
 import { getLinksQuery } from 'queries';
-import { Link, Query } from 'schema/types';
+import { CountedVisitsLink, Query } from 'schema/types';
 
 interface LinksContextType {
-  currentLink?: Link;
-  editLink: (link?: Link) => void;
-  blockLink: (link?: Link) => void;
-  unblockLink: (link?: Link) => void;
-  activateLink: (link?: Link) => void;
-  inactivateLink: (link?: Link) => void;
+  currentLink?: CountedVisitsLink;
+  editLink: (link?: CountedVisitsLink) => void;
+  blockLink: (link?: CountedVisitsLink) => void;
+  unblockLink: (link?: CountedVisitsLink) => void;
+  activateLink: (link?: CountedVisitsLink) => void;
+  inactivateLink: (link?: CountedVisitsLink) => void;
   deleteLink?: (id: number) => Promise<FetchResult>;
 }
 
@@ -32,11 +32,11 @@ interface ProviderProps {
 }
 
 export const LinksProvider: FC<ProviderProps> = ({ children }) => {
-  const [currentLink, setCurrentLink] = useState<Link>();
+  const [currentLink, setCurrentLink] = useState<CountedVisitsLink>();
   const [requestDeleteLink] = useMutation(deleteLinkMutation);
   const [updateLink] = useMutation(updateLinkMutation);
 
-  const editLink = useCallback((link?: Link) => {
+  const editLink = useCallback((link?: CountedVisitsLink) => {
     setCurrentLink(link);
   }, []);
 
@@ -51,7 +51,7 @@ export const LinksProvider: FC<ProviderProps> = ({ children }) => {
           cache.writeQuery({
             query: getLinksQuery,
             data: {
-              getLinks: links?.getLinks?.items?.filter((link: Link) => link.id !== data?.deleteLink.id),
+              getLinks: links?.getLinks?.items?.filter((link: CountedVisitsLink) => link.id !== data?.deleteLink.id),
             },
           });
         },
@@ -60,7 +60,7 @@ export const LinksProvider: FC<ProviderProps> = ({ children }) => {
   );
 
   const updateLinkBlockedState = useCallback(
-    ({ isBlocked, isActive }: { isBlocked?: boolean; isActive?: boolean }, link?: Link) => {
+    ({ isBlocked, isActive }: { isBlocked?: boolean; isActive?: boolean }, link?: CountedVisitsLink) => {
       if (link) {
         updateLink({
           variables: {
@@ -77,22 +77,22 @@ export const LinksProvider: FC<ProviderProps> = ({ children }) => {
   );
 
   const blockLink = useCallback(
-    (link?: Link) => !!link && updateLinkBlockedState({ isBlocked: true }, link),
+    (link?: CountedVisitsLink) => !!link && updateLinkBlockedState({ isBlocked: true }, link),
     [updateLinkBlockedState],
   );
 
   const unblockLink = useCallback(
-    (link?: Link) => !!link && updateLinkBlockedState({ isBlocked: false }, link),
+    (link?: CountedVisitsLink) => !!link && updateLinkBlockedState({ isBlocked: false }, link),
     [updateLinkBlockedState],
   );
 
   const activateLink = useCallback(
-    (link?: Link) => !!link && updateLinkBlockedState({ isActive: true }, link),
+    (link?: CountedVisitsLink) => !!link && updateLinkBlockedState({ isActive: true }, link),
     [updateLinkBlockedState],
   );
 
   const inactivateLink = useCallback(
-    (link?: Link) => !!link && updateLinkBlockedState({ isActive: false }, link),
+    (link?: CountedVisitsLink) => !!link && updateLinkBlockedState({ isActive: false }, link),
     [updateLinkBlockedState],
   );
 
