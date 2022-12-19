@@ -19,17 +19,7 @@ import { Link } from './models/link';
 import { CountedListType, getCountedList } from 'src/utils/getCountedList';
 import { CountedVisitsLink } from './models/countedVisitsLink';
 import getCountedVisits from './utils/getCountedVisits';
-
-function makeid(length) {
-  let result = '';
-  const characters =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
+import makeid from 'src/utils/makeId';
 
 @Injectable()
 export class LinksService {
