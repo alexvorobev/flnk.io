@@ -14,8 +14,9 @@ const getCountedVisits = (items: Link[]): CountedVisitsLink[] => {
       ...item,
       visits: {
         current: recentVisits ?? 0,
-        change:
-          Math.ceil(((recentVisits - prevVisits) / prevVisits) * 100) || 0,
+        change: prevVisits
+          ? Math.ceil(((recentVisits - prevVisits) / prevVisits) * 100)
+          : recentVisits * 100,
       },
     };
   });
