@@ -39,6 +39,7 @@ export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore, onRefetch 
   const { me } = useAuth();
   const [linkToDelete, setLinkToDelete] = useState<CountedVisitsLink>();
   const handleSearch = useThreshold<string>(onSearch, threshold);
+  const isCopyAvailable = !!navigator.clipboard && !!navigator.clipboard.writeText;
 
   const handleConfirmedDelete = useCallback(async () => {
     if (linkToDelete) {
@@ -94,16 +95,18 @@ export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore, onRefetch 
                 <Table.TextCell maxWidth={220}>
                   <Pane display='flex' alignItems='center'>
                     <Pane width='100%'>{link.hash}</Pane>
-                    <Button
-                      marginLeft={16}
-                      width={24}
-                      height={24}
-                      minWidth={24}
-                      paddingX={0}
-                      onClick={() => copyToClipboard(link.hash)}
-                    >
-                      <RxLink2 />
-                    </Button>
+                    {isCopyAvailable && (
+                      <Button
+                        marginLeft={16}
+                        width={24}
+                        height={24}
+                        minWidth={24}
+                        paddingX={0}
+                        onClick={() => copyToClipboard(link.hash)}
+                      >
+                        <RxLink2 />
+                      </Button>
+                    )}
                   </Pane>
                 </Table.TextCell>
                 <Table.TextCell>{link.path}</Table.TextCell>
