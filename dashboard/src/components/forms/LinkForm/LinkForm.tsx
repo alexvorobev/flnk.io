@@ -1,12 +1,13 @@
 import { useForm } from 'react-hook-form';
 import { useCallback, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
-import { TextInput, Button } from 'evergreen-ui';
+import { TextInput, Button, toaster } from 'evergreen-ui';
 
 import { useLink } from 'controllers/links/useLink';
 import { createLinkMutation, updateLinkMutation } from 'mutations';
 import { useAuth } from 'controllers/auth/useAuth';
 import { Mutation, Query } from 'schema/types';
+import { getLinksQuery } from 'queries';
 
 import { FormWrapper } from './styles';
 
@@ -19,13 +20,13 @@ export const LinkForm = () => {
   const { register, handleSubmit, reset, setValue } = useForm<FormFields>();
   const { me } = useAuth();
   const { currentLink, editLink } = useLink();
-  const [updateLink] = useMutation(updateLinkMutation, {
+  const [updateLink, { loading: isUpdating }] = useMutation(updateLinkMutation, {
     onCompleted: () => {
       reset();
       editLink();
     },
   });
-  const [createLink] = useMutation<Mutation>(createLinkMutation, {
+  const [createLink, { loading: isCreating }] = useMutation<Mutation>(createLinkMutation, {
     onCompleted: () => {
       reset();
       editLink();
@@ -51,13 +52,36 @@ export const LinkForm = () => {
             path: data.path,
           },
           update: (cache, { data: newLink }) => {
-            cache.modify({
-              fields: {
-                getLinks(existingLinks: Query['getLinks']) {
-                  return {
-                    ...existingLinks,
-                    items: [newLink, ...(existingLinks?.items ?? [])],
-                  };
+            toaster.success('Success!', {
+              description: `Your link has been successfully created with hash: ${newLink?.createLink?.hash}`,
+            });
+
+            const cachedLinks = cache.readQuery<Query>({
+              query: getLinksQuery,
+            });
+
+            const total = (cachedLinks?.getLinks?.total ?? 0) + 1;
+
+            cache.writeQuery({
+              query: getLinksQuery,
+              data: { 
+                getLinks: {
+                  total,
+                  items: [{
+                    __typename: 'Link',
+                    ...newLink?.createLink,
+                    isActive: true,
+                    isBlocked: false,
+                    visits: {
+                      __typename: 'Visits',
+                      current: 0,
+                      change: 0,
+                    },
+                    user: {
+                      __typename: 'User',
+                      ...me,
+                    }
+                  }, ...(cachedLinks?.getLinks?.items ?? [])],
                 },
               },
             });
@@ -65,7 +89,7 @@ export const LinkForm = () => {
         });
       }
     },
-    [createLink, currentLink, me?.role, updateLink],
+    [createLink, currentLink, me, updateLink],
   );
 
   useEffect(() => {
@@ -85,10 +109,17 @@ export const LinkForm = () => {
         width='100%'
         height={40}
         {...register('hash')}
-        disabled={me?.role !== 'ADMIN'}
+        disabled={me?.role !== 'ADMIN' || isCreating || isUpdating}
       />
-      <TextInput placeholder='Link to be shortened' width='100%' height={40} type='url' {...register('path')} />
-      <Button width='100%' height={40} appearance='primary'>
+      <TextInput
+        placeholder='Link to be shortened'
+        width='100%'
+        height={40}
+        type='url'
+        {...register('path')}
+        disabled={isCreating || isUpdating}
+      />
+      <Button width='100%' height={40} appearance='primary' isLoading={isCreating || isUpdating}>
         Save
       </Button>
     </FormWrapper>

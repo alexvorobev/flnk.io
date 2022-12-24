@@ -18,21 +18,23 @@ const SignUp = () => {
         variables: {
           ...formData,
         },
-      }).then(({ data }) => {
-        const { signUp: signUpData } = data ?? {};
+      })
+        .then(({ data }) => {
+          const { signUp: signUpData } = data ?? {};
 
-        if(signUpData?.token) {
-          toaster.success('Success!', {
-            description: 'You have been successfully signed up!',
+          if (signUpData?.token) {
+            toaster.success('Success!', {
+              description: 'You have been successfully signed up!',
+            });
+
+            handleLogin(signUpData.token);
+          }
+        })
+        .catch((error) => {
+          toaster.danger('Failed!', {
+            description: `Failed: ${error.message}`,
           });
-
-          handleLogin(signUpData.token);
-        }
-      }).catch((error) => {
-        toaster.danger('Failed!', {
-          description: `Failed: ${error.message}`,
         });
-      });
     },
     [handleLogin, signUp],
   );
