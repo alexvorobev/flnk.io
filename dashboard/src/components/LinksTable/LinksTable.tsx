@@ -35,7 +35,7 @@ const copyToClipboard = (link: string) => {
 const threshold = 500;
 
 export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore, onRefetch }) => {
-  const { editLink, deleteLink, blockLink, unblockLink, activateLink, inactivateLink } = useLink();
+  const { isDeleting, editLink, deleteLink, blockLink, unblockLink, activateLink, inactivateLink } = useLink();
   const { me } = useAuth();
   const [linkToDelete, setLinkToDelete] = useState<CountedVisitsLink>();
   const handleSearch = useThreshold<string>(onSearch, threshold);
@@ -67,6 +67,7 @@ export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore, onRefetch 
           onCancel={() => setLinkToDelete(undefined)}
           onCloseComplete={() => setLinkToDelete(undefined)}
           confirmLabel='Delete'
+          isConfirmLoading={isDeleting}
         >
           {linkToDelete && (
             <Alert intent='danger' title={`${process.env.REACT_APP_URL}/${linkToDelete?.hash}`} hasIcon={false}>

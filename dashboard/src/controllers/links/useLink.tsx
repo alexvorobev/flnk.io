@@ -7,6 +7,7 @@ import { CountedVisitsLink, Query } from 'schema/types';
 
 interface LinksContextType {
   currentLink?: CountedVisitsLink;
+  isDeleting?: boolean;
   editLink: (link?: CountedVisitsLink) => void;
   blockLink: (link?: CountedVisitsLink) => void;
   unblockLink: (link?: CountedVisitsLink) => void;
@@ -19,6 +20,7 @@ const noop = () => {};
 
 const LinksContext = createContext<LinksContextType>({
   currentLink: undefined,
+  isDeleting: false,
   editLink: noop,
   blockLink: noop,
   unblockLink: noop,
@@ -33,7 +35,7 @@ interface ProviderProps {
 
 export const LinksProvider: FC<ProviderProps> = ({ children }) => {
   const [currentLink, setCurrentLink] = useState<CountedVisitsLink>();
-  const [requestDeleteLink] = useMutation(deleteLinkMutation);
+  const [requestDeleteLink, { loading: isDeleting }] = useMutation(deleteLinkMutation);
   const [updateLink] = useMutation(updateLinkMutation);
 
   const editLink = useCallback((link?: CountedVisitsLink) => {
@@ -51,7 +53,10 @@ export const LinksProvider: FC<ProviderProps> = ({ children }) => {
           cache.writeQuery({
             query: getLinksQuery,
             data: {
-              getLinks: links?.getLinks?.items?.filter((link: CountedVisitsLink) => link.id !== data?.deleteLink.id),
+              getLinks: {
+                total: (links?.getLinks?.total ?? 0) - 1,
+                items: links?.getLinks?.items?.filter((link: CountedVisitsLink) => link.id !== data?.deleteLink.id)
+              },
             },
           });
         },
@@ -98,7 +103,7 @@ export const LinksProvider: FC<ProviderProps> = ({ children }) => {
 
   return (
     <LinksContext.Provider
-      value={{ currentLink, editLink, deleteLink, blockLink, unblockLink, activateLink, inactivateLink }}
+      value={{ currentLink, isDeleting, editLink, deleteLink, blockLink, unblockLink, activateLink, inactivateLink }}
     >
       {children}
     </LinksContext.Provider>
