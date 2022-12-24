@@ -13,10 +13,11 @@ export interface AuthFormFields {
 }
 
 interface Props {
+  isLoading: boolean;
   onSubmit: (data: AuthFormFields) => void;
 }
 
-export const AuthForm: FC<Props> = ({ onSubmit }) => {
+export const AuthForm: FC<Props> = ({ isLoading, onSubmit }) => {
   const { register, handleSubmit } = useForm<AuthFormFields>();
   const navigate = useNavigate();
 
@@ -26,10 +27,10 @@ export const AuthForm: FC<Props> = ({ onSubmit }) => {
         <TextInput height={40} placeholder='email' {...register('email')} />
         <TextInput height={40} placeholder='password' type='password' {...register('password')} />
         <FormButtons>
-          <Button height={40} onClick={() => navigate(ROUTES.SIGN_UP)}>
+          <Button height={40} type='button' onClick={() => navigate(ROUTES.SIGN_UP)}>
             Sign Up
           </Button>
-          <Button height={40} type='submit' appearance='primary'>
+          <Button height={40} type='submit' appearance='primary' isLoading={isLoading}>
             Login
           </Button>
         </FormButtons>

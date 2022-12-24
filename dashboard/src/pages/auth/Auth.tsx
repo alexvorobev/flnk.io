@@ -13,7 +13,7 @@ interface ResponseData {
 }
 
 const Auth = () => {
-  const [getToken] = useLazyQuery(authQuery);
+  const [getToken, { loading }] = useLazyQuery(authQuery);
   const { handleLogin, handleLogout } = useAuth();
 
   const onSubmit = useCallback(
@@ -38,7 +38,7 @@ const Auth = () => {
   return (
     <AuthLayout>
       <h3 style={{ textAlign: 'center' }}>Auth</h3>
-      <AuthForm onSubmit={onSubmit} />
+      <AuthForm isLoading={loading} onSubmit={onSubmit} />
     </AuthLayout>
   );
 };

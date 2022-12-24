@@ -15,10 +15,11 @@ export interface SignUpFormFields {
 }
 
 interface Props {
+  isLoading: boolean;
   onSubmit: (data: SignUpFormFields) => void;
 }
 
-export const SignUpForm: FC<Props> = ({ onSubmit }) => {
+export const SignUpForm: FC<Props> = ({ isLoading, onSubmit }) => {
   const { register, handleSubmit } = useForm<SignUpFormFields>();
   const navigate = useNavigate();
 
@@ -30,10 +31,10 @@ export const SignUpForm: FC<Props> = ({ onSubmit }) => {
         <TextInput height={40} placeholder='email' {...register('email')} />
         <TextInput height={40} placeholder='password' type='password' {...register('password')} />
         <FormButtons>
-          <Button height={40} onClick={() => navigate(ROUTES.AUTH)}>
+          <Button type='button' height={40} onClick={() => navigate(ROUTES.AUTH)}>
             Login
           </Button>
-          <Button height={40} appearance='primary' type='submit'>
+          <Button height={40} appearance='primary' type='submit' isLoading={isLoading}>
             Sign up
           </Button>
         </FormButtons>
