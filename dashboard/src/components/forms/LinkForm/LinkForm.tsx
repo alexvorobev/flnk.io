@@ -20,7 +20,7 @@ export const LinkForm = () => {
   const { register, handleSubmit, reset, setValue } = useForm<FormFields>();
   const { me } = useAuth();
   const { currentLink, editLink } = useLink();
-  const [updateLink, { loading: isUpdating }] = useMutation(updateLinkMutation, {
+  const [updateLink, { loading: isUpdating }] = useMutation<Mutation>(updateLinkMutation, {
     onCompleted: () => {
       reset();
       editLink();
@@ -43,6 +43,35 @@ export const LinkForm = () => {
               hash: data.hash,
               path: data.path,
             },
+          },
+          update: (cache, { data: updatedLink }) => {
+            toaster.success('Success!', {
+              description: `Your link has been successfully updated with hash: ${updatedLink?.updateLink?.hash}`,
+            });
+
+            const cachedLinks = cache.readQuery<Query>({
+              query: getLinksQuery,
+            });
+
+            cache.writeQuery({
+              query: getLinksQuery,
+              data: { 
+                getLinks: {
+                  total: cachedLinks?.getLinks?.total ?? 0,
+                  items: cachedLinks?.getLinks?.items?.map((link) => {
+                    if (link.id === updatedLink?.updateLink?.id) {
+                      return {
+                        ...link,
+                        ...updatedLink?.updateLink,
+                        __typename: "CountedLinks",
+                      };
+                    }
+
+                    return link;
+                  }) ?? [],
+                },
+              },
+            });
           },
         });
       } else {
