@@ -45,8 +45,8 @@ export const LinkForm = () => {
             },
           },
           update: (cache, { data: updatedLink }) => {
-            toaster.success('Success!', {
-              description: `Your link has been successfully updated with hash: ${updatedLink?.updateLink?.hash}`,
+            toaster.success('Like a new!', {
+              description: 'Your link has been successfully updated',
             });
 
             const cachedLinks = cache.readQuery<Query>({
@@ -133,6 +133,9 @@ export const LinkForm = () => {
 
   return (
     <FormWrapper onSubmit={handleSubmit(onSubmitCallback)}>
+      <p style={{fontSize: 14, fontWeight: 'bold'}}>
+        flnk.io/
+      </p>
       <TextInput
         placeholder={me?.role === 'ADMIN' ? 'Your custom link hash' : 'Link hash'}
         width='100%'
