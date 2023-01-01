@@ -9,11 +9,13 @@ import { useLink } from 'controllers/links/useLink';
 import { useAuth } from 'controllers/auth/useAuth';
 import { UserInfo } from 'components/core';
 import { useThreshold } from 'hooks';
+import { TableLoader } from 'components/TableLoader';
 
 import GrowthCell from './GrowthCell';
 
 interface Props {
   links?: CountedVisitsLink[];
+  isLoading?: boolean;
   onSearch?: (search: string) => void;
   onFetchMore?: () => void;
   onRefetch?: () => void;
@@ -34,7 +36,7 @@ const copyToClipboard = (link: string) => {
 
 const threshold = 500;
 
-export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore, onRefetch }) => {
+export const LinksTable: FC<Props> = ({ links, isLoading, onSearch, onFetchMore, onRefetch }) => {
   const { isDeleting, editLink, deleteLink, blockLink, unblockLink, activateLink, inactivateLink } = useLink();
   const { me } = useAuth();
   const [linkToDelete, setLinkToDelete] = useState<CountedVisitsLink>();
@@ -147,6 +149,7 @@ export const LinksTable: FC<Props> = ({ links, onSearch, onFetchMore, onRefetch 
             ))}
           </Table.Body>
         </Table>
+        {isLoading && <TableLoader />}
       </div>
     </InfiniteScroll>
   );

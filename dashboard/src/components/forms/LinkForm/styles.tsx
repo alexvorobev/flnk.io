@@ -14,7 +14,7 @@ export const FormWrapper = styled.form`
   @media (max-width: 1200px) {
     grid-template-columns: auto 1fr;
 
-    & > *:nth-child(n+3) {
+    & > *:nth-child(n + 3) {
       grid-column: 1 / -1;
     }
   }

@@ -9,7 +9,7 @@ import { getLinksQuery } from 'queries';
 import { CountedVisitsLink, Query } from 'schema/types';
 
 const Dashboard = () => {
-  const { data, refetch, fetchMore } = useQuery<Query>(getLinksQuery);
+  const { data, loading, refetch, fetchMore } = useQuery<Query>(getLinksQuery);
   const links = useMemo((): CountedVisitsLink[] => data?.getLinks?.items ?? [], [data]);
   const total = useMemo((): number => data?.getLinks?.total ?? 0, [data]);
 
@@ -43,6 +43,7 @@ const Dashboard = () => {
         <LinkForm />
         <LinksTable
           links={links ?? []}
+          isLoading={loading}
           onSearch={handleSearch}
           onRefetch={() => refetch({})}
           onFetchMore={total > links.length ? handleFetchMore : undefined}

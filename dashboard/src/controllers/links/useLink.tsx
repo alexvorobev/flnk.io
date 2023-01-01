@@ -55,7 +55,7 @@ export const LinksProvider: FC<ProviderProps> = ({ children }) => {
             data: {
               getLinks: {
                 total: (links?.getLinks?.total ?? 0) - 1,
-                items: links?.getLinks?.items?.filter((link: CountedVisitsLink) => link.id !== data?.deleteLink.id)
+                items: links?.getLinks?.items?.filter((link: CountedVisitsLink) => link.id !== data?.deleteLink.id),
               },
             },
           });

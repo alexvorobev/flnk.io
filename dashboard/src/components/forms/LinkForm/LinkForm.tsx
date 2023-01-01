@@ -55,20 +55,21 @@ export const LinkForm = () => {
 
             cache.writeQuery({
               query: getLinksQuery,
-              data: { 
+              data: {
                 getLinks: {
                   total: cachedLinks?.getLinks?.total ?? 0,
-                  items: cachedLinks?.getLinks?.items?.map((link) => {
-                    if (link.id === updatedLink?.updateLink?.id) {
-                      return {
-                        ...link,
-                        ...updatedLink?.updateLink,
-                        __typename: "CountedLinks",
-                      };
-                    }
+                  items:
+                    cachedLinks?.getLinks?.items?.map((link) => {
+                      if (link.id === updatedLink?.updateLink?.id) {
+                        return {
+                          ...link,
+                          ...updatedLink?.updateLink,
+                          __typename: 'CountedLinks',
+                        };
+                      }
 
-                    return link;
-                  }) ?? [],
+                      return link;
+                    }) ?? [],
                 },
               },
             });
@@ -93,24 +94,27 @@ export const LinkForm = () => {
 
             cache.writeQuery({
               query: getLinksQuery,
-              data: { 
+              data: {
                 getLinks: {
                   total,
-                  items: [{
-                    __typename: 'Link',
-                    ...newLink?.createLink,
-                    isActive: true,
-                    isBlocked: false,
-                    visits: {
-                      __typename: 'Visits',
-                      current: 0,
-                      change: 0,
+                  items: [
+                    {
+                      __typename: 'Link',
+                      ...newLink?.createLink,
+                      isActive: true,
+                      isBlocked: false,
+                      visits: {
+                        __typename: 'Visits',
+                        current: 0,
+                        change: 0,
+                      },
+                      user: {
+                        __typename: 'User',
+                        ...me,
+                      },
                     },
-                    user: {
-                      __typename: 'User',
-                      ...me,
-                    }
-                  }, ...(cachedLinks?.getLinks?.items ?? [])],
+                    ...(cachedLinks?.getLinks?.items ?? []),
+                  ],
                 },
               },
             });
@@ -133,9 +137,7 @@ export const LinkForm = () => {
 
   return (
     <FormWrapper onSubmit={handleSubmit(onSubmitCallback)}>
-      <p style={{fontSize: 14, fontWeight: 'bold'}}>
-        flnk.io/
-      </p>
+      <p style={{ fontSize: 14, fontWeight: 'bold' }}>flnk.io/</p>
       <TextInput
         placeholder={me?.role === 'ADMIN' ? 'Your custom link hash' : 'Link hash'}
         width='100%'
