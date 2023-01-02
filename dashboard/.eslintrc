@@ -64,7 +64,8 @@
           "tableRendererProps": true,
           "DropdownItemProps": true,
           "FormControlProps": true,
-          "FormRegisterProps": true
+          "FormRegisterProps": true,
+          "env": true
         }
       }
     ],

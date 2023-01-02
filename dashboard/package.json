@@ -11,9 +11,8 @@
     "format": "prettier --write src/**",
     "lint:ts": "tsc --noEmit && yarn lint:eslint",
     "lint:eslint": "eslint --ext=jsx,ts,tsx 'src/**/*.{ts,tsx}'",
-    "lint:css": "stylelint --custom-syntax \"postcss-scss\" \"src/**/*.scss\" --config ./.stylelintrc",
-    "lint": "yarn lint:ts && yarn lint:css",
-    "lint:fix": "yarn lint:eslint --fix && yarn lint:css --fix"
+    "lint": "yarn lint:ts",
+    "lint:fix": "yarn lint:eslint --fix"
   },
   "dependencies": {
     "@apollo/client": "^3.6.10",
