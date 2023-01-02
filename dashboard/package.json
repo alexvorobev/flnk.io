@@ -46,6 +46,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-router-dom": "^5.3.3",
     "@types/wojtekmaj__react-daterange-picker": "^3.4.1",
+    "@typescript-eslint/parser": "^5.47.1",
     "autoprefixer": "^10.4.0",
     "babel-eslint": "^10.1.0",
     "dotenv": "8.2.0",
