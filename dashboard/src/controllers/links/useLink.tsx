@@ -88,7 +88,7 @@ export const LinksProvider: FC<ProviderProps> = ({ children }) => {
                 },
               },
             });
-          }
+          },
         });
       }
     },

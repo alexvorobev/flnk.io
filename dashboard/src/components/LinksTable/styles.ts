@@ -31,3 +31,11 @@ export const LinkControls = styled.div`
   justify-content: flex-end;
   gap: 16px;
 `;
+
+export const LinksTableEmpty = styled.div`
+  font-size: 1.125rem;
+  line-height: 1.8rem;
+  padding: 64px 24px;
+  color: #c1c4d6;
+  text-align: center;
+`;

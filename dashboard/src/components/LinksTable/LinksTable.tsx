@@ -1,7 +1,8 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Table, Switch, Button, toaster, Dialog, Alert, Pane } from 'evergreen-ui';
 import { BsPencil, BsTrash } from 'react-icons/bs';
 import { RxUpdate, RxLink2 } from 'react-icons/rx';
+import { AiOutlineLink } from 'react-icons/ai';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { CountedVisitsLink } from 'schema/types';
@@ -12,6 +13,7 @@ import { useThreshold } from 'hooks';
 import { TableLoader } from 'components/TableLoader';
 
 import GrowthCell from './GrowthCell';
+import { LinksTableEmpty } from './styles';
 
 interface Props {
   links?: CountedVisitsLink[];
@@ -42,6 +44,7 @@ export const LinksTable: FC<Props> = ({ links, isLoading, onSearch, onFetchMore,
   const [linkToDelete, setLinkToDelete] = useState<CountedVisitsLink>();
   const handleSearch = useThreshold<string>(onSearch, threshold);
   const isCopyAvailable = !!navigator.clipboard && !!navigator.clipboard.writeText;
+  const isShowEmptyState = !isLoading && (!links || links.length === 0);
 
   const handleConfirmedDelete = useCallback(async () => {
     if (linkToDelete) {
@@ -49,6 +52,21 @@ export const LinksTable: FC<Props> = ({ links, isLoading, onSearch, onFetchMore,
       setLinkToDelete(undefined);
     }
   }, [deleteLink, linkToDelete]);
+
+  const renderedEmptyState = useMemo(
+    () =>
+      isShowEmptyState && (
+        <LinksTableEmpty>
+          <AiOutlineLink style={{ marginBottom: 24 }} size={64} />
+          <p>
+            You don&apos;t have any links yet.
+            <br />
+            Create one by form above.
+          </p>
+        </LinksTableEmpty>
+      ),
+    [isShowEmptyState],
+  );
 
   return (
     <InfiniteScroll
@@ -149,6 +167,7 @@ export const LinksTable: FC<Props> = ({ links, isLoading, onSearch, onFetchMore,
             ))}
           </Table.Body>
         </Table>
+        {renderedEmptyState}
         {isLoading && <TableLoader />}
       </div>
     </InfiniteScroll>
