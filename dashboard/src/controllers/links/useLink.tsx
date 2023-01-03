@@ -3,7 +3,7 @@ import { createContext, FC, useCallback, useContext, useState } from 'react';
 
 import { deleteLinkMutation, updateLinkMutation } from 'mutations';
 import { getLinksQuery } from 'queries';
-import { CountedVisitsLink, Query } from 'schema/types';
+import { CountedVisitsLink, Mutation, Query } from 'schema/types';
 
 interface LinksContextType {
   currentLink?: CountedVisitsLink;
@@ -36,7 +36,7 @@ interface ProviderProps {
 export const LinksProvider: FC<ProviderProps> = ({ children }) => {
   const [currentLink, setCurrentLink] = useState<CountedVisitsLink>();
   const [requestDeleteLink, { loading: isDeleting }] = useMutation(deleteLinkMutation);
-  const [updateLink] = useMutation(updateLinkMutation);
+  const [updateLink] = useMutation<Mutation>(updateLinkMutation);
 
   const editLink = useCallback((link?: CountedVisitsLink) => {
     setCurrentLink(link);
@@ -75,6 +75,20 @@ export const LinksProvider: FC<ProviderProps> = ({ children }) => {
               isActive,
             },
           },
+          update(cache, { data }) {
+            const links = cache.readQuery<Query>({ query: getLinksQuery });
+            cache.writeQuery({
+              query: getLinksQuery,
+              data: {
+                getLinks: {
+                  total: links?.getLinks?.total,
+                  items: links?.getLinks?.items?.map((item: CountedVisitsLink) =>
+                    item.id === data?.updateLink?.id ? data?.updateLink : item,
+                  ),
+                },
+              },
+            });
+          }
         });
       }
     },
