@@ -20,13 +20,6 @@ export const FormWrapper = styled.form`
   }
 `;
 
-export const FieldErrorMessage = styled.span`
-  display: block;
-  padding-top: 8px;
-  color: #ff4d4f;
-  font-size: 12px;
-`;
-
 export const AppLinkUrl = styled.p`
   display: block;
   line-height: 40px;

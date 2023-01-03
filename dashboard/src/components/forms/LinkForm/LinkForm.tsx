@@ -10,8 +10,9 @@ import { createLinkMutation, updateLinkMutation } from 'mutations';
 import { useAuth } from 'controllers/auth/useAuth';
 import { Mutation, Query } from 'schema/types';
 import { getLinksQuery } from 'queries';
+import { FieldErrorMessage } from 'components/core';
 
-import { AppLinkUrl, FieldErrorMessage, FormWrapper } from './styles';
+import { AppLinkUrl, FormWrapper } from './styles';
 
 interface FormFields {
   hash: string;
@@ -174,7 +175,7 @@ export const LinkForm = () => {
           isInvalid={!!errors.path}
           disabled={isCreating || isUpdating}
         />
-        {!!errors?.path?.message && <FieldErrorMessage>{errors?.path?.message}</FieldErrorMessage>}
+        <FieldErrorMessage message={errors.path?.message} />
       </div>
       <Button width='100%' height={40} appearance='primary' isLoading={isCreating || isUpdating}>
         Save
