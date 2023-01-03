@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useLazyQuery } from '@apollo/client';
+import { toaster } from 'evergreen-ui';
 
 import { AuthForm, AuthFormFields } from 'components/forms';
 import { AuthLayout } from 'components/layouts';
@@ -14,7 +15,7 @@ interface ResponseData {
 
 const Auth = () => {
   const [getToken, { loading }] = useLazyQuery(authQuery);
-  const { handleLogin, handleLogout } = useAuth();
+  const { handleLogin } = useAuth();
 
   const onSubmit = useCallback(
     (data: AuthFormFields) => {
@@ -27,12 +28,14 @@ const Auth = () => {
             handleLogin(response.auth.token);
           }
         },
-        onError: () => {
-          handleLogout();
+        onError: (error) => {
+          toaster.danger('Error!', {
+            description: `${error.message}. Please try again`,
+          });
         },
       });
     },
-    [getToken, handleLogin, handleLogout],
+    [getToken, handleLogin],
   );
 
   return (
