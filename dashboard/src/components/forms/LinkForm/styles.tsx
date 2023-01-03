@@ -9,7 +9,7 @@ export const FormWrapper = styled.form`
   background-color: #f9fafc;
   border: 1px solid #edeff5;
   margin-bottom: 24px;
-  align-items: center;
+  align-items: grid-start;
 
   @media (max-width: 1200px) {
     grid-template-columns: auto 1fr;
@@ -18,4 +18,16 @@ export const FormWrapper = styled.form`
       grid-column: 1 / -1;
     }
   }
+`;
+
+export const FieldErrorMessage = styled.span`
+  display: block;
+  padding-top: 8px;
+  color: #ff4d4f;
+  font-size: 12px;
+`;
+
+export const AppLinkUrl = styled.p`
+  display: block;
+  line-height: 40px;
 `;

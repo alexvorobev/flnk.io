@@ -2,6 +2,8 @@ import { useForm } from 'react-hook-form';
 import { useCallback, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { TextInput, Button, toaster } from 'evergreen-ui';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useLink } from 'controllers/links/useLink';
 import { createLinkMutation, updateLinkMutation } from 'mutations';
@@ -9,15 +11,33 @@ import { useAuth } from 'controllers/auth/useAuth';
 import { Mutation, Query } from 'schema/types';
 import { getLinksQuery } from 'queries';
 
-import { FormWrapper } from './styles';
+import { AppLinkUrl, FieldErrorMessage, FormWrapper } from './styles';
 
 interface FormFields {
   hash: string;
   path: string;
 }
 
+const URL_REGEX =
+  /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
+
+const schema = yup
+  .object({
+    hash: yup.string(),
+    path: yup.string().required('URL required').matches(URL_REGEX, 'Invalid URL'),
+  })
+  .required();
+
 export const LinkForm = () => {
-  const { register, handleSubmit, reset, setValue } = useForm<FormFields>();
+  const {
+    formState: { errors },
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+  } = useForm<FormFields>({
+    resolver: yupResolver(schema),
+  });
   const { me } = useAuth();
   const { currentLink, editLink } = useLink();
   const [updateLink, { loading: isUpdating }] = useMutation<Mutation>(updateLinkMutation, {
@@ -137,7 +157,7 @@ export const LinkForm = () => {
 
   return (
     <FormWrapper onSubmit={handleSubmit(onSubmitCallback)}>
-      <p style={{ fontSize: 14, fontWeight: 'bold' }}>flnk.io/</p>
+      <AppLinkUrl style={{ fontSize: 14, fontWeight: 'bold' }}>flnk.io/</AppLinkUrl>
       <TextInput
         placeholder={me?.role === 'ADMIN' ? 'Your custom link hash' : 'Link hash'}
         width='100%'
@@ -145,14 +165,17 @@ export const LinkForm = () => {
         {...register('hash')}
         disabled={me?.role !== 'ADMIN' || isCreating || isUpdating}
       />
-      <TextInput
-        placeholder='Link to be shortened'
-        width='100%'
-        height={40}
-        type='url'
-        {...register('path')}
-        disabled={isCreating || isUpdating}
-      />
+      <div>
+        <TextInput
+          placeholder='Link to be shortened'
+          width='100%'
+          height={40}
+          {...register('path')}
+          isInvalid={!!errors.path}
+          disabled={isCreating || isUpdating}
+        />
+        {!!errors?.path?.message && <FieldErrorMessage>{errors?.path?.message}</FieldErrorMessage>}
+      </div>
       <Button width='100%' height={40} appearance='primary' isLoading={isCreating || isUpdating}>
         Save
       </Button>

@@ -16,6 +16,7 @@
       "typescript.tsdk": "dashboard/node_modules/typescript/lib",
       "cSpell.words": [
         "geoip",
+        "hookform",
         "uuidv"
       ]
     }
