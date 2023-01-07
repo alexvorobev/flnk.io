@@ -1,21 +1,21 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { get as getRedis } from '../../lib/redis';
 
 type Data = {
   path: string | null;
   uuid: string;
   isBlocked?: boolean | null;
-}
+};
 
 type JSONResponse = {
   uuid?: string;
-  errors?: Array<{message: string}>
-}
+  errors?: Array<{ message: string }>;
+};
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Data>,
 ) {
   const body = req.body;
   const { hash, userAgent, cookies, address } = JSON.parse(body);
@@ -36,7 +36,7 @@ export default async function handler(
     });
   }
 
-  if(uuid) {
+  if (uuid) {
     res.status(200).json({
       path: linkPath,
       uuid,
@@ -45,25 +45,27 @@ export default async function handler(
   }
 
   fetch(`http://${process.env.API_URL}/visits`, {
-        method: 'POST',
-        cache: 'no-cache',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            uuid,
-            ip: address,
-            ua: userAgent,
-            link: hash,
-        }),
-    }).then(async (result) => {
-      const { uuid: newUUID } = await result.json() as JSONResponse;
+    method: 'POST',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      uuid,
+      ip: address,
+      ua: userAgent,
+      link: hash,
+    }),
+  })
+    .then(async (result) => {
+      const { uuid: newUUID } = (await result.json()) as JSONResponse;
 
-      if(!uuid) {
+      if (!uuid) {
         res.status(200).json({
           path: linkPath,
           uuid: newUUID ?? '',
         });
       }
-    }).catch(() => {});
+    })
+    .catch(() => {});
 }
