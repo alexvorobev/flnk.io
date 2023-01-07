@@ -1,22 +1,26 @@
 import { useEffect, FC } from "react";
 import { GetServerSideProps } from "next";
-import { UAParser } from 'ua-parser-js';
-import { lookup } from 'geoip-lite';
+import { BlockedMessage } from "../../components/BlockedMessage";
 
 interface Props {
     path: string | null;
     uuid: string | null;
+    isBlocked?: boolean;
 }
 
-const LinkHashPage:FC<Props> = ({ path, uuid }) => {
+const LinkHashPage:FC<Props> = ({ path, isBlocked, uuid }) => {
 
     useEffect(() => {
-        if(window && path) {
+        if(window && path && !isBlocked) {
             window.location.href = path;
+            // add cookie 
+            window.document.cookie = `uuid=${uuid};`;
         }
-        // add cookie 
-        window.document.cookie = `uuid=${uuid};`;
-    }, [path, uuid]);
+    }, [isBlocked, path, uuid]);
+
+    if(isBlocked) {
+        return <BlockedMessage />
+    }
 
     return null;
 };
@@ -44,6 +48,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
             props: {
                 path: data.path ?? null,
                 uuid: data.uuid ?? null,
+                isBlocked: data.isBlocked ?? false,
             }
         }
     }).catch(() => {

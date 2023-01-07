@@ -5,6 +5,7 @@ import { get as getRedis } from '../../lib/redis';
 type Data = {
   path: string | null;
   uuid: string;
+  isBlocked?: boolean | null;
 }
 
 type JSONResponse = {
@@ -21,6 +22,7 @@ export default async function handler(
   const { uuid } = cookies;
   const cached = await getRedis(hash);
   let linkPath = '';
+  let linkBlocked = false;
 
   if (cached) {
     linkPath = cached?.replaceAll('"', '') ?? null;
@@ -28,8 +30,9 @@ export default async function handler(
     await fetch(`http://localhost:4000/links/${hash}`, {
       method: 'GET',
     }).then(async (result) => {
-      const { path } = await result.json();
+      const { path, isBlocked } = await result.json();
       linkPath = path;
+      linkBlocked = isBlocked;
     });
   }
 
@@ -37,6 +40,7 @@ export default async function handler(
     res.status(200).json({
       path: linkPath,
       uuid,
+      isBlocked: linkBlocked,
     });
   }
 

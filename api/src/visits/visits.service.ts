@@ -44,16 +44,18 @@ export class VisitsService {
           },
         });
 
-    await this.prisma.visit.create({
-      data: {
-        link: linkData.id,
-        visitor: visitor.id,
-        ip,
-        country: geo?.country ?? 'null',
-        region: geo?.region ?? 'null',
-        city: geo?.city ?? 'null',
-      },
-    });
+    if (visitor) {
+      await this.prisma.visit.create({
+        data: {
+          link: linkData.id,
+          visitor: visitor.id,
+          ip,
+          country: geo?.country ?? 'null',
+          region: geo?.region ?? 'null',
+          city: geo?.city ?? 'null',
+        },
+      });
+    }
 
     return { uuid };
   }

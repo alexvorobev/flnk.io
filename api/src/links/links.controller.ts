@@ -8,11 +8,12 @@ export class LinksController {
   @Get('/:hash')
   async getLinkById(@Param('hash') inputHash) {
     const link = await this.linksService.getLinkByHash(inputHash);
-    const { hash, path } = link ?? {};
+    const { hash, path, isBlocked, isActive } = link ?? {};
 
     return {
       hash,
       path,
+      isBlocked: isBlocked || !isActive,
     };
   }
 }
