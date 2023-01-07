@@ -141,7 +141,11 @@ export class LinksService {
       },
     });
 
-    await this.cacheManager.set(`link:${updated.hash}`, updated.path);
+    if (!isActive || isBlocked) {
+      await this.cacheManager.del(`link:${updated.hash}`);
+    } else {
+      await this.cacheManager.set(`link:${updated.hash}`, updated.path);
+    }
 
     this.userLogs.pushLog({
       user: user.id,
